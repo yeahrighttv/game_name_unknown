@@ -1,2 +1,2 @@
 # game_name_unknown
-game name unknown, future medieval
+game name unknown
