@@ -1,5 +1,6 @@
 import pygame
 from player import Player
+import config
 from game_state import GameState
 
 class Game:
@@ -16,6 +17,7 @@ class Game:
         self.game_state = GameState.RUNNING
 
     def update(self):
+        self.screen.fill(config.BLACK)
         print('update')
         self.handle_events()
 
