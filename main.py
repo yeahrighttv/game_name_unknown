@@ -1,6 +1,7 @@
 import pygame
 import config
 from game import Game
+from game_state import GameState
 
 def main ():
     pygame.init()
@@ -12,7 +13,7 @@ pygame.display.set_caption('Undertale Game')
 game = Game(screen)
 game.set_up()
 
-while True:
+while game.game_state == GameState.RUNNING:
     game.update()
     pygame.display.flip()
 
