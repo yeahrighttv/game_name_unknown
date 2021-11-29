@@ -7,7 +7,7 @@ def main ():
     pygame.init()
 
 
-screen = pygame.display.set_mode((600, 400))
+screen = pygame.display.set_mode((1280, 640))
 pygame.display.set_caption('Undertale Game')
 
 game = Game(screen)
