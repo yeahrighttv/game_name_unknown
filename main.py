@@ -1,6 +1,6 @@
-import pyglet
+import pygame
 
-pyglet.init()
+pygame.init()
 
 def main ():
     #start
