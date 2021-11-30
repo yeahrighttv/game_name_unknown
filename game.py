@@ -16,6 +16,8 @@ class Game:
         print('do set up')
         self.game_state = GameState.RUNNING
 
+        self.
+
     def update(self):
         self.screen.fill(config.BLACK)
         print('update')
