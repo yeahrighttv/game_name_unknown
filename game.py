@@ -32,11 +32,11 @@ class Game:
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.game_state = GameState.ENDED
-                elif event.key == pygame.K_w: # up
+                elif event.key == pygame.K_w or event.key == pygame.K_UP: # up
                     self.player.update_position(0, -1)
-                elif event.key == pygame.K_s: # down
+                elif event.key == pygame.K_s or event.key == pygame.K_DOWN: # down
                     self.player.update_position(0, 1)
-                elif event.key == pygame.K_a: # left
+                elif event.key == pygame.K_a or event.key == pygame.K_LEFT: # left
                     self.player.update_position(-1, 0)
-                elif event.key == pygame.K_d: # right
+                elif event.key == pygame.K_d or event.key == pygame.K_RIGHT: # right
                     self.player.update_position(1, 0)
