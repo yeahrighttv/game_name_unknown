@@ -15,7 +15,7 @@ class Player:
     def update_position(self, x_change, y_change):
         self.position[0] += x_change
         self.position[1] += y_change
-        self.rect = self.position[0] * config.SCALE, self.position[1] * config.SCALE, config.SCALE, config.SCALE
+        self.rect = self.position[0] * config.SCALE/10, self.position[1] * config.SCALE/10, config.SCALE, config.SCALE
 
     def render(self, screen):
         screen.blit(self.image, self.rect)

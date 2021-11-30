@@ -36,9 +36,13 @@ class Game:
                     self.game_state = GameState.ENDED
                 elif event.key == pygame.K_w or event.key == pygame.K_UP: # up
                     self.player.update_position(0, -1)
+                    print("up")
                 elif event.key == pygame.K_s or event.key == pygame.K_DOWN: # down
                     self.player.update_position(0, 1)
+                    print("down")
                 elif event.key == pygame.K_a or event.key == pygame.K_LEFT: # left
                     self.player.update_position(-1, 0)
+                    print("left")
                 elif event.key == pygame.K_d or event.key == pygame.K_RIGHT: # right
                     self.player.update_position(1, 0)
+                    print("right")

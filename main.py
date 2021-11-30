@@ -16,7 +16,7 @@ game = Game(screen)
 game.set_up()
 
 while game.game_state == GameState.RUNNING:
-    clock.tick(50)
+    clock.tick(30)
     game.update()
     pygame.display.flip()
 
