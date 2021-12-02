@@ -1,7 +1,8 @@
 import pygame
-from player import Player
+from player import Player, pressedkeys, stepcount
 import config
 from game_state import GameState
+
 
 class Game:
     def __init__(self, screen):
@@ -67,17 +68,15 @@ class Game:
                     print("right ^")
             #if key is pressed: change posistion
             if pressedkeys['up']:
+                pygame.time.wait(50)
                 self.player.update_position(0, -1)
             if pressedkeys['down']:
+                pygame.time.wait(50)
                 self.player.update_position(0, 1)
             if pressedkeys['left']:
+                pygame.time.wait(50)
                 self.player.update_position(-1, 0)
             if pressedkeys['right']:
+                pygame.time.wait(50)
                 self.player.update_position(1, 0)
 #check if keys are pressed
-pressedkeys = {
-    'up': False,
-    'down': False,
-    'left': False,
-    'right': False
-}
