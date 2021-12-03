@@ -1,7 +1,9 @@
 import pygame
-from player import Player
+from pygame.time import Clock
+from player import Player, index_advance
 import config
 from game_state import GameState
+
 
 
 class Game:
@@ -70,3 +72,4 @@ class Game:
                 elif event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                     self.player.right_pressed = False
                     print("right ^")
+            
