@@ -25,6 +25,7 @@ class Player:
         self.up_pressed = False
         self.down_pressed = False
         self.speed = 0.1
+
         self.image = pygame.image.load('imgs/player.png')
         self.image = pygame.transform.scale(self.image, (config.SCALE, config.SCALE))
         self.rect = pygame.Rect(self.x * config.SCALE, self.y * config.SCALE, config.SCALE, config.SCALE)
@@ -37,12 +38,20 @@ class Player:
         self.velX = 0
         self.velY = 0
         if self.left_pressed == True and self.right_pressed == False:
+            self.image = walk_left[1]
+            self.image = pygame.transform.scale(self.image, (config.SCALE, config.SCALE))
             self.velX = -self.speed
         if self.right_pressed == True and self.left_pressed == False:
+            self.image = walk_right[1]
+            self.image = pygame.transform.scale(self.image, (config.SCALE, config.SCALE))
             self.velX = self.speed
         if self.up_pressed == True and self.down_pressed == False:
+            self.image = walk_up[1]
+            self.image = pygame.transform.scale(self.image, (config.SCALE, config.SCALE))
             self.velY = -self.speed
         if self.down_pressed == True and self.up_pressed == False:
+            self.image = walk_down[1]
+            self.image = pygame.transform.scale(self.image, (config.SCALE, config.SCALE))
             self.velY = self.speed
         
         self.x += self.velX
