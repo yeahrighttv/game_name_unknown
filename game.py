@@ -1,5 +1,5 @@
 import pygame
-from player import Player, pressedkeys, stepcount
+from player import Player
 import config
 from game_state import GameState
 
@@ -11,7 +11,7 @@ class Game:
         self.game_state = GameState.NONE
 
     def set_up(self):
-        player = Player(1, 1)
+        player = Player(0, 0)
         self.player = player
         self.objects.append(player)
         print('do set up')
@@ -23,7 +23,7 @@ class Game:
         self.screen.fill(config.BLACK)
         print('update')
         self.handle_events()
-
+        self.player.update_position()
         for object in self.objects:
             object.render(self.screen)
 
@@ -31,52 +31,42 @@ class Game:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.game_state = GameState.ENDED
-            # hanlde key events
+            # handle key events
             #check if key is pressed
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.game_state = GameState.ENDED
                 elif event.key == pygame.K_w or event.key == pygame.K_UP: # up
                     #self.player.update_position(0, -1)
-                    pressedkeys['up'] = True
+                    self.player.up_pressed = True
                     print("up v")
+                    print(self.player.right_pressed, self.player.left_pressed, self.player.up_pressed, self.player.down_pressed)
                 elif event.key == pygame.K_s or event.key == pygame.K_DOWN: # down
                     #self.player.update_position(0, 1)
-                    pressedkeys['down'] = True
+                    self.player.down_pressed = True
+                    print(self.player.right_pressed, self.player.left_pressed, self.player.up_pressed, self.player.down_pressed)
                     print("down v")
                 elif event.key == pygame.K_a or event.key == pygame.K_LEFT: # left
                     #self.player.update_position(-1, 0)
-                    pressedkeys['left'] = True
+                    self.player.left_pressed = True
+                    print(self.player.right_pressed, self.player.left_pressed, self.player.up_pressed, self.player.down_pressed)
                     print("left v")
                 elif event.key == pygame.K_d or event.key == pygame.K_RIGHT: # right
                     #self.player.update_position(1, 0)
-                    pressedkeys['right'] = True
+                    self.player.right_pressed = True
+                    print(self.player.right_pressed, self.player.left_pressed, self.player.up_pressed, self.player.down_pressed)
                     print("right v")
             #check if key is released
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_w or event.key == pygame.K_UP:
-                    pressedkeys['up'] = False
+                    self.player.up_pressed = False
                     print("up ^")
                 elif event.key == pygame.K_s or event.key == pygame.K_DOWN:
-                    pressedkeys['down'] = False
+                    self.player.down_pressed = False
                     print("down ^")
                 elif event.key == pygame.K_a or event.key == pygame.K_LEFT:
-                    pressedkeys['left'] = False
+                    self.player.left_pressed = False
                     print("left ^")
                 elif event.key == pygame.K_d or event.key == pygame.K_RIGHT:
-                    pressedkeys['right'] = False
+                    self.player.right_pressed = False
                     print("right ^")
-            #if key is pressed: change posistion
-            if pressedkeys['up']:
-                pygame.time.wait(50)
-                self.player.update_position(0, -1)
-            if pressedkeys['down']:
-                pygame.time.wait(50)
-                self.player.update_position(0, 1)
-            if pressedkeys['left']:
-                pygame.time.wait(50)
-                self.player.update_position(-1, 0)
-            if pressedkeys['right']:
-                pygame.time.wait(50)
-                self.player.update_position(1, 0)
-#check if keys are pressed
