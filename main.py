@@ -24,7 +24,7 @@ while game.game_state == GameState.RUNNING:
     game.update()
     pygame.display.flip()
     time_elapsed += dt
-
+    #advance index every 200 milliseconds
     if time_elapsed > 200:
         index_advance()
         time_elapsed = 0

@@ -10,7 +10,7 @@ walk_right = [pygame.image.load('imgs/player_walk1_right.png'), pygame.image.loa
 
 j = 0
 i = 0
-
+#advance index function
 def index_advance():
     global j
     global i
@@ -32,12 +32,12 @@ class Player:
         self.y = int(y_position)
         self.velX = 0
         self.velY = 0
+        #store pressed values in player
         self.left_pressed = False
         self.right_pressed = False
         self.up_pressed = False
         self.down_pressed = False
         self.speed = 0.1
-
         self.image = pygame.image.load('imgs/player.png')
         self.image = pygame.transform.scale(self.image, (config.SCALE, config.SCALE))
         self.rect = pygame.Rect(self.x * config.SCALE, self.y * config.SCALE, config.SCALE, config.SCALE)
@@ -46,11 +46,12 @@ class Player:
         print('Player Updated')
     
     def update_position(self):
-        global stepcount
         global i
         global j
+        #set velocity back to 0
         self.velX = 0
         self.velY = 0
+        #button press reactions
         if self.left_pressed == True and self.right_pressed == False:
             self.image = walk_left[i]
             self.image = pygame.transform.scale(self.image, (config.SCALE, config.SCALE))
@@ -70,10 +71,10 @@ class Player:
         if self.down_pressed == False and self.up_pressed == False and self.right_pressed == False and self.left_pressed == False:
             self.image = walk_down[1]
             self.image = pygame.transform.scale(self.image, (config.SCALE, config.SCALE))
-        
-        
+        #move character according to velocity
         self.x += self.velX
         self.y += self.velY
+        #rescale movement
         self.rect = self.x * config.SCALE, self.y * config.SCALE, config.SCALE, config.SCALE
     def render(self, screen):
         screen.blit(self.image, self.rect)

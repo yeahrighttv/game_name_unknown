@@ -20,7 +20,7 @@ class Game:
         self.game_state = GameState.RUNNING
 
 #        self.
-
+    #update (loops)
     def update(self):
         self.screen.fill(config.BLACK)
         print('update')
@@ -28,7 +28,7 @@ class Game:
         self.player.update_position()
         for object in self.objects:
             object.render(self.screen)
-
+    #handle things
     def handle_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -39,26 +39,22 @@ class Game:
                 if event.key == pygame.K_ESCAPE:
                     self.game_state = GameState.ENDED
                 elif event.key == pygame.K_w or event.key == pygame.K_UP: # up
-                    #self.player.update_position(0, -1)
                     self.player.up_pressed = True
                     print("up v")
                     print(self.player.right_pressed, self.player.left_pressed, self.player.up_pressed, self.player.down_pressed)
                 elif event.key == pygame.K_s or event.key == pygame.K_DOWN: # down
-                    #self.player.update_position(0, 1)
                     self.player.down_pressed = True
                     print(self.player.right_pressed, self.player.left_pressed, self.player.up_pressed, self.player.down_pressed)
                     print("down v")
                 elif event.key == pygame.K_a or event.key == pygame.K_LEFT: # left
-                    #self.player.update_position(-1, 0)
                     self.player.left_pressed = True
                     print(self.player.right_pressed, self.player.left_pressed, self.player.up_pressed, self.player.down_pressed)
                     print("left v")
                 elif event.key == pygame.K_d or event.key == pygame.K_RIGHT: # right
-                    #self.player.update_position(1, 0)
                     self.player.right_pressed = True
                     print(self.player.right_pressed, self.player.left_pressed, self.player.up_pressed, self.player.down_pressed)
                     print("right v")
-            #check if key is released
+            #check if key is released and refalsify booleans
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_w or event.key == pygame.K_UP:
                     self.player.up_pressed = False
