@@ -10,6 +10,8 @@ def main ():
 
 screen = pygame.display.set_mode((1280, 640))
 pygame.display.set_caption('Undertale Game')
+icon = pygame.image.load('imgs/game_icon.png')
+pygame.display.set_icon(icon)
 
 clock = pygame.time.Clock()
 
