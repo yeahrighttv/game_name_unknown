@@ -71,6 +71,9 @@ class Player:
         if self.down_pressed == False and self.up_pressed == False and self.right_pressed == False and self.left_pressed == False:
             self.image = walk_down[1]
             self.image = pygame.transform.scale(self.image, (config.SCALE, config.SCALE))
+        if self.velY == 0 and self.velX == 0:
+            self.image = walk_down[1]
+            self.image = pygame.transform.scale(self.image, (config.SCALE, config.SCALE))
         #move character according to velocity
         self.x += self.velX
         self.y += self.velY
