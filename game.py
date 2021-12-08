@@ -26,7 +26,6 @@ class Game:
         print('update')
         self.handle_events()
         self.player.update_position()
-        print(self.player.x, self.player.y)
         for object in self.objects:
             object.render(self.screen)
             
