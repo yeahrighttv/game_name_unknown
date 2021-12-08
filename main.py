@@ -7,7 +7,7 @@ from player import index_advance
 def main ():
     pygame.init()
 
-screen = pygame.display.set_mode((840, 640))
+screen = pygame.display.set_mode((316 * 2, 236 * 2))
 pygame.display.set_caption('Undertale Game')
 icon = pygame.image.load('imgs/game_icon.png')
 pygame.display.set_icon(icon)
@@ -21,12 +21,12 @@ time_elapsed = 0
 
 while game.game_state == GameState.RUNNING:
     clock.tick()
-    dt = clock.tick(30)
+    dt = clock.tick(90)
     game.update()
     pygame.display.flip()
     time_elapsed += dt
-    #advance index every 200 milliseconds
-    if time_elapsed > 200:
+    #advance index every 100 milliseconds
+    if time_elapsed > 90:
         index_advance()
         time_elapsed = 0
 

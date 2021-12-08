@@ -96,6 +96,6 @@ class Player:
         pygame.Surface.blit(bgsurface, rail2, (0,0))
         pygame.Surface.blit(bgsurface, rail3, (0,0))
 
-        pygame.transform.scale(bgsurface, (840, 640), dest_surface=screen)
+        pygame.transform.scale(bgsurface, (316 * 2, 236 * 2), dest_surface=screen)
 
         
