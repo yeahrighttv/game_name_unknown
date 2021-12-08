@@ -28,6 +28,7 @@ class Game:
         self.player.update_position()
         for object in self.objects:
             object.render(self.screen)
+            
     #handle things
     def handle_events(self):
         for event in pygame.event.get():
