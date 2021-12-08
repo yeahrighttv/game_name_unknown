@@ -80,4 +80,22 @@ class Player:
         #rescale movement
         self.rect = self.x * config.SCALE, self.y * config.SCALE, config.SCALE, config.SCALE
     def render(self, screen):
-        screen.blit(self.image, self.rect)
+        bgsurface = pygame.surface.Surface((316, 236))
+        entrance = pygame.image.load('imgs/Room_Entrance.png')
+        stairs = pygame.image.load('imgs/Staircase_1.png')
+        rail1 = pygame.image.load('imgs/Railing_asset1.png')
+        rail2 = pygame.image.load('imgs/Railing_asset2.png')
+        rail3 = pygame.image.load('imgs/Railing_asset3.png')
+
+        
+
+        pygame.Surface.blit(bgsurface, stairs, (0,0))
+        pygame.Surface.blit(bgsurface, entrance, (0,0))
+        bgsurface.blit(self.image, self.rect)
+        pygame.Surface.blit(bgsurface, rail1, (0,0))
+        pygame.Surface.blit(bgsurface, rail2, (0,0))
+        pygame.Surface.blit(bgsurface, rail3, (0,0))
+
+        pygame.transform.scale(bgsurface, (840, 640), dest_surface=screen)
+
+        
