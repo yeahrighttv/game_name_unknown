@@ -7,7 +7,7 @@ from player import index_advance
 def main ():
     pygame.init()
 
-screen = pygame.display.set_mode((317 * 2, 236 * 2))
+screen = pygame.display.set_mode((317 * 3, 236 * 3))
 pygame.display.set_caption('Undertale Game')
 icon = pygame.image.load('imgs/game_icon.png')
 pygame.display.set_icon(icon)

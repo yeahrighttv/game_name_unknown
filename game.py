@@ -13,7 +13,7 @@ class Game:
         self.game_state = GameState.NONE
 
     def set_up(self):
-        player = Player(0, 0)
+        player = Player(4.5, 6.4)
         self.player = player
         self.objects.append(player)
         print('do set up')
@@ -26,6 +26,7 @@ class Game:
         print('update')
         self.handle_events()
         self.player.update_position()
+        print(self.player.x, self.player.y)
         for object in self.objects:
             object.render(self.screen)
             

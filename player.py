@@ -28,8 +28,8 @@ stepcount = 0
 class Player:
     def __init__(self, x_position, y_position):
         print('Player Created')
-        self.x = int(x_position)
-        self.y = int(y_position)
+        self.x = float(x_position)
+        self.y = float(y_position)
         self.velX = 0
         self.velY = 0
         #store pressed values in player
@@ -96,6 +96,6 @@ class Player:
         pygame.Surface.blit(bgsurface, rail2, (0,0))
         pygame.Surface.blit(bgsurface, rail3, (0,0))
 
-        pygame.transform.scale(bgsurface, (317 * 2, 236 * 2), dest_surface=screen)
+        pygame.transform.scale(bgsurface, (317 * 3, 236 * 3), dest_surface=screen)
 
         
