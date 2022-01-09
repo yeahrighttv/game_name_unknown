@@ -3,8 +3,10 @@ import config
 from game import Game
 from game_state import GameState
 
-def main ():
+
+def main():
     pygame.init()
+
 
 screen = pygame.display.set_mode((317 * 3, 236 * 3))
 pygame.display.set_caption('Undertale Game')
@@ -30,7 +32,5 @@ while game.game_state == GameState.RUNNING:
         time_elapsed = 0
 
 
-
 if __name__ == '__main__':
     main()
-
