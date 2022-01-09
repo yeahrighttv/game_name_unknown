@@ -14,11 +14,16 @@ class Game:
         self.game_state = GameState.NONE
 
     def set_up(self):
-        player = Player(4.5, 6.4)
+        player = Player(4.5, 6.4, "imgs/player.png")
+
         self.player = player
         self.objects.append(player)
         print('do set up')
         self.game_state = GameState.RUNNING
+
+    def render(self):
+        for object in self.objects:
+            object.render(self.screen)
 
     # update (loops)
     def update(self):
@@ -26,8 +31,7 @@ class Game:
         print('update')
         self.handle_events()
         self.player.update_position()
-        for object in self.objects:
-            object.render(self.screen)
+        self.render()
 
     # def move(self, right_pressed=False, left_pressed=False, up_pressed=False, down_pressed=False):
     #     if right_pressed:
@@ -91,4 +95,3 @@ class Game:
                 elif event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                     self.player.right_pressed = False
                     print("right ^")
-            

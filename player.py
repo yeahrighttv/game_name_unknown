@@ -1,9 +1,12 @@
 from functools import partial
 from os import spawnle
+from sprite import Sprite
 import pygame
 import config
 
+
 # sprites sorted in lists
+
 walk_up = [pygame.image.load('imgs/player_walk1_up.png'), pygame.image.load('imgs/player_walk2_up.png'), pygame.image.load('imgs/player_walk3_up.png'),  pygame.image.load('imgs/player_walk2_up.png')]
 walk_down = [pygame.image.load('imgs/player_walk1_down.png'), pygame.image.load('imgs/player_walk2_down.png'), pygame.image.load('imgs/player_walk3_down.png'),  pygame.image.load('imgs/player_walk2_down.png')]
 walk_left = [pygame.image.load('imgs/player_walk1_left.png'), pygame.image.load('imgs/player_walk2_left.png')]
@@ -17,11 +20,11 @@ directions = {
 }
 
 
-class Player:
-    def __init__(self, x_position, y_position):
+class Player(Sprite):
+    def __init__(self, x, y, path):
+        super().__init__(x, y, path)
+
         print('Player Created')
-        self.x = float(x_position)
-        self.y = float(y_position)
         self.velX = 0
         self.velY = 0
 
@@ -34,10 +37,6 @@ class Player:
         self.horizontal_animation_counter = 0
         self.vertical_animation_counter = 0
         self.speed = 0.04
-
-        self.image = pygame.image.load('imgs/player.png')
-        self.image = pygame.transform.scale(self.image, (config.SCALE, config.SCALE))
-        self.rect = pygame.Rect(self.x * config.SCALE, self.y * config.SCALE, config.SCALE, config.SCALE)
 
     # def update(self):
     #     print('Player Updated')
@@ -96,11 +95,11 @@ class Player:
         rail2 = pygame.image.load('imgs/Railing_asset2.png')
         rail3 = pygame.image.load('imgs/Railing_asset3.png')
 
-        pygame.Surface.blit(bgsurface, stairs, (0,0))
-        pygame.Surface.blit(bgsurface, entrance, (0,0))
+        pygame.Surface.blit(bgsurface, stairs, (0, 0))
+        pygame.Surface.blit(bgsurface, entrance, (0, 0))
         bgsurface.blit(self.image, self.rect)
-        pygame.Surface.blit(bgsurface, rail1, (0,0))
-        pygame.Surface.blit(bgsurface, rail2, (0,0))
-        pygame.Surface.blit(bgsurface, rail3, (0,0))
+        pygame.Surface.blit(bgsurface, rail1, (0, 0))
+        pygame.Surface.blit(bgsurface, rail2, (0, 0))
+        pygame.Surface.blit(bgsurface, rail3, (0, 0))
 
         pygame.transform.scale(bgsurface, (317 * 3, 236 * 3), dest_surface=screen)
