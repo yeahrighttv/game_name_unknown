@@ -38,6 +38,9 @@ class Player(Sprite):
         self.vertical_animation_counter = 0
         self.speed = 0.04
 
+        self.image = pygame.transform.scale(self.image, (config.SCALE, config.SCALE))
+        self.rect = pygame.Rect(self.x * config.SCALE, self.y * config.SCALE, config.SCALE, config.SCALE)
+
     # def update(self):
     #     print('Player Updated')
 
@@ -87,19 +90,19 @@ class Player(Sprite):
         # rescale movement
         self.rect = pygame.Rect(self.x * config.SCALE, self.y * config.SCALE, config.SCALE, config.SCALE)
 
-    def render(self, screen):
-        bgsurface = pygame.surface.Surface((317, 236))
-        entrance = pygame.image.load('imgs/Room_Entrance.png')
-        stairs = pygame.image.load('imgs/Staircase_1.png')
-        rail1 = pygame.image.load('imgs/Railing_asset1.png')
-        rail2 = pygame.image.load('imgs/Railing_asset2.png')
-        rail3 = pygame.image.load('imgs/Railing_asset3.png')
-
-        pygame.Surface.blit(bgsurface, stairs, (0, 0))
-        pygame.Surface.blit(bgsurface, entrance, (0, 0))
-        bgsurface.blit(self.image, self.rect)
-        pygame.Surface.blit(bgsurface, rail1, (0, 0))
-        pygame.Surface.blit(bgsurface, rail2, (0, 0))
-        pygame.Surface.blit(bgsurface, rail3, (0, 0))
-
-        pygame.transform.scale(bgsurface, (317 * 3, 236 * 3), dest_surface=screen)
+    # def render(self, screen):
+    #     bgsurface = pygame.surface.Surface((317, 236))
+    #     entrance = pygame.image.load('imgs/Room_Entrance.png')
+    #     stairs = pygame.image.load('imgs/Staircase_1.png')
+    #     rail1 = pygame.image.load('imgs/Railing_asset1.png')
+    #     rail2 = pygame.image.load('imgs/Railing_asset2.png')
+    #     rail3 = pygame.image.load('imgs/Railing_asset3.png')
+    #
+    #     pygame.Surface.blit(bgsurface, stairs, (0, 0))
+    #     pygame.Surface.blit(bgsurface, entrance, (0, 0))
+    #     bgsurface.blit(self.image, self.rect)
+    #     pygame.Surface.blit(bgsurface, rail1, (0, 0))
+    #     pygame.Surface.blit(bgsurface, rail2, (0, 0))
+    #     pygame.Surface.blit(bgsurface, rail3, (0, 0))
+    #
+    #     pygame.transform.scale(bgsurface, (317 * 3, 236 * 3), dest_surface=screen)

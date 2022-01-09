@@ -5,29 +5,40 @@ from pygame.time import Clock
 from player import Player
 import config
 from game_state import GameState
+from sprite import Sprite
 
 
 class Game:
     def __init__(self, screen):
         self.screen = screen
         self.objects = []
+        self.bgsurface = pygame.surface.Surface((317, 236))
         self.game_state = GameState.NONE
 
     def set_up(self):
-        player = Player(4.5, 6.4, "imgs/player.png")
+        self.player = Player("imgs/player.png", 4.5, 6.4)
 
-        self.player = player
-        self.objects.append(player)
+        self.objects.append(Sprite("imgs/Staircase_1.png"))
+        self.objects.append(Sprite("imgs/Room_Entrance.png"))
+        self.objects.append(self.player)
+        self.objects.append(Sprite("imgs/Railing_asset1.png"))
+        self.objects.append(Sprite("imgs/Railing_asset2.png"))
+        self.objects.append(Sprite("imgs/Railing_asset3.png"))
+
         print('do set up')
         self.game_state = GameState.RUNNING
 
     def render(self):
+        self.screen.fill(config.BLACK)
+        self.bgsurface.fill(config.BLACK)
+
         for object in self.objects:
-            object.render(self.screen)
+            object.render(self.bgsurface)
+
+        pygame.transform.scale(self.bgsurface, (317 * 3, 236 * 3), dest_surface=self.screen)
 
     # update (loops)
     def update(self):
-        self.screen.fill(config.BLACK)
         print('update')
         self.handle_events()
         self.player.update_position()
