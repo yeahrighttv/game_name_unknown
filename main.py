@@ -2,7 +2,6 @@ import pygame
 import config
 from game import Game
 from game_state import GameState
-from player import index_advance
 
 def main ():
     pygame.init()
@@ -20,14 +19,14 @@ game.set_up()
 time_elapsed = 0
 
 while game.game_state == GameState.RUNNING:
-    clock.tick()
     dt = clock.tick(90)
     game.update()
     pygame.display.flip()
     time_elapsed += dt
-    #advance index every 90 milliseconds
-    if time_elapsed > 90:
-        index_advance()
+
+    # advance animation every 200 milliseconds
+    if time_elapsed > 200:
+        game.player.advance_animation()
         time_elapsed = 0
 
 
