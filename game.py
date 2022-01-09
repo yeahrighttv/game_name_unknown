@@ -45,7 +45,11 @@ class Game:
 
     # Player movement
     def player_movement(self):
-        pass
+        pressed = pygame.key.get_pressed()
+        self.player.up_pressed = pressed[pygame.K_w] or pressed[pygame.K_UP]
+        self.player.down_pressed = pressed[pygame.K_s] or pressed[pygame.K_DOWN]
+        self.player.left_pressed = pressed[pygame.K_a] or pressed[pygame.K_LEFT]
+        self.player.right_pressed = pressed[pygame.K_d] or pressed[pygame.K_RIGHT]
 
     # Handle things
     def handle_events(self):

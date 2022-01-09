@@ -26,12 +26,6 @@ while game.game_state == GameState.RUNNING:
     pygame.display.flip()
     time_elapsed += dt
 
-    pressed = pygame.key.get_pressed()
-    game.player.up_pressed = pressed[pygame.K_w] or pressed[pygame.K_UP]
-    game.player.down_pressed = pressed[pygame.K_s] or pressed[pygame.K_DOWN]
-    game.player.left_pressed = pressed[pygame.K_a] or pressed[pygame.K_LEFT]
-    game.player.right_pressed = pressed[pygame.K_d] or pressed[pygame.K_RIGHT]
-
     # Advance animation every 200 milliseconds
     if time_elapsed > 200:
         game.player.advance_animation()

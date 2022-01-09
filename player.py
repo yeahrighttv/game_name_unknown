@@ -50,7 +50,7 @@ class Player(Sprite):
             self.horizontal_animation_counter = 0
 
     def change_vel(self, dirX, dirY):
-        self.velX, velY = dirX * self.speed, dirY * self.speed
+        self.velX, self.velY = dirX * self.speed, dirY * self.speed
 
     def update_position(self):
         # Set velocity back to 0
@@ -63,14 +63,7 @@ class Player(Sprite):
         elif self.direction in ["up", "down"]:
             self.image = directions[self.direction][self.vertical_animation_counter]
 
-        if self.left_pressed and not self.right_pressed:
-            self.velX = -self.speed
-        if self.right_pressed and not self.left_pressed:
-            self.velX = self.speed
-        if self.up_pressed and not self.down_pressed:
-            self.velY = -self.speed
-        if self.down_pressed and not self.up_pressed:
-            self.velY = self.speed
+        self.change_vel(self.right_pressed - self.left_pressed, self.down_pressed - self.up_pressed)
 
         if not any([self.right_pressed, self.left_pressed, self.up_pressed, self.down_pressed]):
             self.image = walk_down[1]
