@@ -13,5 +13,6 @@ class Sprite(pygame.sprite.Sprite):
         # self.image = pygame.transform.scale(self.image, (config.SCALE, config.SCALE))
         # self.rect = pygame.Rect(self.x * config.SCALE, self.y * config.SCALE, config.SCALE, config.SCALE)
 
+    # Renders sprite
     def render(self, surface):
         surface.blit(self.image, self.rect)

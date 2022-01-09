@@ -1,11 +1,10 @@
 from functools import partial
-
-import pygame
 from pygame.time import Clock
 from player import Player
-import config
 from game_state import GameState
 from sprite import Sprite
+import pygame
+import config
 
 
 class Game:
@@ -37,72 +36,44 @@ class Game:
 
         pygame.transform.scale(self.bgsurface, (317 * 3, 236 * 3), dest_surface=self.screen)
 
-    # update (loops)
+    # Update (loops)
     def update(self):
-        print('update')
+        # print('update')
         self.handle_events()
         self.player.update_position()
         self.render()
 
-    # def move(self, right_pressed=False, left_pressed=False, up_pressed=False, down_pressed=False):
-    #     if right_pressed:
-    #         self.player.right_pressed = True
-    #     elif left_pressed:
-    #         self.player.left_pressed = True
-    #     elif up_pressed:
-    #         self.player.up_pressed = True
-    #     elif down_pressed:
-    #         self.player.down_pressed = True
+    # Player movement
+    def player_movement(self):
+        pass
 
-    # handle things
+    # Handle things
     def handle_events(self):
+        self.player_movement()
+
         for event in pygame.event.get():
+            dct = {
+                pygame.K_w: "up",
+                pygame.K_UP: "up",
+                pygame.K_s: "down",
+                pygame.K_DOWN: "down",
+                pygame.K_a: "left",
+                pygame.K_LEFT: "left",
+                pygame.K_d: "right",
+                pygame.K_RIGHT: "right",
+            }
+
             if event.type == pygame.QUIT:
                 self.game_state = GameState.ENDED
 
-            # dct = {
-            #     pygame.K_w: partial(self.move),
-            #     pygame.K_UP: partial(self.move),
-            # }
-
-            # handle key events
-            # check if key is pressed
+            # Handle key events
+            # Check if key is pressed
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.game_state = GameState.ENDED
 
-                elif event.key == pygame.K_w or event.key == pygame.K_UP: # up
-                    self.player.direction = "up"
-                    self.player.up_pressed = True
-                    print("up v")
-                    print(self.player.right_pressed, self.player.left_pressed, self.player.up_pressed, self.player.down_pressed)
-                elif event.key == pygame.K_s or event.key == pygame.K_DOWN: # down
-                    self.player.direction = "down"
-                    self.player.down_pressed = True
-                    print(self.player.right_pressed, self.player.left_pressed, self.player.up_pressed, self.player.down_pressed)
-                    print("down v")
-                elif event.key == pygame.K_a or event.key == pygame.K_LEFT: # left
-                    self.player.direction = "left"
-                    self.player.left_pressed = True
-                    print(self.player.right_pressed, self.player.left_pressed, self.player.up_pressed, self.player.down_pressed)
-                    print("left v")
-                elif event.key == pygame.K_d or event.key == pygame.K_RIGHT: # right
-                    self.player.direction = "right"
-                    self.player.right_pressed = True
-                    print(self.player.right_pressed, self.player.left_pressed, self.player.up_pressed, self.player.down_pressed)
-                    print("right v")
+                self.player.direction = dct.get(event.key)
 
-            # check if key is released and re-falsify booleans
+            # Check if key is released and re-falsify booleans
             elif event.type == pygame.KEYUP:
-                if event.key == pygame.K_w or event.key == pygame.K_UP:
-                    self.player.up_pressed = False
-                    print("up ^")
-                elif event.key == pygame.K_s or event.key == pygame.K_DOWN:
-                    self.player.down_pressed = False
-                    print("down ^")
-                elif event.key == pygame.K_a or event.key == pygame.K_LEFT:
-                    self.player.left_pressed = False
-                    print("left ^")
-                elif event.key == pygame.K_d or event.key == pygame.K_RIGHT:
-                    self.player.right_pressed = False
-                    print("right ^")
+                pass

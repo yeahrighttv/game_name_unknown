@@ -27,7 +27,7 @@ class Player(Sprite):
         self.velX = 0
         self.velY = 0
 
-        # store pressed values in player
+        # Store pressed values in player
         self.left_pressed = False
         self.right_pressed = False
         self.up_pressed = False
@@ -53,11 +53,11 @@ class Player(Sprite):
         self.velX, velY = dirX * self.speed, dirY * self.speed
 
     def update_position(self):
-        # set velocity back to 0
+        # Set velocity back to 0
         self.velX = 0
         self.velY = 0
 
-        # button press reactions
+        # Button press reactions
         if self.direction in ["left", "right"]:
             self.image = directions[self.direction][self.horizontal_animation_counter]
         elif self.direction in ["up", "down"]:
@@ -79,9 +79,9 @@ class Player(Sprite):
 
         self.image = pygame.transform.scale(self.image, (config.SCALE, config.SCALE))
 
-        # move character according to velocity
+        # Move character according to velocity
         self.x += self.velX
         self.y += self.velY
 
-        # rescale movement
+        # Rescale movement
         self.rect = pygame.Rect(self.x * config.SCALE, self.y * config.SCALE, config.SCALE, config.SCALE)
