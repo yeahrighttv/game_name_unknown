@@ -1,17 +1,21 @@
 from functools import partial
 from pygame.time import Clock
+
+from camera import Camera, Follow, Border, Auto, Stand
 from player import Player
 from game_state import GameState
 from sprite import Sprite
 import pygame
 import config
-
+vec = pygame.math.Vector2
 
 class Game:
     def __init__(self, screen):
         self.screen = screen
         self.objects = []
-        self.bgsurface = pygame.surface.Surface((317, 236))
+        self.og_screen_size = vec(317, 236)
+        self.screen_scaling_factor = 3
+        self.bgsurface = pygame.surface.Surface(self.og_screen_size)
         self.game_state = GameState.NONE
 
     # Temp scene fix
@@ -27,9 +31,17 @@ class Game:
         self.objects.append(Sprite("imgs/snowdin.png"))
         self.objects.append(self.player)
 
-
     def set_up(self):
         self.player = Player("imgs/player.png", 4.5, 6.4)
+
+        # Camera setup
+        self.camera = Camera(self.player, self.og_screen_size * self.screen_scaling_factor)
+        self.camera.add_mode("follow", Follow(self.camera, self.player))
+        self.camera.add_mode("border", Border(self.camera, self.player))
+        self.camera.add_mode("auto", Auto(self.camera, self.player))
+        self.camera.add_mode("stand", Stand(self.camera, self.player))
+        self.camera.setmethod(self.camera.modes["follow"])
+
 
         # Kitchen scene
         # self.add_kitchen_objects()
@@ -40,6 +52,11 @@ class Game:
         print('do set up')
         self.game_state = GameState.RUNNING
 
+    # Moves and offsets camera
+    def move_camera(self):
+        self.camera.scroll()
+
+    # Renders objects
     def render(self):
         self.screen.fill(config.BLACK)
         self.bgsurface.fill(config.BLACK)
@@ -47,13 +64,14 @@ class Game:
         for object in self.objects:
             object.render(self.bgsurface)
 
-        pygame.transform.scale(self.bgsurface, (317 * 3, 236 * 3), dest_surface=self.screen)
+        pygame.transform.scale(self.bgsurface, self.og_screen_size * self.screen_scaling_factor, dest_surface=self.screen)
 
     # Update (loops)
     def update(self):
         # print('update')
         self.handle_events()
         self.player.update_position()
+        self.move_camera()
         self.render()
 
     # Player movement
