@@ -13,14 +13,6 @@ class Camera:
         self.CONST = vec(-140, -100)
         self.modes = {}
 
-        # North, South, West and East borders
-        self.borders = {
-            "n": -200,
-            "s": 200,
-            "w": -200,
-            "e": 200,
-        }
-
     def add_mode(self, name, mode):
         self.modes[name] = mode
 
@@ -57,14 +49,22 @@ class Border(CamScroll):
         self.east_border_const = 280
         self.south_border_const = 200
 
+        # North, South, West and East borders
+        self.borders = {
+            "n": -200,
+            "s": 200,
+            "w": -200,
+            "e": 200,
+        }
+
     def scroll(self):
         self.camera.offset_float.x += (self.player.rect.x - self.camera.offset_float.x + self.camera.CONST.x)
         self.camera.offset_float.y += (self.player.rect.y - self.camera.offset_float.y + self.camera.CONST.y)
         self.camera.offset.x, self.camera.offset.y = int(self.camera.offset_float.x), int(self.camera.offset_float.y)
-        self.camera.offset.x = max(self.camera.borders["w"], self.camera.offset.x)
-        self.camera.offset.x = min(self.camera.borders["e"] - self.east_border_const, self.camera.offset.x)
-        self.camera.offset.y = max(self.camera.borders["n"], self.camera.offset.y)
-        self.camera.offset.y = min(self.camera.borders["s"] - self.south_border_const, self.camera.offset.y)
+        self.camera.offset.x = max(self.borders["w"], self.camera.offset.x)
+        self.camera.offset.x = min(self.borders["e"] - self.east_border_const, self.camera.offset.x)
+        self.camera.offset.y = max(self.borders["n"], self.camera.offset.y)
+        self.camera.offset.y = min(self.borders["s"] - self.south_border_const, self.camera.offset.y)
 
 
 class Auto(CamScroll):
