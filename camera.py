@@ -78,6 +78,7 @@ class Auto(CamScroll):
     def scroll(self):
         self.camera.offset.x += self.scroll_speed
 
+
 class Stand(CamScroll):
     def __init__(self, camera, player):
         CamScroll.__init__(self, camera, player)
