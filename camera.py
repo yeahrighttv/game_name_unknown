@@ -68,15 +68,23 @@ class Border(CamScroll):
 
 
 class Auto(CamScroll):
-    def __init__(self,camera,player):
-        CamScroll.__init__(self,camera,player)
+    def __init__(self, camera, player):
+        CamScroll.__init__(self, camera, player)
+        self.scroll_speed = 0.1
+
+    def change_scroll_speed(self, new_speed):
+        self.scroll_speed = new_speed
 
     def scroll(self):
-        self.camera.offset.x += 1
+        self.camera.offset.x += self.scroll_speed
 
 class Stand(CamScroll):
-    def __init__(self,camera,player):
-        CamScroll.__init__(self,camera,player)
+    def __init__(self, camera, player):
+        CamScroll.__init__(self, camera, player)
+
+        self.camera.offset_float.x += (self.player.rect.x - self.camera.offset_float.x + self.camera.CONST.x)
+        self.camera.offset_float.y += (self.player.rect.y - self.camera.offset_float.y + self.camera.CONST.y)
+        self.camera.offset.x, self.camera.offset.y = int(self.camera.offset_float.x), int(self.camera.offset_float.y)
 
     def scroll(self):
         pass

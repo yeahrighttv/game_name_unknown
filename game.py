@@ -57,7 +57,11 @@ class Game:
         self.camera.add_mode("border", Border(self.camera, self.player))
         self.camera.add_mode("auto", Auto(self.camera, self.player))
         self.camera.add_mode("stand", Stand(self.camera, self.player))
-        self.camera.setmethod(self.camera.modes["border"])
+
+        # self.camera.setmethod(self.camera.modes["follow"])
+        # self.camera.setmethod(self.camera.modes["border"])
+        # self.camera.setmethod(self.camera.modes["auto"])
+        self.camera.setmethod(self.camera.modes["stand"])
 
 
         # Kitchen scene

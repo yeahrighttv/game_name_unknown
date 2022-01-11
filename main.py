@@ -21,6 +21,7 @@ game.set_up()
 time_elapsed = 0
 
 while game.game_state == GameState.RUNNING:
+    """ NEED TO MAKE SPEED FRAME RATE INDEPENDENT"""
     dt = clock.tick(144)
     game.update()
     pygame.display.flip()
