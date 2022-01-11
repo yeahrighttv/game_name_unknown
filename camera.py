@@ -16,11 +16,11 @@ class Camera:
     def add_mode(self, name, mode):
         self.modes[name] = mode
 
-    def setmethod(self, method):
-        self.method = method
+    def set_method(self, mode):
+        self.mode = self.modes[mode]
 
     def scroll(self):
-        self.method.scroll()
+        self.mode.scroll()
 
 
 class CamScroll(ABC):

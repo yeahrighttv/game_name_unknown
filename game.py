@@ -58,10 +58,10 @@ class Game:
         self.camera.add_mode("auto", Auto(self.camera, self.player))
         self.camera.add_mode("stand", Stand(self.camera, self.player))
 
-        # self.camera.setmethod(self.camera.modes["follow"])
-        # self.camera.setmethod(self.camera.modes["border"])
-        # self.camera.setmethod(self.camera.modes["auto"])
-        self.camera.setmethod(self.camera.modes["stand"])
+        # self.camera.set_method("follow")
+        # self.camera.set_method("border")
+        # self.camera.set_method("auto")
+        self.camera.set_method("stand")
 
 
         # Kitchen scene
@@ -115,7 +115,7 @@ class Game:
         self.player_movement()
 
         for event in pygame.event.get():
-            dct = {
+            dct_directions = {
                 pygame.K_w: "up",
                 pygame.K_UP: "up",
                 pygame.K_s: "down",
@@ -124,6 +124,14 @@ class Game:
                 pygame.K_LEFT: "left",
                 pygame.K_d: "right",
                 pygame.K_RIGHT: "right",
+            }
+
+            # Keys to chose camera modes
+            dct_camera_modes = {
+                pygame.K_1: partial(self.camera.set_method, "border"),
+                pygame.K_2: partial(self.camera.set_method, "follow"),
+                pygame.K_3: partial(self.camera.set_method, "stand"),
+                pygame.K_4: partial(self.camera.set_method, "auto"),
             }
 
             if event.type == pygame.QUIT:
@@ -135,7 +143,10 @@ class Game:
                 if event.key == pygame.K_ESCAPE:
                     self.game_state = GameState.ENDED
 
-                self.player.direction = dct.get(event.key)
+                self.player.direction = dct_directions.get(event.key)
+
+                # Changes camera mode, if other keys defaults to empty lambda
+                dct_camera_modes.get(event.key, lambda: None)()
 
             # Check if key is released and re-falsify booleans
             elif event.type == pygame.KEYUP:
