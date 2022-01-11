@@ -4,7 +4,7 @@ from pygame.time import Clock
 from camera import Camera, Follow, Border, Auto, Stand
 from player import Player
 from game_state import GameState
-from sprite import Sprite, BackGround
+from sprite import Sprite
 import pygame
 import config
 vec = pygame.math.Vector2
