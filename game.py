@@ -14,15 +14,28 @@ class Game:
         self.bgsurface = pygame.surface.Surface((317, 236))
         self.game_state = GameState.NONE
 
-    def set_up(self):
-        self.player = Player("imgs/player.png", 4.5, 6.4)
-
+    # Temp scene fix
+    def add_kitchen_objects(self):
         self.objects.append(Sprite("imgs/Staircase_1.png"))
         self.objects.append(Sprite("imgs/Room_Entrance.png"))
         self.objects.append(self.player)
         self.objects.append(Sprite("imgs/Railing_asset1.png"))
         self.objects.append(Sprite("imgs/Railing_asset2.png"))
         self.objects.append(Sprite("imgs/Railing_asset3.png"))
+
+    def add_snowdin_objects(self):
+        self.objects.append(Sprite("imgs/snowdin.png"))
+        self.objects.append(self.player)
+
+
+    def set_up(self):
+        self.player = Player("imgs/player.png", 4.5, 6.4)
+
+        # Kitchen scene
+        # self.add_kitchen_objects()
+
+        # Snowdin scene
+        self.add_snowdin_objects()
 
         print('do set up')
         self.game_state = GameState.RUNNING
