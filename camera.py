@@ -15,10 +15,10 @@ class Camera:
 
         # North, South, West and East borders
         self.borders = {
-            "n": -1000,
-            "s": 1000,
-            "w": -1000,
-            "e": 1000,
+            "n": -200,
+            "s": 200,
+            "w": -200,
+            "e": 200,
         }
 
     def add_mode(self, name, mode):
@@ -54,13 +54,17 @@ class Follow(CamScroll):
 class Border(CamScroll):
     def __init__(self, camera, player):
         CamScroll.__init__(self, camera, player)
+        self.east_border_const = 280
+        self.south_border_const = 200
 
     def scroll(self):
         self.camera.offset_float.x += (self.player.rect.x - self.camera.offset_float.x + self.camera.CONST.x)
         self.camera.offset_float.y += (self.player.rect.y - self.camera.offset_float.y + self.camera.CONST.y)
         self.camera.offset.x, self.camera.offset.y = int(self.camera.offset_float.x), int(self.camera.offset_float.y)
         self.camera.offset.x = max(self.camera.borders["w"], self.camera.offset.x)
-        self.camera.offset.x = min(self.camera.offset.x, self.camera.borders["e"] - self.camera.DISPLAY_W)
+        self.camera.offset.x = min(self.camera.borders["e"] - self.east_border_const, self.camera.offset.x)
+        self.camera.offset.y = max(self.camera.borders["n"], self.camera.offset.y)
+        self.camera.offset.y = min(self.camera.borders["s"] - self.south_border_const, self.camera.offset.y)
 
 
 class Auto(CamScroll):

@@ -4,7 +4,7 @@ from pygame.time import Clock
 from camera import Camera, Follow, Border, Auto, Stand
 from player import Player
 from game_state import GameState
-from sprite import Sprite
+from sprite import Sprite, BackGround
 import pygame
 import config
 vec = pygame.math.Vector2
@@ -31,8 +31,15 @@ class Game:
         self.objects.append(Sprite("imgs/snowdin.png"))
         self.objects.append(self.player)
 
+    def add_zelda_objects(self):
+        zelda_map = BackGround("imgs/zelda_map_test.png")
+        zelda_map.center()
+        self.objects.append(zelda_map)
+        self.objects.append(self.player)
+
     def set_up(self):
-        self.player = Player("imgs/player.png", 4.5, 6.4)
+        # self.player = Player("imgs/player.png", 4.5, 6.4)
+        self.player = Player("imgs/player.png", 0, 0)
 
         # Camera setup
         self.camera = Camera(self.player, self.og_screen_size * self.screen_scaling_factor)
@@ -47,7 +54,11 @@ class Game:
         # self.add_kitchen_objects()
 
         # Snowdin scene
-        self.add_snowdin_objects()
+        # self.add_snowdin_objects()
+
+        # Zelda map test
+        self.add_zelda_objects()
+
 
         print('do set up')
         self.game_state = GameState.RUNNING
