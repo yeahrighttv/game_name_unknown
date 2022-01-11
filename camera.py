@@ -9,8 +9,8 @@ class Camera:
         self.offset = vec(0, 0)
         self.offset_float = vec(0, 0)
         self.DISPLAY_W, self.DISPLAY_H = display_vec.x, display_vec.y
-        # self.CONST = vec(-self.DISPLAY_W / 2 + player.rect.w / 2, -self.player.ground_y + 20)
-        self.CONST = vec(0, 0)
+        # self.CONST = vec(-self.DISPLAY_W / 8 + player.rect.w / 8, -self.DISPLAY_W / 8 + player.rect.w / 8)
+        self.CONST = vec(-140, -100)
         self.modes = {}
 
     def add_mode(self, name, mode):
@@ -38,7 +38,6 @@ class Follow(CamScroll):
         CamScroll.__init__(self, camera, player)
 
     def scroll(self):
-        print(self.player.rect.x, self.player.rect.y)
         self.camera.offset_float.x += (self.player.rect.x - self.camera.offset_float.x + self.camera.CONST.x)
         self.camera.offset_float.y += (self.player.rect.y - self.camera.offset_float.y + self.camera.CONST.y)
         self.camera.offset.x, self.camera.offset.y = int(self.camera.offset_float.x), int(self.camera.offset_float.y)

@@ -62,9 +62,12 @@ class Game:
         self.bgsurface.fill(config.BLACK)
 
         for object in self.objects:
-            object.render(self.bgsurface)
+            object.render(self.bgsurface, self.camera.offset)
 
         pygame.transform.scale(self.bgsurface, self.og_screen_size * self.screen_scaling_factor, dest_surface=self.screen)
+        # pygame.transform.scale(self.bgsurface, self.og_screen_size * self.screen_scaling_factor)
+        # self.screen.blit(self.bgsurface, self.bgsurface.)
+
 
     # Update (loops)
     def update(self):

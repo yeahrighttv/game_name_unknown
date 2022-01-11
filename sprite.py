@@ -14,5 +14,5 @@ class Sprite(pygame.sprite.Sprite):
         # self.rect = pygame.Rect(self.x * config.SCALE, self.y * config.SCALE, config.SCALE, config.SCALE)
 
     # Renders sprite
-    def render(self, surface):
-        surface.blit(self.image, self.rect)
+    def render(self, surface, offset):
+        surface.blit(self.image, (self.rect.x - offset.x, self.rect.y - offset.y))
