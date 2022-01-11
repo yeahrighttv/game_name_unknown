@@ -20,8 +20,8 @@ directions = {
 
 
 class Player(Sprite):
-    def __init__(self, x, y, path):
-        super().__init__(x, y, path)
+    def __init__(self, path, x, y):
+        super().__init__(path, x, y)
 
         print('Player Created')
         self.velX = 0
@@ -35,10 +35,10 @@ class Player(Sprite):
         self.direction = "down"
         self.horizontal_animation_counter = 0
         self.vertical_animation_counter = 0
-        self.speed = 0.04
+        self.speed = 1
 
-        self.image = pygame.transform.scale(self.image, (config.SCALE, config.SCALE))
-        self.rect = pygame.Rect(self.x * config.SCALE, self.y * config.SCALE, config.SCALE, config.SCALE)
+        # self.image = pygame.transform.scale(self.image, (config.SCALE, config.SCALE))
+        # self.rect = pygame.Rect(self.x, self.y, config.SCALE, config.SCALE)
 
     def advance_animation(self):
         self.horizontal_animation_counter += 1
@@ -70,11 +70,12 @@ class Player(Sprite):
         if self.velY == 0 and self.velX == 0:
             self.image = walk_down[1]
 
-        self.image = pygame.transform.scale(self.image, (config.SCALE, config.SCALE))
+        # self.image = pygame.transform.scale(self.image, (config.SCALE, config.SCALE))
 
         # Move character according to velocity
         self.x += self.velX
         self.y += self.velY
 
         # Rescale movement
-        self.rect = pygame.Rect(self.x * config.SCALE, self.y * config.SCALE, config.SCALE, config.SCALE)
+        # self.rect = pygame.Rect(self.x * config.SCALE, self.y * config.SCALE, config.SCALE, config.SCALE)
+        self.rect = pygame.Rect(self.x, self.y, config.SCALE, config.SCALE)

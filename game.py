@@ -27,15 +27,25 @@ class Game:
         self.objects.append(Sprite("imgs/Railing_asset2.png"))
         self.objects.append(Sprite("imgs/Railing_asset3.png"))
 
+        # Centering objects
+        for object in self.objects:
+            object.center()
+
     def add_snowdin_objects(self):
         self.objects.append(Sprite("imgs/snowdin.png"))
         self.objects.append(self.player)
 
+        # Centering objects
+        for object in self.objects:
+            object.center()
+
     def add_zelda_objects(self):
-        zelda_map = BackGround("imgs/zelda_map_test.png")
-        zelda_map.center()
-        self.objects.append(zelda_map)
+        self.objects.append(Sprite("imgs/zelda_map_test.png"))
         self.objects.append(self.player)
+
+        # Centering objects
+        for object in self.objects:
+            object.center()
 
     def set_up(self):
         # self.player = Player("imgs/player.png", 4.5, 6.4)
@@ -51,13 +61,13 @@ class Game:
 
 
         # Kitchen scene
-        # self.add_kitchen_objects()
+        self.add_kitchen_objects()
 
         # Snowdin scene
         # self.add_snowdin_objects()
 
         # Zelda map test
-        self.add_zelda_objects()
+        # self.add_zelda_objects()
 
 
         print('do set up')

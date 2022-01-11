@@ -21,7 +21,7 @@ game.set_up()
 time_elapsed = 0
 
 while game.game_state == GameState.RUNNING:
-    dt = clock.tick(90)
+    dt = clock.tick(144)
     game.update()
     pygame.display.flip()
     time_elapsed += dt
