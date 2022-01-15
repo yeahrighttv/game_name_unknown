@@ -102,7 +102,6 @@ class Game:
     def move_camera(self):
         self.camera.scroll()
 
-    # Renders objects
     def render(self):
         self.screen.fill(config.BLACK)
         self.bgsurface.fill(config.BLACK)
@@ -112,7 +111,6 @@ class Game:
 
         pygame.transform.scale(self.bgsurface, self.og_screen_size * self.screen_scaling_factor, dest_surface=self.screen)
 
-    # Update (loops)
     def update(self):
         # print('update')
         self.handle_events()
@@ -120,7 +118,6 @@ class Game:
         self.move_camera()
         self.render()
 
-    # Player movement
     def player_movement(self):
         pressed = pygame.key.get_pressed()
         # print(pressed[pygame.K_w],
@@ -156,8 +153,6 @@ class Game:
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.game_state = GameState.ENDED
-
-                # self.player.direction = self.dct_directions.get(event.key, "down")
 
                 # Changes camera mode, if other keys defaults to empty lambda
                 self.dct_camera_modes.get(event.key, lambda: None)()

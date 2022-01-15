@@ -27,18 +27,9 @@ class Player(Sprite):
         print('Player Created')
         self.vel = vec(0, 0)
 
-        # Store pressed values in player
-        self.left_pressed = False
-        self.right_pressed = False
-        self.up_pressed = False
-        self.down_pressed = False
-        self.direction = "down"
         self.horizontal_animation_counter = 0
         self.vertical_animation_counter = 0
         self.speed = 1
-
-        # self.image = pygame.transform.scale(self.image, (config.SCALE, config.SCALE))
-        # self.rect = pygame.Rect(self.x, self.y, config.SCALE, config.SCALE)
 
     def advance_animation(self):
         self.horizontal_animation_counter += 1
@@ -50,11 +41,6 @@ class Player(Sprite):
             self.horizontal_animation_counter = 0
 
     def change_direction(self):
-        # self.direction = dir_str
-
-        # counter = self.horizontal_animation_counter if self.direction in ["left",
-        #                                                                   "right"] else self.vertical_animation_counter
-        # self.image = directions[self.direction][counter]
 
         # Temp fix for directions by ordering updates
         if self.vel.y < 0:
@@ -76,18 +62,6 @@ class Player(Sprite):
         self.change_direction()
 
     def update_position(self, dirX, dirY):
-        # # Set velocity back to 0
-        # self.velX = 0
-        # self.velY = 0
-        #
-        # # Button press reactions
-        # if self.direction in ["left", "right"]:
-        #     self.image = directions[self.direction][self.horizontal_animation_counter]
-        # elif self.direction in ["up", "down"]:
-        #     self.image = directions[self.direction][self.vertical_animation_counter]
-        #
-        # self.change_vel(self.right_pressed - self.left_pressed, self.down_pressed - self.up_pressed)
-
         self.change_vel(dirX, dirY)
 
         # Move character according to velocity
