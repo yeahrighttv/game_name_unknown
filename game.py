@@ -117,6 +117,7 @@ class Game:
         self.move_camera()
         self.render()
 
+    """ SOMETIMES DOESN'T WORK WHEN MULTIPLE KEYS ARE PRESSED, SEEMS TO BE PYGAME BUG"""
     def player_movement(self):
         pressed = pygame.key.get_pressed()
         # print(pressed[pygame.K_w],
