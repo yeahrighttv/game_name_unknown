@@ -61,7 +61,6 @@ class Game:
             object.center()
 
     def set_up(self):
-        # self.player = Player("imgs/player.png", 4.5, 6.4)
         self.player = Player("imgs/player.png", 0, 0)
 
         # Camera setup
