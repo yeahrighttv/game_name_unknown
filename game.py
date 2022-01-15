@@ -9,6 +9,7 @@ import pygame
 import config
 vec = pygame.math.Vector2
 
+
 class Game:
     def __init__(self, screen):
         self.screen = screen
@@ -17,6 +18,18 @@ class Game:
         self.screen_scaling_factor = 3
         self.bgsurface = pygame.surface.Surface(self.og_screen_size)
         self.game_state = GameState.NONE
+
+        # Keys for directions
+        self.dct_directions = {
+            pygame.K_w: "up",
+            pygame.K_UP: "up",
+            pygame.K_s: "down",
+            pygame.K_DOWN: "down",
+            pygame.K_a: "left",
+            pygame.K_LEFT: "left",
+            pygame.K_d: "right",
+            pygame.K_RIGHT: "right",
+        }
 
     # Temp scene fix
     def add_kitchen_objects(self):
@@ -63,6 +76,14 @@ class Game:
         # self.camera.set_method("auto")
         self.camera.set_method("stand")
 
+        # Keys to choose camera modes
+        self.dct_camera_modes = {
+            pygame.K_1: partial(self.camera.set_method, "border"),
+            pygame.K_2: partial(self.camera.set_method, "follow"),
+            pygame.K_3: partial(self.camera.set_method, "stand"),
+            pygame.K_4: partial(self.camera.set_method, "auto"),
+        }
+
 
         # Kitchen scene
         self.add_kitchen_objects()
@@ -90,64 +111,57 @@ class Game:
             object.render(self.bgsurface, self.camera.offset)
 
         pygame.transform.scale(self.bgsurface, self.og_screen_size * self.screen_scaling_factor, dest_surface=self.screen)
-        # pygame.transform.scale(self.bgsurface, self.og_screen_size * self.screen_scaling_factor)
-        # self.screen.blit(self.bgsurface, self.bgsurface.)
-
 
     # Update (loops)
     def update(self):
         # print('update')
         self.handle_events()
-        self.player.update_position()
+        self.player_movement()
         self.move_camera()
         self.render()
 
     # Player movement
     def player_movement(self):
         pressed = pygame.key.get_pressed()
-        self.player.up_pressed = pressed[pygame.K_w] or pressed[pygame.K_UP]
-        self.player.down_pressed = pressed[pygame.K_s] or pressed[pygame.K_DOWN]
-        self.player.left_pressed = pressed[pygame.K_a] or pressed[pygame.K_LEFT]
-        self.player.right_pressed = pressed[pygame.K_d] or pressed[pygame.K_RIGHT]
+        # print(pressed[pygame.K_w],
+        #       # pressed[pygame.K_UP],
+        #       pressed[pygame.K_s],
+        #       # pressed[pygame.K_DOWN],
+        #       pressed[pygame.K_a],
+        #       # pressed[pygame.K_LEFT],
+        #       pressed[pygame.K_d],)
+        #       # pressed[pygame.K_RIGHT])
+
+        # Directions to int values
+        up = int(pressed[pygame.K_w] or pressed[pygame.K_UP])
+        down = int(pressed[pygame.K_s] or pressed[pygame.K_DOWN])
+        left = int(pressed[pygame.K_a] or pressed[pygame.K_LEFT])
+        right = int(pressed[pygame.K_d] or pressed[pygame.K_RIGHT])
+
+        # Final horizontal and vertical directions
+        hor = right - left
+        ver = down - up
+
+        # print(up, down, left, right, ver, hor)
+
+        self.player.move(hor, ver)
 
     # Handle things
     def handle_events(self):
-        self.player_movement()
-
         for event in pygame.event.get():
-            dct_directions = {
-                pygame.K_w: "up",
-                pygame.K_UP: "up",
-                pygame.K_s: "down",
-                pygame.K_DOWN: "down",
-                pygame.K_a: "left",
-                pygame.K_LEFT: "left",
-                pygame.K_d: "right",
-                pygame.K_RIGHT: "right",
-            }
-
-            # Keys to chose camera modes
-            dct_camera_modes = {
-                pygame.K_1: partial(self.camera.set_method, "border"),
-                pygame.K_2: partial(self.camera.set_method, "follow"),
-                pygame.K_3: partial(self.camera.set_method, "stand"),
-                pygame.K_4: partial(self.camera.set_method, "auto"),
-            }
-
             if event.type == pygame.QUIT:
                 self.game_state = GameState.ENDED
 
-            # Handle key events
             # Check if key is pressed
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.game_state = GameState.ENDED
 
-                self.player.direction = dct_directions.get(event.key)
+                # self.player.direction = self.dct_directions.get(event.key, "down")
 
                 # Changes camera mode, if other keys defaults to empty lambda
-                dct_camera_modes.get(event.key, lambda: None)()
+                self.dct_camera_modes.get(event.key, lambda: None)()
 
-            # Check if key is released and re-falsify booleans
+            # Check if key is released
             elif event.type == pygame.KEYUP:
                 pass

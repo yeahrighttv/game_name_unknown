@@ -5,8 +5,7 @@ import config
 class Sprite(pygame.sprite.Sprite):
     def __init__(self, path, x=0, y=0):
         pygame.sprite.Sprite.__init__(self)
-        self.x = float(x)
-        self.y = float(y)
+        self.pos = pygame.math.Vector2(float(x), float(y))
 
         self.image = pygame.image.load(path)
         self.rect = self.image.get_rect()
