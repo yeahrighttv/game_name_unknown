@@ -25,6 +25,5 @@ class AbstractState(ABC):
         pass
 
     def change_res(self, new_res, new_scaling):
-        print(self.screen_scaling_factor, new_scaling)
         self.og_screen_size = new_res
         self.screen_scaling_factor = new_scaling
