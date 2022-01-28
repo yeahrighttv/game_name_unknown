@@ -88,6 +88,11 @@ class RunningGame(AbstractState):
             pygame.K_4: partial(self.camera.set_method, "auto"),
         }
 
+        self.test_dct = {
+            pygame.K_9: lambda x: self.game.change_res(self.og_screen_size, x - 1),
+            pygame.K_0: lambda x: self.game.change_res(self.og_screen_size, x + 1),
+        }
+
 
         # Kitchen scene
         self.add_kitchen_objects()
@@ -160,6 +165,7 @@ class RunningGame(AbstractState):
 
                 # Changes camera mode, if other keys defaults to empty lambda
                 self.dct_camera_modes.get(event.key, lambda: None)()
+                self.test_dct.get(event.key, lambda x: None)(self.screen_scaling_factor)
 
             # Check if key is released
             elif event.type == pygame.KEYUP:

@@ -31,4 +31,5 @@ class Game:
         self.game_state = new_state
 
     def change_res(self, new_res, new_scaling):
+        pygame.display.set_mode(new_res * new_scaling)
         self.current_state_obj.change_res(new_res, new_scaling)
