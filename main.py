@@ -16,11 +16,10 @@ pygame.display.set_icon(icon)
 clock = pygame.time.Clock()
 
 game = Game(screen)
-game.set_up()
 
 time_elapsed = 0
 
-while game.game_state == GameState.RUNNING:
+while game.game_state != GameState.ENDED:
     """ NEED TO MAKE SPEED FRAME RATE INDEPENDENT"""
     dt = clock.tick(144)
     game.update()
