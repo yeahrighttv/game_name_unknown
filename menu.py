@@ -18,9 +18,9 @@ class Menu(AbstractState):
 
     def set_up(self):
         self.test_dct = {
-            pygame.K_9: lambda x: self.game.change_res(self.og_screen_size, x - 1),
-            pygame.K_0: lambda x: self.game.change_res(self.og_screen_size, x + 1),
-            pygame.K_7: lambda x: self.game.change_state(RUNNING),
+            pygame.K_9: lambda x, y: self.game.change_res(x, y - 1),
+            pygame.K_0: lambda x, y: self.game.change_res(x, y + 1),
+            pygame.K_7: lambda x, y: self.game.change_state(RUNNING),
         }
 
     def render(self):
@@ -41,7 +41,7 @@ class Menu(AbstractState):
                 if event.key == pygame.K_ESCAPE:
                     self.game.change_state(ENDED)
 
-                self.test_dct.get(event.key, lambda x: None)(self.screen_scaling_factor)
+                self.test_dct.get(event.key, lambda x, y: None)(self.og_screen_size, self.screen_scaling_factor)
 
 
             # Check if key is released

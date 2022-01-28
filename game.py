@@ -16,8 +16,6 @@ MENU = GameState.MENU
 class Game:
     def __init__(self, screen):
         self.screen = screen
-        self.og_screen_size = vec(317, 236)
-        self.screen_scaling_factor = 3
         self.player = Player("imgs/player.png", 0, 0)
 
         self.game_state = RUNNING
