@@ -1,3 +1,4 @@
+from menu import Menu
 from player import Player
 from game_state import GameState
 import pygame
@@ -9,6 +10,7 @@ vec = pygame.math.Vector2
 NONE = GameState.NONE
 RUNNING = GameState.RUNNING
 ENDED = GameState.ENDED
+MENU = GameState.MENU
 
 
 class Game:
@@ -20,7 +22,9 @@ class Game:
 
         self.game_state = RUNNING
         self.game_states = {
-            RUNNING: RunningGame(self.screen, self, self.player)
+            RUNNING: RunningGame(self.screen, self, self.player),
+            MENU: Menu(self.screen, self)
+
         }
         self.current_state_obj = self.game_states.get(self.game_state)
 
@@ -29,6 +33,7 @@ class Game:
 
     def change_state(self, new_state):
         self.game_state = new_state
+        self.current_state_obj = self.game_states.get(self.game_state)
 
     def change_res(self, new_res, new_scaling):
         pygame.display.set_mode(new_res * new_scaling)

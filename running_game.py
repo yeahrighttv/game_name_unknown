@@ -13,6 +13,7 @@ vec = pygame.math.Vector2
 NONE = GameState.NONE
 RUNNING = GameState.RUNNING
 ENDED = GameState.ENDED
+MENU = GameState.MENU
 
 
 class RunningGame(AbstractState):
@@ -91,6 +92,7 @@ class RunningGame(AbstractState):
         self.test_dct = {
             pygame.K_9: lambda x: self.game.change_res(self.og_screen_size, x - 1),
             pygame.K_0: lambda x: self.game.change_res(self.og_screen_size, x + 1),
+            pygame.K_7: lambda x: self.game.change_state(MENU),
         }
 
 
