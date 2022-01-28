@@ -1,13 +1,9 @@
-from functools import partial
-from pygame.time import Clock
-
-from camera import Camera, Follow, Border, Auto, Stand
 from player import Player
 from game_state import GameState
-from program_states import RunningGame
-from sprite import Sprite
 import pygame
-import config
+
+from running_game import RunningGame
+
 vec = pygame.math.Vector2
 
 NONE = GameState.NONE
@@ -26,9 +22,13 @@ class Game:
         self.game_states = {
             RUNNING: RunningGame(self.screen, self, self.player)
         }
+        self.current_state_obj = self.game_states.get(self.game_state)
 
     def update(self):
-        self.game_states.get(self.game_state).update()
+        self.current_state_obj.update()
 
     def change_state(self, new_state):
         self.game_state = new_state
+
+    def change_res(self, new_res, new_scaling):
+        self.current_state_obj.change_res(new_res, new_scaling)
