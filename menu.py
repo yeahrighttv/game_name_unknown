@@ -52,7 +52,15 @@ class Menu(AbstractState):
                     self.index = (self.index + 1) % len(self.menu_options)
                 elif event.key == pygame.K_UP:
                     self.index = (self.index - 1) % len(self.menu_options)
+                elif event.key == pygame.K_RETURN:
+                    if self.menu_options[self.index] == 'Items':
+                        self.screen.fill(config.WHITE)
+                    elif self.menu_options[self.index] == 'Exit':
+                        self.game.change_state(RUNNING)
                 self.cursor_rect.y = self.cursor_posy + (self.index * 30)
+
+            elif event.type == pygame.KEYUP:
+                pass
 
     def handle_events(self):
         for event in pygame.event.get():
