@@ -6,6 +6,7 @@ import pygame
 import config
 from camera import Camera, Follow, Border, Auto, Stand
 from game_state import GameState
+from running_game_hierarchy import Act
 from sprite import Sprite
 
 vec = pygame.math.Vector2
@@ -20,8 +21,9 @@ class RunningGame(AbstractState):
     def __init__(self, screen, game, player):
         super().__init__(screen, game)
 
-        self.objects = []
-        self.bgsurface = pygame.surface.Surface(self.og_screen_size)
+        # self.objects = []
+
+        self.bg_surface = pygame.surface.Surface(self.og_screen_size)
 
         # Keys for directions
         self.dct_directions = {
@@ -38,34 +40,34 @@ class RunningGame(AbstractState):
         self.player = player
         self.set_up()
 
-    # Temp scene fix
-    def add_kitchen_objects(self):
-        self.objects.append(Sprite("imgs/Staircase_1.png"))
-        self.objects.append(Sprite("imgs/Room_Entrance.png"))
-        self.objects.append(self.player)
-        self.objects.append(Sprite("imgs/Railing_asset1.png"))
-        self.objects.append(Sprite("imgs/Railing_asset2.png"))
-        self.objects.append(Sprite("imgs/Railing_asset3.png"))
-
-        # Centering objects
-        for object in self.objects:
-            object.center()
-
-    def add_snowdin_objects(self):
-        self.objects.append(Sprite("imgs/snowdin.png"))
-        self.objects.append(self.player)
-
-        # Centering objects
-        for object in self.objects:
-            object.center()
-
-    def add_zelda_objects(self):
-        self.objects.append(Sprite("imgs/zelda_map_test.png"))
-        self.objects.append(self.player)
-
-        # Centering objects
-        for object in self.objects:
-            object.center()
+    # # Temp scene fix
+    # def add_kitchen_objects(self):
+    #     self.objects.append(Sprite("imgs/Staircase_1.png"))
+    #     self.objects.append(Sprite("imgs/Room_Entrance.png"))
+    #     self.objects.append(self.player)
+    #     self.objects.append(Sprite("imgs/Railing_asset1.png"))
+    #     self.objects.append(Sprite("imgs/Railing_asset2.png"))
+    #     self.objects.append(Sprite("imgs/Railing_asset3.png"))
+    #
+    #     # Centering objects
+    #     for object in self.objects:
+    #         object.center()
+    #
+    # def add_snowdin_objects(self):
+    #     self.objects.append(Sprite("imgs/snowdin.png"))
+    #     self.objects.append(self.player)
+    #
+    #     # Centering objects
+    #     for object in self.objects:
+    #         object.center()
+    #
+    # def add_zelda_objects(self):
+    #     self.objects.append(Sprite("imgs/zelda_map_test.png"))
+    #     self.objects.append(self.player)
+    #
+    #     # Centering objects
+    #     for object in self.objects:
+    #         object.center()
 
     def set_up(self):
 
@@ -76,9 +78,6 @@ class RunningGame(AbstractState):
         self.camera.add_mode("auto", Auto(self.camera, self.player))
         self.camera.add_mode("stand", Stand(self.camera, self.player))
 
-        # self.camera.set_method("follow")
-        # self.camera.set_method("border")
-        # self.camera.set_method("auto")
         self.camera.set_method("stand")
 
         # Keys to choose camera modes
@@ -95,16 +94,10 @@ class RunningGame(AbstractState):
             pygame.K_7: lambda x, y: self.game.change_state(MENU),
         }
 
-
-        # Kitchen scene
-        self.add_kitchen_objects()
-
-        # Snowdin scene
-        # self.add_snowdin_objects()
-
-        # Zelda map test
-        # self.add_zelda_objects()
-
+        self.act = "act 1"
+        self.acts = {
+            "act 1": Act(self.screen, self, self.player, self.camera),
+        }
 
         print('do set up')
 
@@ -112,21 +105,20 @@ class RunningGame(AbstractState):
     def move_camera(self):
         self.camera.scroll()
 
-    def render(self):
+    def render(self, bg_surface):
         self.screen.fill(config.BLACK)
-        self.bgsurface.fill(config.BLACK)
+        self.bg_surface.fill(config.BLACK)
 
-        for object in self.objects:
-            object.render(self.bgsurface, self.camera.offset)
+        self.acts.get(self.act).render(self.bg_surface)
 
-        pygame.transform.scale(self.bgsurface, self.og_screen_size * self.screen_scaling_factor, dest_surface=self.screen)
+        pygame.transform.scale(self.bg_surface, self.og_screen_size * self.screen_scaling_factor, dest_surface=self.screen)
 
     def update(self):
         # print('update')
         self.handle_events()
         self.player_movement()
         self.move_camera()
-        self.render()
+        self.render(None)
 
     """ SOMETIMES DOESN'T WORK WHEN MULTIPLE KEYS ARE PRESSED, SEEMS TO BE PYGAME BUG"""
     def player_movement(self):

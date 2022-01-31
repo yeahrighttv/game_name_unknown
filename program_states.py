@@ -17,7 +17,7 @@ class AbstractState(ABC):
         pass
 
     @abstractmethod
-    def render(self):
+    def render(self, bg_surface):
         pass
 
     @abstractmethod

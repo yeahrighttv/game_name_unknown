@@ -57,6 +57,12 @@ class Border(CamScroll):
             "e": 200,
         }
 
+    def set_borders(self, north, south, west, east):
+        self.borders["n"] = north
+        self.borders["s"] = south
+        self.borders["w"] = west
+        self.borders["e"] = east
+
     def scroll(self):
         self.camera.offset_float.x += (self.player.rect.x - self.camera.offset_float.x + self.camera.CONST.x)
         self.camera.offset_float.y += (self.player.rect.y - self.camera.offset_float.y + self.camera.CONST.y)
