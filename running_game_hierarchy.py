@@ -41,6 +41,9 @@ class Act(PlayingField):
 
         self.set_up()
 
+    def change_cur_scene(self, new_scene):
+        self.scene = new_scene
+
     def update_scene(self, scene_name, scene):
         """Can be used to add and update scenes"""
         self.scenes[scene_name] = scene

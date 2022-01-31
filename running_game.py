@@ -93,6 +93,8 @@ class RunningGame(AbstractState):
             pygame.K_9: lambda x, y: self.game.change_res(x, y - 1),
             pygame.K_0: lambda x, y: self.game.change_res(x, y + 1),
             pygame.K_7: lambda x, y: self.game.change_state(MENU),
+            pygame.K_o: lambda x, y: self.get_act().change_cur_scene("scene 1"),
+            pygame.K_p: lambda x, y: self.get_act().change_cur_scene("scene 2"),
         }
 
         self.act = "act 1"
@@ -102,6 +104,9 @@ class RunningGame(AbstractState):
 
         print('do set up')
 
+    def get_act(self):
+        return self.acts.get(self.act)
+
     # Moves and offsets camera
     def move_camera(self):
         self.camera.scroll()
@@ -110,7 +115,7 @@ class RunningGame(AbstractState):
         self.screen.fill(config.BLACK)
         self.bg_surface.fill(config.BLACK)
 
-        self.acts.get(self.act).render(self.bg_surface)
+        self.get_act().render(self.bg_surface)
 
         pygame.transform.scale(self.bg_surface, self.og_screen_size * self.screen_scaling_factor, dest_surface=self.screen)
 
