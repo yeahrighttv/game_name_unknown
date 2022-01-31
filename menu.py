@@ -15,16 +15,28 @@ class Menu(AbstractState):
         super().__init__(screen, game)
 
         self.set_up()
+        self.menu = pygame.image.load('imgs/Assets/menu.png')
+        self.menu_rect = self.menu.get_rect()
+        self.menu_rect.center = ((317 * 3) * .85, (236 * 3) * .4)
+        # Set the cursor and menu states
+        self.menu_options = {0: 'Items', 1: 'Exit'}
+        self.index = 0
+        # Variables for the cursor
+        self.cursor = pygame.image.load('imgs/Assets/cursor.png')
+        self.cursor_rect = self.cursor.get_rect()
+        self.cursor_posy = self.menu_rect.y + 98
+        self.cursor_rect.x, self.cursor_rect.y = self.menu_rect.x + 10, self.cursor_posy
 
     def set_up(self):
         self.test_dct = {
-            pygame.K_9: lambda x, y: self.game.change_res(x, y - 1),
+            pygame.K_9: lambda x, y: self.game.ch7ange_res(x, y - 1),
             pygame.K_0: lambda x, y: self.game.change_res(x, y + 1),
             pygame.K_7: lambda x, y: self.game.change_state(RUNNING),
         }
 
     def render(self):
-        self.screen.fill(config.WHITE)
+        self.screen.blit(self.menu, self.menu_rect)
+        self.screen.blit(self.cursor, self.cursor_rect)
         pygame.transform.scale(self.screen, self.og_screen_size * self.screen_scaling_factor)
 
     def update(self):
