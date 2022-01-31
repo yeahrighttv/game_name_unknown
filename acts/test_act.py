@@ -1,5 +1,22 @@
 import config
-from running_game_hierarchy import Act, MapScene
+from running_game_hierarchy import Act, MapScene, House, Room
+
+
+class Entrance(Room):
+    def __init__(self, screen, game, player, camera):
+        super().__init__(screen, game, player, camera)
+
+    def set_up(self):
+        pass
+
+
+class TestHouse(House):
+    def __init__(self, screen, game, player, camera):
+        super().__init__(screen, game, player, camera)
+
+    def set_up(self):
+        self.room = "entrance"
+        self.update_room("entrance", Entrance(self.screen, self.game, self.player, self.camera))
 
 
 class TestScene1(MapScene):
@@ -15,10 +32,11 @@ class TestScene2(MapScene):
         super().__init__(screen, game, player, camera)
 
     def set_up(self):
-        pass
+        self.cur_indoors_area = "house 1"
+        self.update_indoor_area("house 1", TestHouse(self.screen, self.game, self.player, self.camera))
 
-    def render(self, bg_surface):
-        bg_surface.fill(config.GREEN)
+    # def render(self, bg_surface):
+    #     bg_surface.fill(config.GREEN)
 
 
 class TestAct(Act):

@@ -36,7 +36,7 @@ class Act(PlayingField):
     def __init__(self, screen, game, player, camera):
         super().__init__(screen, game, player, camera)
 
-        self.scene = "scene 1"
+        self.scene = ""
         self.scenes = dict()
 
         self.set_up()
@@ -79,21 +79,71 @@ class GeneralScene(PlayingField):
 class MapScene(GeneralScene):
     def __init__(self, screen, game, player, camera):
         super().__init__(screen, game, player, camera)
+        self.camera.set_method("border")
+        self.camera.mode.set_borders(-1000, 1000, -1000, 1000)
 
-        self.cur_indoors_area = None
+        self.cur_indoors_area = ""
         self.indoors_areas = dict()
 
-        self.npc = None
+        self.npc = ""
         self.npcs = dict()
 
-        self.map = Sprite("imgs/zelda_map_test.png")
+        self.objects = dict()
+
+        self.map: Sprite
         self.set_up()
+
+    def update_indoor_area(self, area_name, area):
+        self.indoors_areas[area_name] = area
 
     def set_up(self):
         pass
 
     def render(self, bg_surface):
         bg_surface.fill(config.BLUE)
+
+        if self.cur_indoors_area in self.indoors_areas.keys():
+            self.indoors_areas.get(self.cur_indoors_area).render(bg_surface)
+
+    def update(self):
+        pass
+
+
+class House(PlayingField):
+    def __init__(self, screen, game, player, camera):
+        super().__init__(screen, game, player, camera)
+
+        self.room = ""
+        self.rooms = dict()
+
+        self.set_up()
+
+    def update_room(self, room_name, room):
+        self.rooms[room_name] = room
+
+    def set_up(self):
+        pass
+
+    def render(self, bg_surface):
+        self.rooms.get(self.room).render(bg_surface)
+
+    def update(self):
+        pass
+
+
+class Room(PlayingField):
+    def __init__(self, screen, game, player, camera):
+        super().__init__(screen, game, player, camera)
+
+        self.objects = []
+
+    def set_up(self):
+        pass
+
+    def render(self, bg_surface):
+        bg_surface.fill(config.WHITE)
+        # for object in self.objects:
+        #     object.render(bg_surface, self.camera.offset)
 
     def update(self):
         pass
