@@ -134,16 +134,23 @@ class House(PlayingField):
 class Room(PlayingField):
     def __init__(self, screen, game, player, camera):
         super().__init__(screen, game, player, camera)
+        self.camera.set_method("stand")
 
         self.objects = []
+
+        self.npc = ""
+        self.npcs = dict()
+
+        self.set_up()
 
     def set_up(self):
         pass
 
     def render(self, bg_surface):
-        bg_surface.fill(config.WHITE)
-        # for object in self.objects:
-        #     object.render(bg_surface, self.camera.offset)
+        bg_surface.fill(config.BLACK)
+
+        for object in self.objects:
+            object.render(bg_surface, self.camera.offset)
 
     def update(self):
         pass

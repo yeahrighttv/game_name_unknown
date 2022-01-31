@@ -1,5 +1,6 @@
 import config
 from running_game_hierarchy import Act, MapScene, House, Room
+from sprite import Sprite
 
 
 class Entrance(Room):
@@ -7,7 +8,15 @@ class Entrance(Room):
         super().__init__(screen, game, player, camera)
 
     def set_up(self):
-        pass
+        self.objects.append(Sprite("imgs/Staircase_1.png"))
+        self.objects.append(Sprite("imgs/Room_Entrance.png"))
+        self.objects.append(self.player)
+        self.objects.append(Sprite("imgs/Railing_asset1.png"))
+        self.objects.append(Sprite("imgs/Railing_asset2.png"))
+        self.objects.append(Sprite("imgs/Railing_asset3.png"))
+
+        for object in self.objects:
+            object.center()
 
 
 class TestHouse(House):
