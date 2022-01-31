@@ -40,8 +40,19 @@ class Menu(AbstractState):
         pygame.transform.scale(self.screen, self.og_screen_size * self.screen_scaling_factor)
 
     def update(self):
+        self.update_cursor()
         self.handle_events()
         self.render()
+
+    def update_cursor(self):
+        # This updates the cursor
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_DOWN:
+                    self.index = (self.index + 1) % len(self.menu_options)
+                elif event.key == pygame.K_UP:
+                    self.index = (self.index - 1) % len(self.menu_options)
+                self.cursor_rect.y = self.cursor_posy + (self.index * 30)
 
     def handle_events(self):
         for event in pygame.event.get():
