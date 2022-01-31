@@ -136,7 +136,7 @@ class Room(PlayingField):
         super().__init__(screen, game, player, camera)
         self.camera.set_method("stand")
 
-        self.objects = []
+        self.objects = dict()
 
         self.npc = ""
         self.npcs = dict()
@@ -149,7 +149,7 @@ class Room(PlayingField):
     def render(self, bg_surface):
         bg_surface.fill(config.BLACK)
 
-        for object in self.objects:
+        for object in self.objects.values():
             object.render(bg_surface, self.camera.offset)
 
     def update(self):

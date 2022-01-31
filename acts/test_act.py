@@ -8,14 +8,14 @@ class Entrance(Room):
         super().__init__(screen, game, player, camera)
 
     def set_up(self):
-        self.objects.append(Sprite("imgs/Staircase_1.png"))
-        self.objects.append(Sprite("imgs/Room_Entrance.png"))
-        self.objects.append(self.player)
-        self.objects.append(Sprite("imgs/Railing_asset1.png"))
-        self.objects.append(Sprite("imgs/Railing_asset2.png"))
-        self.objects.append(Sprite("imgs/Railing_asset3.png"))
+        self.objects["staircase"] = Sprite("imgs/Staircase_1.png")
+        self.objects["bg"] = Sprite("imgs/Room_Entrance.png")
+        self.objects["player"] = self.player
+        self.objects["rail_1"] = Sprite("imgs/Railing_asset1.png")
+        self.objects["rail_2"] = Sprite("imgs/Railing_asset2.png")
+        self.objects["rail_3"] = Sprite("imgs/Railing_asset3.png")
 
-        for object in self.objects:
+        for object in self.objects.values():
             object.center()
 
 
