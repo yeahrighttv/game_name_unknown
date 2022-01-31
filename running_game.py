@@ -1,3 +1,4 @@
+from acts.test_act import TestAct
 from program_states import AbstractState
 from functools import partial
 
@@ -96,7 +97,7 @@ class RunningGame(AbstractState):
 
         self.act = "act 1"
         self.acts = {
-            "act 1": Act(self.screen, self, self.player, self.camera),
+            "act 1": TestAct(self.screen, self, self.player, self.camera),
         }
 
         print('do set up')

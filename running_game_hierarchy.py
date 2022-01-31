@@ -50,6 +50,7 @@ class Act(PlayingField):
 
     def render(self, bg_surface):
         bg_surface.fill(config.RED)
+        self.scenes.get(self.scene).render(bg_surface)
 
     def update(self):
         self.scenes.get(self.scene).update()
