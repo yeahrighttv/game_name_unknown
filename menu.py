@@ -17,7 +17,7 @@ class Menu(AbstractState):
         self.set_up()
         self.menu = pygame.image.load('imgs/Assets/menu.png')
         self.menu_rect = self.menu.get_rect()
-        self.menu_rect.center = ((317 * 3) * .85, (236 * 3) * .4)
+        self.menu_rect.center = (150 * .85, (236 * 3) * .4)
         # Set the cursor and menu states
         self.menu_options = {0: 'Items', 1: 'Exit'}
         self.index = 0
@@ -56,6 +56,7 @@ class Menu(AbstractState):
                     if self.menu_options[self.index] == 'Items':
                         self.screen.fill(config.WHITE)
                     elif self.menu_options[self.index] == 'Exit':
+                        self.index = 0
                         self.game.change_state(RUNNING)
                 self.cursor_rect.y = self.cursor_posy + (self.index * 30)
 
