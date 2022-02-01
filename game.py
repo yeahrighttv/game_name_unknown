@@ -16,7 +16,7 @@ MENU = GameState.MENU
 class Game:
     def __init__(self, screen):
         self.screen = screen
-        self.player = Player("imgs/player.png", 0, 0)
+        self.player = Player("imgs/player.png", 0, 0, center=True)
 
         self.game_state = RUNNING
         self.game_states = {

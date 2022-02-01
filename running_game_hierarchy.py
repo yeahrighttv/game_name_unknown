@@ -1,3 +1,4 @@
+import time
 from abc import abstractmethod
 
 import pygame
@@ -79,8 +80,6 @@ class GeneralScene(PlayingField):
 class MapScene(GeneralScene):
     def __init__(self, screen, game, player, camera):
         super().__init__(screen, game, player, camera)
-        self.camera.set_method("border")
-        self.camera.mode.set_borders(-1000, 1000, -1000, 1000)
 
         self.cur_indoors_area = ""
         self.indoors_areas = dict()
@@ -90,7 +89,7 @@ class MapScene(GeneralScene):
 
         self.objects = dict()
 
-        self.map: Sprite
+        self.map = None
         self.set_up()
 
     def update_indoor_area(self, area_name, area):
@@ -104,14 +103,41 @@ class MapScene(GeneralScene):
 
         if self.cur_indoors_area in self.indoors_areas.keys():
             self.indoors_areas.get(self.cur_indoors_area).render(bg_surface)
+        else:
+            self.map.render(bg_surface, self.camera.offset)
+
+            for object in self.objects.values():
+                object.render(bg_surface, self.camera.offset)
+
+            for npc in self.npcs.values():
+                npc.render(bg_surface, self.camera.offset)
+
+            for area in self.indoors_areas.values():
+                area.render_house(bg_surface)
+
+            self.player.render(bg_surface, self.camera.offset)
 
     def update(self):
-        pass
+        self.camera.set_method("border")
+        self.camera.mode.set_borders(-4000, 4000, -4000, 4000)
+
+        if self.cur_indoors_area in self.indoors_areas.keys():
+            self.indoors_areas.get(self.cur_indoors_area).update()
+        else:
+            for area_name, area in self.indoors_areas.items():
+                if self.player.rect.colliderect(area.house_sprite.rect):
+                    self.cur_indoors_area = area_name
+                    self.player.rect.x, self.player.rect.y = -16, -16
+                    self.render(self.game.bg_surface)
+                    pygame.time.delay(500)
+                    break
 
 
 class House(PlayingField):
     def __init__(self, screen, game, player, camera):
         super().__init__(screen, game, player, camera)
+
+        self.house_sprite = None
 
         self.room = ""
         self.rooms = dict()
@@ -127,14 +153,16 @@ class House(PlayingField):
     def render(self, bg_surface):
         self.rooms.get(self.room).render(bg_surface)
 
+    def render_house(self, bg_surface):
+        self.house_sprite.render(bg_surface, self.camera.offset)
+
     def update(self):
-        pass
+        self.rooms.get(self.room).update()
 
 
 class Room(PlayingField):
     def __init__(self, screen, game, player, camera):
         super().__init__(screen, game, player, camera)
-        self.camera.set_method("stand")
 
         self.objects = dict()
 
@@ -152,5 +180,9 @@ class Room(PlayingField):
         for object in self.objects.values():
             object.render(bg_surface, self.camera.offset)
 
+        for npc in self.npcs.values():
+            npc.render()
+
     def update(self):
-        pass
+        print("room", self.camera.mode)
+        self.camera.set_method("stand")

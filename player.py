@@ -21,7 +21,7 @@ directions = {
 
 
 class Player(Sprite):
-    def __init__(self, path, x, y):
+    def __init__(self, path, x, y, center=False):
         super().__init__(path, x, y)
 
         print('Player Created')
@@ -30,6 +30,9 @@ class Player(Sprite):
         self.horizontal_animation_counter = 0
         self.vertical_animation_counter = 0
         self.speed = 1
+
+        if center:
+            self.center()
 
     def advance_animation(self):
         self.horizontal_animation_counter += 1
@@ -64,8 +67,14 @@ class Player(Sprite):
     def update_position(self, dirX, dirY):
         self.change_vel(dirX, dirY)
 
-        # Move character according to velocity
-        self.pos += self.vel
-
         # Move rect
         self.rect.move_ip(self.vel)
+
+    def center(self):
+        self.rect.update(self.rect.x + (-self.rect.w / 2),
+                         self.rect.y + (-self.rect.h / 2),
+                         self.rect.w,
+                         self.rect.h)
+        print(self.rect)
+
+

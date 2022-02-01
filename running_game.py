@@ -124,6 +124,7 @@ class RunningGame(AbstractState):
         self.handle_events()
         self.player_movement()
         self.move_camera()
+        self.get_act().update()
         self.render(None)
 
     """ SOMETIMES DOESN'T WORK WHEN MULTIPLE KEYS ARE PRESSED, SEEMS TO BE PYGAME BUG"""
