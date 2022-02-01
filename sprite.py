@@ -34,7 +34,7 @@ class SpriteInsideHouse(Sprite):
         super().__init__(path, x, y, center)
 
     def center(self):
-        self.rect.update(self.rect.x + 2 + (-self.rect.w / 2),
-                         self.rect.y + 2 + (-self.rect.h / 2),
+        self.rect.update(self.rect.x + (-self.rect.w / 2),
+                         self.rect.y + (-self.rect.h / 2),
                          self.rect.w,
                          self.rect.h)

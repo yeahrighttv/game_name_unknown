@@ -10,7 +10,7 @@ class Camera:
         self.offset_float = vec(0, 0)
         self.DISPLAY_W, self.DISPLAY_H = display_vec.x, display_vec.y
         # self.CONST = vec(-self.DISPLAY_W / 8 + player.rect.w / 8, -self.DISPLAY_W / 8 + player.rect.w / 8)
-        self.CONST = vec(-140, -100)
+        self.CONST = vec(-158, -118)
         self.modes = {}
 
     def add_mode(self, name, mode):

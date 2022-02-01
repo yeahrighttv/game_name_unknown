@@ -7,6 +7,8 @@ import config
 from program_states import AbstractState
 from sprite import Sprite
 
+vec = pygame.math.Vector2
+
 
 class PlayingField(AbstractState):
     def __init__(self, screen, game, player, camera):
@@ -122,13 +124,14 @@ class MapScene(GeneralScene):
         self.camera.mode.set_borders(-4000, 4000, -4000, 4000)
 
         if self.cur_indoors_area in self.indoors_areas.keys():
+            self.camera.offset = vec(self.camera.CONST.x, self.camera.CONST.y)
             self.indoors_areas.get(self.cur_indoors_area).update()
         else:
             for area_name, area in self.indoors_areas.items():
                 if self.player.rect.colliderect(area.house_sprite.rect):
                     self.cur_indoors_area = area_name
-                    self.player.rect.x, self.player.rect.y = -16, -16
-                    self.render(self.game.bg_surface)
+                    self.player.rect.x, self.player.rect.y = -16, 84
+                    print(self.camera.offset)
                     pygame.time.delay(500)
                     break
 
@@ -184,5 +187,4 @@ class Room(PlayingField):
             npc.render()
 
     def update(self):
-        print("room", self.camera.mode)
         self.camera.set_method("stand")
