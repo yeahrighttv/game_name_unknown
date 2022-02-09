@@ -67,18 +67,16 @@ class TestScene1(MapScene):
         self.update_indoor_area("house 1", TestHouse(self.screen, self.game, self.player, self.camera, self))
 
 
-class TestScene2(MapScene):
-    def set_up(self):
-        self.map = Sprite("imgs/zelda_map_test.png", center=True)
-        self.cur_indoors_area = "house 1"
-        self.update_indoor_area("house 1", TestHouse(self.screen, self.game, self.player, self.camera, self))
-
-    # def render(self, bg_surface):
-    #     bg_surface.fill(config.GREEN)
+# class TestScene2(MapScene):
+#     def set_up(self):
+#         self.map = Sprite("imgs/zelda_map_test.png", center=True)
+#         self.cur_indoors_area = "house 1"
+#         self.update_indoor_area("house 1", TestHouse(self.screen, self.game, self.player, self.camera, self))
+#         self.indoors_areas.get(self.cur_indoors_area).enter_house()
 
 
 class TestAct(Act):
     def set_up(self):
         self.scene = "scene 1"
         self.update_scene("scene 1", TestScene1(self.screen, self.game, self.player, self.camera, self))
-        self.update_scene("scene 2", TestScene2(self.screen, self.game, self.player, self.camera, self))
+        # self.update_scene("scene 2", TestScene2(self.screen, self.game, self.player, self.camera, self))

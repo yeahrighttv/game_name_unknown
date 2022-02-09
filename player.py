@@ -24,7 +24,7 @@ class Player(Sprite):
     def __init__(self, path, x, y, center=False):
         super().__init__(path, x, y)
 
-        print('Player Created')
+        # print('Player Created')
         self.vel = vec(0, 0)
 
         self.horizontal_animation_counter = 0
