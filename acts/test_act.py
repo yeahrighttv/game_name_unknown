@@ -12,7 +12,14 @@ class EntranceRoom(Room):
         self.objects["rail_2"] = SpriteInsideHouse("imgs/Railing_asset2.png", center=True)
         self.objects["rail_3"] = SpriteInsideHouse("imgs/Railing_asset3.png", center=True)
 
-        self.update_entrance("entrance 1", Entrance(-16, 84, 32, 32))
+        self.update_entrance("entrance 1", Entrance())
+        self.entrances.get("entrance 1").set_default_bottom()
+
+        self.update_entrance("entrance 2", Entrance())
+        self.entrances.get("entrance 2").set_default_left_lower()
+
+        self.update_entrance("entrance 3", Entrance())
+        self.entrances.get("entrance 3").set_default_right_lower()
 
 
 class TestHouse(House):

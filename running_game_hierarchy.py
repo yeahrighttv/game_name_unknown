@@ -199,8 +199,26 @@ class Room(PlayingField):
 
 
 class Entrance:
-    def __init__(self, x, y, width, height):
+    def __init__(self, x=0, y=0, width=16, height=16):
         self.rect = pygame.Rect(x, y, width, height)
+
+    def set_default_bottom(self):
+        self.set_pos(-16, 116)
+        self.set_shape(32, 2)
+
+    def set_default_left_lower(self):
+        self.set_pos(-158, 44)
+        self.set_shape(2, 32)
+
+    def set_default_right_lower(self):
+        self.set_pos(157, 44)
+        self.set_shape(2, 32)
+
+    def set_pos(self, x, y):
+        self.rect.x, self.rect.y = x, y
+
+    def set_shape(self, w, h):
+        self.rect.w, self.rect.h = w, h
 
     def render(self, surface, offset):
         pygame.draw.rect(surface, config.BLUE,
