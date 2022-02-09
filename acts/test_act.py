@@ -34,7 +34,7 @@ class WestRoom(Room):
         self.add_entry_pos("e", 125, 44)
         self.add_entry_pos("n", -110, -116)
 
-        self.objects["bg_walls"] = SpriteInsideHouse("imgs/Assets/Room_West_Walls.png", center=True)
+        self.objects["bg"] = SpriteInsideHouse("imgs/Assets/Room_West_Walls.png", center=True)
         self.objects["bg_floor"] = SpriteInsideHouse("imgs/Assets/Room_West_Floor.png", center=True)
         self.objects["player"] = self.player
 

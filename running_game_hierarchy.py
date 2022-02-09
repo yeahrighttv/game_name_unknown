@@ -127,6 +127,7 @@ class MapScene(GeneralScene):
         if self.cur_indoors_area in self.indoors_areas.keys():
             self.indoors_areas.get(self.cur_indoors_area).update()
         else:
+            self.player.scope = self.map
             for area_name, area in self.indoors_areas.items():
                 if self.player.rect.colliderect(area.house_sprite.rect):
                     # print(self.player.rect)
@@ -191,12 +192,13 @@ class Room(PlayingField):
         self.set_up()
 
     def enter_room(self, enter_from=None):
-        if enter_from is not None:
-            self.player.rect.x, self.player.rect.y = (self.enter_positions.get(enter_from).x,
-                                                      self.enter_positions.get(enter_from).y)
-        else:
+        self.player.scope = self.objects.get("bg")
+        if enter_from is None:
             self.player.rect.x, self.player.rect.y = (self.enter_positions.get(self.enter_from_default).x,
                                                       self.enter_positions.get(self.enter_from_default).y)
+        else:
+            self.player.rect.x, self.player.rect.y = (self.enter_positions.get(enter_from).x,
+                                                      self.enter_positions.get(enter_from).y)
 
     def add_entry_pos(self, name, x, y):
         self.enter_positions[name] = vec(x, y)
@@ -212,6 +214,8 @@ class Room(PlayingField):
         }
         self.player.rect.x, self.player.rect.y = house_sides_coords.get(return_side_of_house,
                                                                         (self.parent.house_sprite.rect.x - self.player.rect.w, self.parent.house_sprite.rect.y))
+
+        self.player.scope = self.parent.parent.map
 
     def update_entrance(self, entrance_name, entrance):
         self.entrances[entrance_name] = entrance

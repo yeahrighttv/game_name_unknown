@@ -23,6 +23,7 @@ directions = {
 class Player(Sprite):
     def __init__(self, path, x, y, center=False):
         super().__init__(path, x, y)
+        self.scope = None
 
         # print('Player Created')
         self.vel = vec(0, 0)
@@ -68,7 +69,14 @@ class Player(Sprite):
         self.change_vel(dirX, dirY)
 
         # Move rect
-        self.rect.move_ip(self.vel)
+        if self.scope is None:
+            self.rect.move_ip(self.vel)
+        else:
+            if self.scope.rect.contains(pygame.Rect(self.rect.x + self.vel.x,
+                                               self.rect.y + self.vel.y,
+                                               self.rect.w,
+                                               self.rect.h)):
+                self.rect.move_ip(self.vel)
 
     def center(self):
         self.rect.update(self.rect.x + (-self.rect.w / 2),
