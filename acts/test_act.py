@@ -6,14 +6,14 @@ from sprite import Sprite, SpriteInsideHouse
 class Kitchen(Room):
     def set_up(self):
         self.enter_from_default = "s"
-        self.add_entry_pos("s", -110, 84)
+        self.add_entry_pos("s", -80, 84)
 
-        self.objects["bg"] = SpriteInsideHouse("imgs/Kitchen.png", center=True, scale=False)
+        self.objects["bg"] = SpriteInsideHouse("imgs/Kitchen.png", -33, 36, center=True, scale=False)
         self.objects["player"] = self.player
 
         self.update_entrance("entrance 1", Entrance("west_room", "n"))
         self.entrances.get("entrance 1").set_shape(32, 2)
-        self.entrances.get("entrance 1").set_pos(-110, 116)
+        self.entrances.get("entrance 1").set_pos(-80, 116)
 
 
 class EastHallway(Room):
