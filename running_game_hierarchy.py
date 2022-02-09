@@ -130,8 +130,9 @@ class MapScene(GeneralScene):
         else:
             for area_name, area in self.indoors_areas.items():
                 if self.player.rect.colliderect(area.house_sprite.rect):
+                    # print(self.player.rect)
                     self.cur_indoors_area = area_name
-                    self.player.rect.x, self.player.rect.y = -16, 84
+                    self.indoors_areas.get(self.cur_indoors_area).enter_house()
                     time.sleep(0.5)
                     break
 
@@ -143,9 +144,20 @@ class House(PlayingField):
         self.house_sprite = None
 
         self.room = ""
+        self.entry_room = ""
         self.rooms = dict()
 
         self.set_up()
+
+    def set_entry_name(self, entry_room_name):
+        self.entry_room = entry_room_name
+
+    def enter_house(self):
+        self.room = self.entry_room
+        self.rooms.get(self.room).enter_room()
+
+    def set_room_by_name(self, room_name):
+        self.room = room_name
 
     def update_room(self, room_name, room):
         self.rooms[room_name] = room
@@ -174,7 +186,33 @@ class Room(PlayingField):
         self.npc = ""
         self.npcs = dict()
 
+        self.enter_from_default = ""
+        self.enter_positions = dict()
+
         self.set_up()
+
+    def enter_room(self, enter_from=None):
+        if enter_from is not None:
+            self.player.rect.x, self.player.rect.y = (self.enter_positions.get(enter_from).x,
+                                                      self.enter_positions.get(enter_from).y)
+        else:
+            self.player.rect.x, self.player.rect.y = (self.enter_positions.get(self.enter_from_default).x,
+                                                      self.enter_positions.get(self.enter_from_default).y)
+
+    def add_entry_pos(self, name, x, y):
+        self.enter_positions[name] = vec(x, y)
+
+    def return_outside(self, return_side_of_house="w"):
+        self.parent.parent.cur_indoors_area = ""
+
+        house_sides_coords = {
+            "w": (self.parent.house_sprite.rect.x - self.player.rect.w, self.parent.house_sprite.rect.y),
+            "e": (self.parent.house_sprite.rect.x + self.player.rect.w, self.parent.house_sprite.rect.y),
+            "n": (self.parent.house_sprite.rect.x, self.parent.house_sprite.rect.y - self.player.rect.h),
+            "s": (self.parent.house_sprite.rect.x, self.parent.house_sprite.rect.y + self.player.rect.h),
+        }
+        self.player.rect.x, self.player.rect.y = house_sides_coords.get(return_side_of_house,
+                                                                        (self.parent.house_sprite.rect.x - self.player.rect.w, self.parent.house_sprite.rect.y))
 
     def update_entrance(self, entrance_name, entrance):
         self.entrances[entrance_name] = entrance
@@ -197,10 +235,23 @@ class Room(PlayingField):
     def update(self):
         self.camera.set_method("stand")
 
+        for entrance in self.entrances.values():
+            if self.player.rect.colliderect(entrance.rect):
+                entrance.action()
+                self.parent.set_room_by_name(entrance.destination_name)
+                if self.parent.room in self.parent.rooms:
+                    self.parent.rooms.get(self.parent.room).enter_room(entrance.enter_from)
+
 
 class Entrance:
-    def __init__(self, x=0, y=0, width=16, height=16):
+    def __init__(self, destination_name, enter_from, x=0, y=0, width=16, height=16):
         self.rect = pygame.Rect(x, y, width, height)
+        self.destination_name = destination_name
+        self.enter_from = enter_from
+
+    def action(self):
+        # print(self.destination_name)
+        time.sleep(0.5)
 
     def set_default_bottom(self):
         self.set_pos(-16, 116)
@@ -208,6 +259,10 @@ class Entrance:
 
     def set_default_left_lower(self):
         self.set_pos(-158, 44)
+        self.set_shape(2, 32)
+
+    def set_default_left_center_lower(self):
+        self.set_pos(-158, 10)
         self.set_shape(2, 32)
 
     def set_default_right_lower(self):
@@ -223,3 +278,15 @@ class Entrance:
     def render(self, surface, offset):
         pygame.draw.rect(surface, config.BLUE,
                          pygame.Rect(self.rect.x - offset.x, self.rect.y - offset.y, self.rect.w, self.rect.h), width=1)
+
+
+class ReturnEntrance(Entrance):
+    def __init__(self, room, destination_name, x=0, y=0, width=16, height=16, return_side="w"):
+        super().__init__(destination_name, x, y, width, height)
+        self.room = room
+        self.return_side = return_side
+
+    def action(self):
+        self.room.return_outside(self.return_side)
+        time.sleep(0.5)
+

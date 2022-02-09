@@ -102,7 +102,7 @@ class RunningGame(AbstractState):
             "act 1": TestAct(self.screen, self, self.player, self.camera, self),
         }
 
-        print('do set up')
+        # print('do set up')
 
     def get_act(self):
         return self.acts.get(self.act)

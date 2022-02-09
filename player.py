@@ -75,6 +75,6 @@ class Player(Sprite):
                          self.rect.y + (-self.rect.h / 2),
                          self.rect.w,
                          self.rect.h)
-        print(self.rect)
+        # print(self.rect)
 
 
