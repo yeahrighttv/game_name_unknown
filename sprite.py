@@ -3,13 +3,17 @@ import math
 import pygame
 import config
 
+vec = pygame.math.Vector2
+
 
 class Sprite(pygame.sprite.Sprite):
-    def __init__(self, path, x=0, y=0, center=False):
+    def __init__(self, path, x=0, y=0, center=False, scale=False):
         self.path = path
         pygame.sprite.Sprite.__init__(self)
 
         self.image = pygame.image.load(path)
+        if scale:
+            self.image = pygame.transform.scale(self.image, vec(317, 236))
         self.rect = self.image.get_rect()
         self.rect.move_ip(x, y)
 
@@ -30,8 +34,8 @@ class Sprite(pygame.sprite.Sprite):
 
 
 class SpriteInsideHouse(Sprite):
-    def __init__(self, path, x=0, y=0, center=False):
-        super().__init__(path, x, y, center)
+    def __init__(self, path, x=0, y=0, center=False, scale=False):
+        super().__init__(path, x, y, center, scale)
 
     def center(self):
         self.rect.update(self.rect.x + (-self.rect.w / 2),

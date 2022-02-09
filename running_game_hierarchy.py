@@ -125,7 +125,6 @@ class MapScene(GeneralScene):
         self.camera.mode.set_borders(-4000, 4000, -4000, 4000)
 
         if self.cur_indoors_area in self.indoors_areas.keys():
-            self.camera.offset = vec(self.camera.CONST.x, self.camera.CONST.y)
             self.indoors_areas.get(self.cur_indoors_area).update()
         else:
             for area_name, area in self.indoors_areas.items():
@@ -234,6 +233,7 @@ class Room(PlayingField):
 
     def update(self):
         self.camera.set_method("stand")
+        self.camera.offset = vec(self.camera.CONST.x, self.camera.CONST.y)
 
         for entrance in self.entrances.values():
             if self.player.rect.colliderect(entrance.rect):
@@ -289,4 +289,3 @@ class ReturnEntrance(Entrance):
     def action(self):
         self.room.return_outside(self.return_side)
         time.sleep(0.5)
-
