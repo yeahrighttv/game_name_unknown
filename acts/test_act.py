@@ -4,9 +4,6 @@ from sprite import Sprite, SpriteInsideHouse
 
 
 class Entrance(Room):
-    def __init__(self, screen, game, player, camera):
-        super().__init__(screen, game, player, camera)
-
     def set_up(self):
         self.objects["staircase"] = SpriteInsideHouse("imgs/Staircase_1.png", center=True)
         self.objects["bg"] = SpriteInsideHouse("imgs/Room_Entrance.png", center=True)
@@ -17,9 +14,6 @@ class Entrance(Room):
 
 
 class TestHouse(House):
-    def __init__(self, screen, game, player, camera):
-        super().__init__(screen, game, player, camera)
-
     def set_up(self):
         self.room = "entrance"
         self.update_room("entrance", Entrance(self.screen, self.game, self.player, self.camera))
@@ -27,31 +21,22 @@ class TestHouse(House):
 
 
 class TestScene1(MapScene):
-    def __init__(self, screen, game, player, camera):
-        super().__init__(screen, game, player, camera)
-
     def set_up(self):
         self.map = Sprite("imgs/zelda_map_test.png", center=True)
-        self.update_indoor_area("house 1", TestHouse(self.screen, self.game, self.player, self.camera))
+        self.update_indoor_area("house 1", TestHouse(self.screen, self.game, self.player, self.camera, self))
 
 
 class TestScene2(MapScene):
-    def __init__(self, screen, game, player, camera):
-        super().__init__(screen, game, player, camera)
-
     def set_up(self):
         self.map = Sprite("imgs/zelda_map_test.png", center=True)
         self.cur_indoors_area = "house 1"
-        self.update_indoor_area("house 1", TestHouse(self.screen, self.game, self.player, self.camera))
+        self.update_indoor_area("house 1", TestHouse(self.screen, self.game, self.player, self.camera, self))
 
     # def render(self, bg_surface):
     #     bg_surface.fill(config.GREEN)
 
 
 class TestAct(Act):
-    def __init__(self, screen, game, player, camera):
-        super().__init__(screen, game, player, camera)
-
     def set_up(self):
         self.scene = "scene 1"
         self.update_scene("scene 1", TestScene1(self.screen, self.game, self.player, self.camera))

@@ -131,14 +131,14 @@ class MapScene(GeneralScene):
                 if self.player.rect.colliderect(area.house_sprite.rect):
                     self.cur_indoors_area = area_name
                     self.player.rect.x, self.player.rect.y = -16, 84
-                    print(self.camera.offset)
-                    pygame.time.delay(500)
                     break
 
 
 class House(PlayingField):
-    def __init__(self, screen, game, player, camera):
+    def __init__(self, screen, game, player, camera, scene):
         super().__init__(screen, game, player, camera)
+
+        self.scene = scene
 
         self.house_sprite = None
 
