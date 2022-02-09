@@ -99,7 +99,7 @@ class RunningGame(AbstractState):
 
         self.act = "act 1"
         self.acts = {
-            "act 1": TestAct(self.screen, self, self.player, self.camera),
+            "act 1": TestAct(self.screen, self, self.player, self.camera, self),
         }
 
         print('do set up')

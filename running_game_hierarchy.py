@@ -11,10 +11,11 @@ vec = pygame.math.Vector2
 
 
 class PlayingField(AbstractState):
-    def __init__(self, screen, game, player, camera):
+    def __init__(self, screen, game, player, camera, parent):
         super().__init__(screen, game)
         self.player = player
         self.camera = camera
+        self.parent = parent
 
         self.flags = dict()
 
@@ -36,8 +37,8 @@ class PlayingField(AbstractState):
 
 
 class Act(PlayingField):
-    def __init__(self, screen, game, player, camera):
-        super().__init__(screen, game, player, camera)
+    def __init__(self, screen, game, player, camera, parent):
+        super().__init__(screen, game, player, camera, parent)
 
         self.scene = ""
         self.scenes = dict()
@@ -63,8 +64,8 @@ class Act(PlayingField):
 
 
 class GeneralScene(PlayingField):
-    def __init__(self, screen, game, player, camera):
-        super().__init__(screen, game, player, camera)
+    def __init__(self, screen, game, player, camera, parent):
+        super().__init__(screen, game, player, camera, parent)
 
     @abstractmethod
     def set_up(self):
@@ -80,8 +81,8 @@ class GeneralScene(PlayingField):
 
 
 class MapScene(GeneralScene):
-    def __init__(self, screen, game, player, camera):
-        super().__init__(screen, game, player, camera)
+    def __init__(self, screen, game, player, camera, parent):
+        super().__init__(screen, game, player, camera, parent)
 
         self.cur_indoors_area = ""
         self.indoors_areas = dict()
@@ -131,14 +132,13 @@ class MapScene(GeneralScene):
                 if self.player.rect.colliderect(area.house_sprite.rect):
                     self.cur_indoors_area = area_name
                     self.player.rect.x, self.player.rect.y = -16, 84
+                    time.sleep(0.5)
                     break
 
 
 class House(PlayingField):
-    def __init__(self, screen, game, player, camera, scene):
-        super().__init__(screen, game, player, camera)
-
-        self.scene = scene
+    def __init__(self, screen, game, player, camera, parent):
+        super().__init__(screen, game, player, camera, parent)
 
         self.house_sprite = None
 
@@ -164,8 +164,10 @@ class House(PlayingField):
 
 
 class Room(PlayingField):
-    def __init__(self, screen, game, player, camera):
-        super().__init__(screen, game, player, camera)
+    def __init__(self, screen, game, player, camera, parent):
+        super().__init__(screen, game, player, camera, parent)
+
+        self.entrances = dict()
 
         self.objects = dict()
 
@@ -173,6 +175,9 @@ class Room(PlayingField):
         self.npcs = dict()
 
         self.set_up()
+
+    def update_entrance(self, entrance_name, entrance):
+        self.entrances[entrance_name] = entrance
 
     def set_up(self):
         pass
@@ -184,7 +189,19 @@ class Room(PlayingField):
             object.render(bg_surface, self.camera.offset)
 
         for npc in self.npcs.values():
-            npc.render()
+            npc.render(bg_surface, self.camera.offset)
+
+        for entrance in self.entrances.values():
+            entrance.render(bg_surface, self.camera.offset)
 
     def update(self):
         self.camera.set_method("stand")
+
+
+class Entrance:
+    def __init__(self, x, y, width, height):
+        self.rect = pygame.Rect(x, y, width, height)
+
+    def render(self, surface, offset):
+        pygame.draw.rect(surface, config.BLUE,
+                         pygame.Rect(self.rect.x - offset.x, self.rect.y - offset.y, self.rect.w, self.rect.h), width=1)

@@ -1,9 +1,9 @@
 import config
-from running_game_hierarchy import Act, MapScene, House, Room
+from running_game_hierarchy import Act, MapScene, House, Room, Entrance
 from sprite import Sprite, SpriteInsideHouse
 
 
-class Entrance(Room):
+class EntranceRoom(Room):
     def set_up(self):
         self.objects["staircase"] = SpriteInsideHouse("imgs/Staircase_1.png", center=True)
         self.objects["bg"] = SpriteInsideHouse("imgs/Room_Entrance.png", center=True)
@@ -12,11 +12,13 @@ class Entrance(Room):
         self.objects["rail_2"] = SpriteInsideHouse("imgs/Railing_asset2.png", center=True)
         self.objects["rail_3"] = SpriteInsideHouse("imgs/Railing_asset3.png", center=True)
 
+        self.update_entrance("entrance 1", Entrance(-16, 84, 32, 32))
+
 
 class TestHouse(House):
     def set_up(self):
         self.room = "entrance"
-        self.update_room("entrance", Entrance(self.screen, self.game, self.player, self.camera))
+        self.update_room("entrance", EntranceRoom(self.screen, self.game, self.player, self.camera, self))
         self.house_sprite = Sprite("imgs/house_test.png", 100, 100, center=True)
 
 
@@ -39,5 +41,5 @@ class TestScene2(MapScene):
 class TestAct(Act):
     def set_up(self):
         self.scene = "scene 1"
-        self.update_scene("scene 1", TestScene1(self.screen, self.game, self.player, self.camera))
-        self.update_scene("scene 2", TestScene2(self.screen, self.game, self.player, self.camera))
+        self.update_scene("scene 1", TestScene1(self.screen, self.game, self.player, self.camera, self))
+        self.update_scene("scene 2", TestScene2(self.screen, self.game, self.player, self.camera, self))
