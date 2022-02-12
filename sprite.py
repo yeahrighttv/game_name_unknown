@@ -1,4 +1,5 @@
 import math
+import random
 
 import pygame
 import config
@@ -56,14 +57,17 @@ class NPC(Sprite):
         super().__init__(main_image_path, x, y, center, scale)
         self.dialogs = dict()
 
-        self.fight_animation_frequency = 2
+        self.fight_animation_frequency = 10
         self.fight_image = pygame.image.load(main_fight_sprite_path)
         self.fight_images = [self.fight_image]
         self.fight_rect = self.fight_image.get_rect()
         self.animation_fight_counter = 0
 
-        self.fight_rect.x, self.fight_rect.y = 240, 40
+        self.cur_animation_value = 0
+        self.animation_changer = 1
+        self.animation_min, self.animation_max = -4, 4
 
+        self.fight_rect.x, self.fight_rect.y = 240, 40
 
     def render_fight(self, surface, dt):
         self.animate_fight(dt)
@@ -78,6 +82,18 @@ class NPC(Sprite):
             self.animation_fight_counter += 1
             if self.animation_fight_counter >= len(self.fight_images):
                 self.animation_fight_counter = 0
+
+            self.fight_image = pygame.transform.scale(self.fight_image,
+                                                      vec(self.fight_rect.w + self.cur_animation_value,
+                                                          self.fight_rect.h + self.cur_animation_value))
+
+            self.fight_rect.x, self.fight_rect.y = 240 - self.cur_animation_value / 2, 40 - self.cur_animation_value / 2
+
+            self.cur_animation_value += self.animation_changer
+            if self.cur_animation_value >= self.animation_max:
+                self.animation_changer = -1
+            elif self.cur_animation_value <= self.animation_min:
+                self.animation_changer = 1
 
     def add_empty_dialog(self, name):
         self.dialogs[name] = []
