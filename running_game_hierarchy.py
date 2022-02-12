@@ -101,6 +101,7 @@ class MapScene(GeneralScene):
         for npc in self.npcs:
             if self.player.rect.colliderect(npc.rect):
                 self.game.game_state = GameState.FIGHT
+                self.game.current_state_obj.change_npc(npc)
 
     def update_indoor_area(self, area_name, area):
         self.indoors_areas[area_name] = area

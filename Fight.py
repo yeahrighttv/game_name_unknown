@@ -6,10 +6,15 @@ from program_states import AbstractState
 
 
 class Fight(AbstractState):
-    def __init__(self, screen, game):
+    def __init__(self, screen, game, player):
         super().__init__(screen, game)
+        self.player = player
+        self.npc = None
 
         self.set_up()
+
+    def change_npc(self, npc):
+        self.npc = npc
 
     def set_up(self):
         self.bg_surface = pygame.surface.Surface(self.og_screen_size)
@@ -21,7 +26,7 @@ class Fight(AbstractState):
         }
 
     def render(self, bg_surface=None):
-        self.bg_surface.fill(config.BLUE)
+        self.bg_surface.fill(config.BLACK)
 
         pygame.transform.scale(self.bg_surface, self.og_screen_size * self.screen_scaling_factor,
                                dest_surface=self.screen)
