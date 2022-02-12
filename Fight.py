@@ -1,3 +1,5 @@
+import random
+
 import pygame
 
 import config
@@ -31,13 +33,15 @@ class Fight(AbstractState):
 
         self.npc_option = None
         self.npc_options = [
-            DialogOption("imgs/rock_outside_box.png", x=160, y=168),
-            DialogOption("imgs/paper_outside_box.png", x=160, y=168),
-            DialogOption("imgs/scissors_outside_box.png", x=160, y=168),
+            DialogOption("imgs/rock_outside_box.png", x=240, y=168),
+            DialogOption("imgs/paper_outside_box.png", x=240, y=168),
+            DialogOption("imgs/scissors_outside_box.png", x=240, y=168),
         ]
 
         self.time_until_cooldown = 0
+        self.time_until_secondary_cooldown = 0
         self.cooldown = 5000
+        self.secondary_cooldown = 150
 
         self.set_up()
 
@@ -80,6 +84,15 @@ class Fight(AbstractState):
 
     def cooldown_method(self):
         self.time_until_cooldown -= self.dt
+        self.time_until_secondary_cooldown -= self.dt
+
+        if self.time_until_cooldown > self.cooldown - 2000:
+            if self.time_until_secondary_cooldown <= 0:
+                self.npc_choice()
+                self.time_until_secondary_cooldown = self.secondary_cooldown
+
+    def npc_choice(self):
+        self.npc_option = random.randint(0, 2)
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -93,7 +106,6 @@ class Fight(AbstractState):
                             self.time_until_cooldown = self.cooldown
                             self.option = i
                             break
-
 
             # Check if key is pressed
             elif event.type == pygame.KEYDOWN:
