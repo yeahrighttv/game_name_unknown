@@ -69,6 +69,12 @@ class Fight(AbstractState):
             if event.type == pygame.QUIT:
                 self.game.change_state(GameState.ENDED)
 
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                for i, option in enumerate(self.options):
+                    if option.moused_over:
+                        self.option = i
+                        break
+
             # Check if key is pressed
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
