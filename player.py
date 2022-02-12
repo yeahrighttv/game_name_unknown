@@ -14,10 +14,10 @@ class Player(Sprite):
 
         # print('Player Created')
         self.vel = vec(0, 0)
-        self.pos = vec(0, 0)
 
         self.horizontal_animation_counter = 0
         self.vertical_animation_counter = 0
+        # pixels / s
         self.speed = 200
 
         walk_up = [pygame.image.load('imgs/player_walk1_up.png'), pygame.image.load('imgs/player_walk2_up.png'),
@@ -72,7 +72,6 @@ class Player(Sprite):
         self.change_direction()
 
     def update_position(self, dirX, dirY, dt):
-        # print((dt / 1000), (dt / 1000))
         self.change_vel(dirX * (dt / 1000), dirY * (dt / 1000))
 
         # Move rect
@@ -83,10 +82,7 @@ class Player(Sprite):
                                                self.rect.y + self.vel.y,
                                                self.rect.w,
                                                self.rect.h)):
-                self.pos.xy += self.vel
-                print(self.pos, self.time_elapsed)
-
-                self.rect.x, self.rect.y = self.pos.xy
+                self.rect.move_ip(self.vel)
 
     def center(self):
         self.rect.update(self.rect.x + (-self.rect.w / 2),

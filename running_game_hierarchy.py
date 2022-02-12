@@ -234,7 +234,9 @@ class Room(PlayingField):
             npc.render(bg_surface, self.camera.offset, self.dt)
 
         for entrance in self.entrances.values():
-            entrance.render(bg_surface, self.camera.offset, self.dt)
+            entrance.render(bg_surface, self.camera.offset)
+
+        self.player.render(bg_surface, self.camera.offset, self.dt)
 
     def update(self, dt):
         self.dt = dt

@@ -1,7 +1,7 @@
 import config
 from running_game_hierarchy import Act, MapScene, House, Room, Entrance, ReturnEntrance, EastEntrance, NorthEntrance, \
     SouthEntrance, WestEntrance
-from sprite import Sprite
+from sprite import Sprite, Sans
 
 
 class Kitchen(Room):
@@ -32,6 +32,7 @@ class EastHallway(Room):
 
         self.update_entrance("secret_1", SouthEntrance(self.player, "entrance_room"))
 
+        self.npcs["sans"] = Sans(x=100, y=0, center=True)
 
 
 class WestRoom(Room):
