@@ -8,8 +8,6 @@ class Kitchen(Room):
     def set_up(self):
         self.default_entrance = "west_room"
 
-        # self.add_entry_pos("s", -80, 84)
-
         self.objects["bg"] = SpriteInsideHouse("imgs/Kitchen.png", -33, 36, center=True, scale=False)
         self.objects["player"] = self.player
 
@@ -26,8 +24,6 @@ class EastHallway(Room):
     def set_up(self):
         self.default_entrance = "entrance room"
 
-        # self.add_entry_pos("w", -156, 10)
-
         self.objects["bg"] = SpriteInsideHouse("imgs/Assets/EastHallway.png", center=True)
         self.objects["player"] = self.player
 
@@ -41,9 +37,6 @@ class EastHallway(Room):
 class WestRoom(Room):
     def set_up(self):
         self.default_entrance = "entrance room"
-        # self.add_entry_pos("e", 125, 44)
-        # self.add_entry_pos("n", -110, -116)
-
         self.objects["bg"] = SpriteInsideHouse("imgs/Assets/Room_West_Walls.png", center=True)
         self.objects["bg_floor"] = SpriteInsideHouse("imgs/Assets/Room_West_Floor.png", center=True)
         self.objects["player"] = self.player
@@ -58,10 +51,7 @@ class WestRoom(Room):
 
 class EntranceRoom(Room):
     def set_up(self):
-        # self.enter_from_default = "s"
-        # self.add_entry_pos("s", -16, 84)
-        # self.add_entry_pos("w",  -156, 44)
-        # self.add_entry_pos("e",  125, 44)
+
         self.default_entrance = "entrance_room"
 
         self.objects["staircase"] = SpriteInsideHouse("imgs/Staircase_1.png", center=True)
