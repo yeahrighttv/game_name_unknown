@@ -114,10 +114,9 @@ class Sans(NPC):
         self.fight_rect.x, self.fight_rect.y = 240, 40
 
 
-class DialogBox(pygame.sprite.Sprite):
-    def __init__(self, main_image_path="imgs/dialog_box.png", x=14, y=140, center=False, scale=False):
-        self.path = main_image_path
-        pygame.sprite.Sprite.__init__(self)
+class DialogBox(Sprite):
+    def __init__(self, main_image_path="imgs/dialog_box.png", x=14, y=136, center=False, scale=False):
+        super().__init__(main_image_path, x, y, center, scale)
 
         self.image = pygame.image.load(main_image_path)
         self.images = [self.image]

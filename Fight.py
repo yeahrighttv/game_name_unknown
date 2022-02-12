@@ -15,6 +15,13 @@ class Fight(AbstractState):
         self.npc = None
         self.dialog_box = DialogBox()
 
+        self.option = 0
+        self.options = [
+            DialogBox("imgs/rock.png", x=14, y=216),
+            DialogBox("imgs/paper.png", x=114, y=216),
+            DialogBox("imgs/scissors.png", x=213, y=216),
+        ]
+
         self.set_up()
 
     def change_npc(self, npc):
@@ -33,6 +40,9 @@ class Fight(AbstractState):
         self.bg_surface.fill(config.BLACK)
         self.npc.render_fight(self.bg_surface, self.dt)
         self.dialog_box.render(self.bg_surface)
+
+        for option in self.options:
+            option.render(self.bg_surface)
 
         pygame.transform.scale(self.bg_surface, self.og_screen_size * self.screen_scaling_factor,
                                dest_surface=self.screen)
