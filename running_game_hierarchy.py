@@ -176,8 +176,10 @@ class House(PlayingField):
 
 
 class Room(PlayingField):
-    def __init__(self, screen, game, player, camera, parent):
+    def __init__(self, room_name, screen, game, player, camera, parent):
         super().__init__(screen, game, player, camera, parent)
+
+        self.room_name = room_name
 
         self.entrances = dict()
 
@@ -186,22 +188,22 @@ class Room(PlayingField):
         self.npc = ""
         self.npcs = dict()
 
-        self.enter_from_default = ""
-        self.enter_positions = dict()
+        # self.enter_from_default = ""
+        # self.enter_positions = dict()
+
+        self.default_entrance = ""
 
         self.set_up()
 
-    def enter_room(self, enter_from=None):
+    def enter_room(self, entrance=None):
         self.player.scope = self.objects.get("bg")
-        if enter_from is None:
-            self.player.rect.x, self.player.rect.y = (self.enter_positions.get(self.enter_from_default).x,
-                                                      self.enter_positions.get(self.enter_from_default).y)
+        if entrance is None:
+            self.player.rect.x, self.player.rect.y = self.entrances.get(self.default_entrance).get_player_pos()
         else:
-            self.player.rect.x, self.player.rect.y = (self.enter_positions.get(enter_from).x,
-                                                      self.enter_positions.get(enter_from).y)
+            self.player.rect.x, self.player.rect.y = self.entrances.get(entrance).get_player_pos()
 
-    def add_entry_pos(self, name, x, y):
-        self.enter_positions[name] = vec(x, y)
+    # def add_entry_pos(self, name, x, y):
+    #     self.enter_positions[name] = vec(x, y)
 
     def return_outside(self, return_side_of_house="w"):
         self.parent.parent.cur_indoors_area = ""
@@ -244,32 +246,54 @@ class Room(PlayingField):
                 entrance.action()
                 self.parent.set_room_by_name(entrance.destination_name)
                 if self.parent.room in self.parent.rooms:
-                    self.parent.rooms.get(self.parent.room).enter_room(entrance.enter_from)
+                    self.parent.rooms.get(self.parent.room).enter_room(self.room_name)
 
 
 class Entrance:
-    def __init__(self, destination_name, enter_from, x=0, y=0, width=16, height=16):
+    def __init__(self, player, destination_name, enter_from, x=0, y=0, width=16, height=16):
+        self.player = player
         self.rect = pygame.Rect(x, y, width, height)
         self.destination_name = destination_name
         self.enter_from = enter_from
 
+    def get_player_pos(self):
+        player_pos_from_entering = {
+            "w": (self.rect.x + self.rect.w, self.rect.y),
+            "e": (self.rect.x - self.player.rect.w, self.rect.y),
+            "n": (self.rect.x, self.rect.y + self.rect.h),
+            "s": (self.rect.x, self.rect.y - self.player.rect.h),
+        }
+
+        return player_pos_from_entering.get(self.enter_from)
+
     def action(self):
-        # print(self.destination_name)
         time.sleep(0.5)
 
-    def set_default_bottom(self):
+    def set_default_south(self):
         self.set_pos(-16, 116)
         self.set_shape(32, 2)
 
-    def set_default_left_lower(self):
+    def set_default_north(self):
+        self.set_pos(-16, -118)
+        self.set_shape(32, 2)
+
+    def set_default_west(self):
+        self.set_pos(-158, -16)
+        self.set_shape(2, 32)
+
+    def set_default_west_lower(self):
         self.set_pos(-158, 44)
         self.set_shape(2, 32)
 
-    def set_default_left_center_lower(self):
+    def set_default_west_center_lower(self):
         self.set_pos(-158, 10)
         self.set_shape(2, 32)
 
-    def set_default_right_lower(self):
+    def set_default_east(self):
+        self.set_pos(157, -16)
+        self.set_shape(2, 32)
+
+    def set_default_east_lower(self):
         self.set_pos(157, 44)
         self.set_shape(2, 32)
 
@@ -284,9 +308,46 @@ class Entrance:
                          pygame.Rect(self.rect.x - offset.x, self.rect.y - offset.y, self.rect.w, self.rect.h), width=1)
 
 
+class HorizontalEntrance(Entrance):
+    def __init__(self, player, destination_name, enter_from, x=0, y=0, width=16, height=16):
+        super().__init__(player, destination_name, enter_from, x, y, width, height)
+        self.set_shape(32, 2)
+
+
+class NorthEntrance(HorizontalEntrance):
+    def __init__(self, player, destination_name, enter_from="n", x=0, y=0, width=16, height=16):
+        super().__init__(player, destination_name, enter_from, x, y, width, height)
+        self.set_default_north()
+
+
+class SouthEntrance(HorizontalEntrance):
+    def __init__(self, player, destination_name, enter_from="s", x=0, y=0, width=16, height=16):
+        super().__init__(player, destination_name, enter_from, x, y, width, height)
+        self.set_default_south()
+
+
+class VerticalEntrance(Entrance):
+    def __init__(self, player, destination_name, enter_from, x=0, y=0, width=16, height=16):
+        super().__init__(player, destination_name, enter_from, x, y, width, height)
+        self.set_shape(2, 32)
+
+
+class WestEntrance(HorizontalEntrance):
+    def __init__(self, player, destination_name, enter_from="w", x=0, y=0, width=16, height=16):
+        super().__init__(player, destination_name, enter_from, x, y, width, height)
+        self.set_default_west()
+
+
+class EastEntrance(HorizontalEntrance):
+    def __init__(self, player, destination_name, enter_from="e", x=0, y=0, width=16, height=16):
+        super().__init__(player, destination_name, enter_from, x, y, width, height)
+        self.set_default_east()
+
+
 class ReturnEntrance(Entrance):
-    def __init__(self, room, destination_name, x=0, y=0, width=16, height=16, return_side="w"):
-        super().__init__(destination_name, x, y, width, height)
+    def __init__(self, room, player, destination_name="", enter_from="", x=0, y=0, width=16, height=16,
+                 return_side="w"):
+        super().__init__(player, destination_name, enter_from, x, y, width, height)
         self.room = room
         self.return_side = return_side
 

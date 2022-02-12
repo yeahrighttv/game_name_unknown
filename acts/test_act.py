@@ -1,57 +1,68 @@
 import config
-from running_game_hierarchy import Act, MapScene, House, Room, Entrance, ReturnEntrance
+from running_game_hierarchy import Act, MapScene, House, Room, Entrance, ReturnEntrance, EastEntrance, NorthEntrance, \
+    SouthEntrance, WestEntrance
 from sprite import Sprite, SpriteInsideHouse
 
 
 class Kitchen(Room):
     def set_up(self):
-        self.enter_from_default = "s"
-        self.add_entry_pos("s", -80, 84)
+        self.default_entrance = "west_room"
+
+        # self.add_entry_pos("s", -80, 84)
 
         self.objects["bg"] = SpriteInsideHouse("imgs/Kitchen.png", -33, 36, center=True, scale=False)
         self.objects["player"] = self.player
 
-        self.update_entrance("entrance 1", Entrance("west_room", "n"))
-        self.entrances.get("entrance 1").set_shape(32, 2)
-        self.entrances.get("entrance 1").set_pos(-80, 116)
+        self.update_entrance("west_room", SouthEntrance(self.player, "west_room"))
+        self.entrances.get("west_room").set_shape(32, 2)
+        self.entrances.get("west_room").set_pos(-80, 116)
+
+        self.update_entrance("secret_1", NorthEntrance(self.player, "west_room"))
+        self.update_entrance("secret_2", WestEntrance(self.player, "west_room"))
+        self.update_entrance("secret_3", EastEntrance(self.player, "west_room"))
 
 
 class EastHallway(Room):
     def set_up(self):
-        self.enter_from_default = "w"
-        self.add_entry_pos("w", -156, 10)
+        self.default_entrance = "entrance room"
+
+        # self.add_entry_pos("w", -156, 10)
 
         self.objects["bg"] = SpriteInsideHouse("imgs/Assets/EastHallway.png", center=True)
         self.objects["player"] = self.player
 
-        self.update_entrance("entrance 1", Entrance("entrance", "e"))
-        self.entrances.get("entrance 1").set_default_left_center_lower()
+        self.update_entrance("entrance_room", WestEntrance(self.player, "entrance_room"))
+        self.entrances.get("entrance_room").set_default_west_center_lower()
+
+        self.update_entrance("secret_1", SouthEntrance(self.player, "entrance_room"))
+
 
 
 class WestRoom(Room):
     def set_up(self):
-        self.enter_from_default = "e"
-        self.add_entry_pos("e", 125, 44)
-        self.add_entry_pos("n", -110, -116)
+        self.default_entrance = "entrance room"
+        # self.add_entry_pos("e", 125, 44)
+        # self.add_entry_pos("n", -110, -116)
 
         self.objects["bg"] = SpriteInsideHouse("imgs/Assets/Room_West_Walls.png", center=True)
         self.objects["bg_floor"] = SpriteInsideHouse("imgs/Assets/Room_West_Floor.png", center=True)
         self.objects["player"] = self.player
 
-        self.update_entrance("entrance 1", Entrance("entrance", "w"))
-        self.entrances.get("entrance 1").set_default_right_lower()
+        self.update_entrance("entrance_room", EastEntrance(self.player, "entrance_room"))
+        self.entrances.get("entrance_room").set_default_east_lower()
 
-        self.update_entrance("entrance 2", Entrance("kitchen", "s"))
-        self.entrances.get("entrance 2").set_shape(32, 2)
-        self.entrances.get("entrance 2").set_pos(-110, -118)
+        self.update_entrance("kitchen", NorthEntrance(self.player, "kitchen"))
+        self.entrances.get("kitchen").set_shape(32, 2)
+        self.entrances.get("kitchen").set_pos(-110, -118)
 
 
 class EntranceRoom(Room):
     def set_up(self):
-        self.enter_from_default = "s"
-        self.add_entry_pos("s", -16, 84)
-        self.add_entry_pos("w",  -156, 44)
-        self.add_entry_pos("e",  125, 44)
+        # self.enter_from_default = "s"
+        # self.add_entry_pos("s", -16, 84)
+        # self.add_entry_pos("w",  -156, 44)
+        # self.add_entry_pos("e",  125, 44)
+        self.default_entrance = "entrance_room"
 
         self.objects["staircase"] = SpriteInsideHouse("imgs/Staircase_1.png", center=True)
         self.objects["bg"] = SpriteInsideHouse("imgs/Room_Entrance.png", center=True)
@@ -60,23 +71,23 @@ class EntranceRoom(Room):
         self.objects["rail_2"] = SpriteInsideHouse("imgs/Railing_asset2.png", center=True)
         self.objects["rail_3"] = SpriteInsideHouse("imgs/Railing_asset3.png", center=True)
 
-        self.update_entrance("entrance 1", ReturnEntrance(self, "", return_side="w"))
-        self.entrances.get("entrance 1").set_default_bottom()
+        self.update_entrance("entrance_room", ReturnEntrance(self, self.player, enter_from="s", return_side="w"))
+        self.entrances.get("entrance_room").set_default_south()
 
-        self.update_entrance("entrance 2", Entrance("west_room", "e"))
-        self.entrances.get("entrance 2").set_default_left_lower()
+        self.update_entrance("west_room", WestEntrance(self.player, "west_room"))
+        self.entrances.get("west_room").set_default_west_lower()
 
-        self.update_entrance("entrance 3", Entrance("east_hallway", "w"))
-        self.entrances.get("entrance 3").set_default_right_lower()
+        self.update_entrance("east_hallway", EastEntrance(self.player, "east_hallway"))
+        self.entrances.get("east_hallway").set_default_east_lower()
 
 
 class TestHouse(House):
     def set_up(self):
-        self.set_entry_name("entrance")
-        self.update_room("entrance", EntranceRoom(self.screen, self.game, self.player, self.camera, self))
-        self.update_room("west_room", WestRoom(self.screen, self.game, self.player, self.camera, self))
-        self.update_room("east_hallway", EastHallway(self.screen, self.game, self.player, self.camera, self))
-        self.update_room("kitchen", Kitchen(self.screen, self.game, self.player, self.camera, self))
+        self.set_entry_name("entrance_room")
+        self.update_room("entrance_room", EntranceRoom("entrance_room", self.screen, self.game, self.player, self.camera, self))
+        self.update_room("west_room", WestRoom("west_room", self.screen, self.game, self.player, self.camera, self))
+        self.update_room("east_hallway", EastHallway("east_hallway", self.screen, self.game, self.player, self.camera, self))
+        self.update_room("kitchen", Kitchen("kitchen", self.screen, self.game, self.player, self.camera, self))
         self.house_sprite = Sprite("imgs/house_test.png", 100, 100, center=True)
 
 

@@ -31,6 +31,7 @@ while game.game_state != GameState.ENDED:
         game.player.advance_animation()
         time_elapsed = 0
 
+pygame.quit()
 
 if __name__ == '__main__':
     main()
