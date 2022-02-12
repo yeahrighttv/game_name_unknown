@@ -31,14 +31,3 @@ class Sprite(pygame.sprite.Sprite):
                          self.rect.y + (-self.rect.h / 2),
                          self.rect.w,
                          self.rect.h)
-
-
-class SpriteInsideHouse(Sprite):
-    def __init__(self, path, x=0, y=0, center=False, scale=False):
-        super().__init__(path, x, y, center, scale)
-
-    def center(self):
-        self.rect.update(self.rect.x + (-self.rect.w / 2),
-                         self.rect.y + (-self.rect.h / 2),
-                         self.rect.w,
-                         self.rect.h)

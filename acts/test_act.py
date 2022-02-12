@@ -1,14 +1,14 @@
 import config
 from running_game_hierarchy import Act, MapScene, House, Room, Entrance, ReturnEntrance, EastEntrance, NorthEntrance, \
     SouthEntrance, WestEntrance
-from sprite import Sprite, SpriteInsideHouse
+from sprite import Sprite
 
 
 class Kitchen(Room):
     def set_up(self):
         self.default_entrance = "west_room"
 
-        self.objects["bg"] = SpriteInsideHouse("imgs/Kitchen.png", -33, 36, center=True, scale=False)
+        self.objects["bg"] = Sprite("imgs/Kitchen.png", -33, 36, center=True, scale=False)
         self.objects["player"] = self.player
 
         self.update_entrance("west_room", SouthEntrance(self.player, "west_room"))
@@ -24,7 +24,7 @@ class EastHallway(Room):
     def set_up(self):
         self.default_entrance = "entrance room"
 
-        self.objects["bg"] = SpriteInsideHouse("imgs/Assets/EastHallway.png", center=True)
+        self.objects["bg"] = Sprite("imgs/Assets/EastHallway.png", center=True)
         self.objects["player"] = self.player
 
         self.update_entrance("entrance_room", WestEntrance(self.player, "entrance_room"))
@@ -37,8 +37,8 @@ class EastHallway(Room):
 class WestRoom(Room):
     def set_up(self):
         self.default_entrance = "entrance room"
-        self.objects["bg"] = SpriteInsideHouse("imgs/Assets/Room_West_Walls.png", center=True)
-        self.objects["bg_floor"] = SpriteInsideHouse("imgs/Assets/Room_West_Floor.png", center=True)
+        self.objects["bg"] = Sprite("imgs/Assets/Room_West_Walls.png", center=True)
+        self.objects["bg_floor"] = Sprite("imgs/Assets/Room_West_Floor.png", center=True)
         self.objects["player"] = self.player
 
         self.update_entrance("entrance_room", EastEntrance(self.player, "entrance_room"))
@@ -54,12 +54,12 @@ class EntranceRoom(Room):
 
         self.default_entrance = "entrance_room"
 
-        self.objects["staircase"] = SpriteInsideHouse("imgs/Staircase_1.png", center=True)
-        self.objects["bg"] = SpriteInsideHouse("imgs/Room_Entrance.png", center=True)
+        self.objects["staircase"] = Sprite("imgs/Staircase_1.png", center=True)
+        self.objects["bg"] = Sprite("imgs/Room_Entrance.png", center=True)
         self.objects["player"] = self.player
-        self.objects["rail_1"] = SpriteInsideHouse("imgs/Railing_asset1.png", center=True)
-        self.objects["rail_2"] = SpriteInsideHouse("imgs/Railing_asset2.png", center=True)
-        self.objects["rail_3"] = SpriteInsideHouse("imgs/Railing_asset3.png", center=True)
+        self.objects["rail_1"] = Sprite("imgs/Railing_asset1.png", center=True)
+        self.objects["rail_2"] = Sprite("imgs/Railing_asset2.png", center=True)
+        self.objects["rail_3"] = Sprite("imgs/Railing_asset3.png", center=True)
 
         self.update_entrance("entrance_room", ReturnEntrance(self, self.player, enter_from="s", return_side="w"))
         self.entrances.get("entrance_room").set_default_south()

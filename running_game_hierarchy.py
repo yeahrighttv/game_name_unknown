@@ -130,7 +130,6 @@ class MapScene(GeneralScene):
             self.player.scope = self.map
             for area_name, area in self.indoors_areas.items():
                 if self.player.rect.colliderect(area.house_sprite.rect):
-                    # print(self.player.rect)
                     self.cur_indoors_area = area_name
                     self.indoors_areas.get(self.cur_indoors_area).enter_house()
                     time.sleep(0.5)
@@ -188,9 +187,6 @@ class Room(PlayingField):
         self.npc = ""
         self.npcs = dict()
 
-        # self.enter_from_default = ""
-        # self.enter_positions = dict()
-
         self.default_entrance = ""
 
         self.set_up()
@@ -201,9 +197,6 @@ class Room(PlayingField):
             self.player.rect.x, self.player.rect.y = self.entrances.get(self.default_entrance).get_player_pos()
         else:
             self.player.rect.x, self.player.rect.y = self.entrances.get(entrance).get_player_pos()
-
-    # def add_entry_pos(self, name, x, y):
-    #     self.enter_positions[name] = vec(x, y)
 
     def return_outside(self, return_side_of_house="w"):
         self.parent.parent.cur_indoors_area = ""
