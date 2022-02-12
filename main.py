@@ -22,14 +22,8 @@ time_elapsed = 0
 while game.game_state != GameState.ENDED:
     """ NEED TO MAKE SPEED FRAME RATE INDEPENDENT"""
     dt = clock.tick(144)
-    game.update()
+    game.update(dt)
     pygame.display.flip()
-    time_elapsed += dt
-
-    # Advance animation every 200 milliseconds
-    if time_elapsed > 200:
-        game.player.advance_animation()
-        time_elapsed = 0
 
 pygame.quit()
 

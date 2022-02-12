@@ -8,19 +8,17 @@ vec = pygame.math.Vector2
 
 
 class Player(Sprite):
-    def __init__(self, path, x, y, center=False):
-        super().__init__(path, x, y)
+    def __init__(self, main_image_path, x, y, center=False, scale=False):
+        super().__init__(main_image_path, x, y, center, scale)
         self.scope = None
 
         # print('Player Created')
         self.vel = vec(0, 0)
+        self.pos = vec(0, 0)
 
         self.horizontal_animation_counter = 0
         self.vertical_animation_counter = 0
-        self.speed = 1
-
-        if center:
-            self.center()
+        self.speed = 200
 
         walk_up = [pygame.image.load('imgs/player_walk1_up.png'), pygame.image.load('imgs/player_walk2_up.png'),
                    pygame.image.load('imgs/player_walk3_up.png'), pygame.image.load('imgs/player_walk2_up.png')]
@@ -37,14 +35,20 @@ class Player(Sprite):
             "down": walk_down,
         }
 
-    def advance_animation(self):
-        self.horizontal_animation_counter += 1
-        self.vertical_animation_counter += 1
+    def animate(self, dt):
+        self.time_elapsed += dt
 
-        if self.vertical_animation_counter >= 4:
-            self.vertical_animation_counter = 0
-        if self.horizontal_animation_counter >= 2:
-            self.horizontal_animation_counter = 0
+        # print(self.time_elapsed, dt)
+
+        if self.time_elapsed > 1000 / self.animation_frequency:
+            self.time_elapsed = 0
+
+            self.horizontal_animation_counter += 1
+            self.vertical_animation_counter += 1
+            if self.vertical_animation_counter >= len(self.directions["up"]):
+                self.vertical_animation_counter = 0
+            if self.horizontal_animation_counter >= len(self.directions["left"]):
+                self.horizontal_animation_counter = 0
 
     def change_direction(self):
 
@@ -63,12 +67,13 @@ class Player(Sprite):
     def change_vel(self, dirX, dirY):
         self.vel.xy = dirX * self.speed, dirY * self.speed
 
-    def move(self, dirX, dirY):
-        self.update_position(dirX, dirY)
+    def move(self, dirX, dirY, dt):
+        self.update_position(dirX, dirY, dt)
         self.change_direction()
 
-    def update_position(self, dirX, dirY):
-        self.change_vel(dirX, dirY)
+    def update_position(self, dirX, dirY, dt):
+        # print((dt / 1000), (dt / 1000))
+        self.change_vel(dirX * (dt / 1000), dirY * (dt / 1000))
 
         # Move rect
         if self.scope is None:
@@ -78,7 +83,10 @@ class Player(Sprite):
                                                self.rect.y + self.vel.y,
                                                self.rect.w,
                                                self.rect.h)):
-                self.rect.move_ip(self.vel)
+                self.pos.xy += self.vel
+                print(self.pos, self.time_elapsed)
+
+                self.rect.x, self.rect.y = self.pos.xy
 
     def center(self):
         self.rect.update(self.rect.x + (-self.rect.w / 2),

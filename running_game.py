@@ -119,16 +119,17 @@ class RunningGame(AbstractState):
 
         pygame.transform.scale(self.bg_surface, self.og_screen_size * self.screen_scaling_factor, dest_surface=self.screen)
 
-    def update(self):
+    def update(self, dt):
+        self.dt = dt
         # print('update')
         self.handle_events()
-        self.player_movement()
+        self.player_movement(dt)
         self.move_camera()
-        self.get_act().update()
+        self.get_act().update(dt)
         self.render(None)
 
     """ SOMETIMES DOESN'T WORK WHEN MULTIPLE KEYS ARE PRESSED, SEEMS TO BE PYGAME BUG"""
-    def player_movement(self):
+    def player_movement(self, dt):
         pressed = pygame.key.get_pressed()
         # print(pressed[pygame.K_w],
         #       # pressed[pygame.K_UP],
@@ -151,7 +152,7 @@ class RunningGame(AbstractState):
 
         # print(up, down, left, right, ver, hor)
 
-        self.player.move(hor, ver)
+        self.player.move(hor, ver, dt)
 
     # Handle things
     def handle_events(self):

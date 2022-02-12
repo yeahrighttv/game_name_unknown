@@ -25,9 +25,11 @@ class Game:
 
         }
         self.current_state_obj = self.game_states.get(self.game_state)
+        self.dt = 0
 
-    def update(self):
-        self.current_state_obj.update()
+    def update(self, dt):
+        self.dt = dt
+        self.current_state_obj.update(dt)
 
     def change_state(self, new_state):
         self.game_state = new_state

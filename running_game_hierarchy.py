@@ -32,8 +32,8 @@ class PlayingField(AbstractState):
         pass
 
     @abstractmethod
-    def update(self):
-        pass
+    def update(self, dt):
+        self.dt = dt
 
 
 class Act(PlayingField):
@@ -59,8 +59,10 @@ class Act(PlayingField):
         bg_surface.fill(config.RED)
         self.scenes.get(self.scene).render(bg_surface)
 
-    def update(self):
-        self.scenes.get(self.scene).update()
+    def update(self, dt):
+        self.dt = dt
+
+        self.scenes.get(self.scene).update(dt)
 
 
 class GeneralScene(PlayingField):
@@ -76,8 +78,8 @@ class GeneralScene(PlayingField):
         pass
 
     @abstractmethod
-    def update(self):
-        pass
+    def update(self, dt):
+        self.dt = dt
 
 
 class MapScene(GeneralScene):
@@ -107,25 +109,27 @@ class MapScene(GeneralScene):
         if self.cur_indoors_area in self.indoors_areas.keys():
             self.indoors_areas.get(self.cur_indoors_area).render(bg_surface)
         else:
-            self.map.render(bg_surface, self.camera.offset)
+            self.map.render(bg_surface, self.camera.offset, self.dt)
 
             for object in self.objects.values():
-                object.render(bg_surface, self.camera.offset)
+                object.render(bg_surface, self.camera.offset, self.dt)
 
             for npc in self.npcs.values():
-                npc.render(bg_surface, self.camera.offset)
+                npc.render(bg_surface, self.camera.offset, self.dt)
 
             for area in self.indoors_areas.values():
                 area.render_house(bg_surface)
 
-            self.player.render(bg_surface, self.camera.offset)
+            self.player.render(bg_surface, self.camera.offset, self.dt)
 
-    def update(self):
+    def update(self, dt):
+        self.dt = dt
+
         self.camera.set_method("border")
         self.camera.mode.set_borders(-4000, 4000, -4000, 4000)
 
         if self.cur_indoors_area in self.indoors_areas.keys():
-            self.indoors_areas.get(self.cur_indoors_area).update()
+            self.indoors_areas.get(self.cur_indoors_area).update(dt)
         else:
             self.player.scope = self.map
             for area_name, area in self.indoors_areas.items():
@@ -168,10 +172,12 @@ class House(PlayingField):
         self.rooms.get(self.room).render(bg_surface)
 
     def render_house(self, bg_surface):
-        self.house_sprite.render(bg_surface, self.camera.offset)
+        self.house_sprite.render(bg_surface, self.camera.offset, self.dt)
 
-    def update(self):
-        self.rooms.get(self.room).update()
+    def update(self, dt):
+        self.dt = dt
+
+        self.rooms.get(self.room).update(dt)
 
 
 class Room(PlayingField):
@@ -222,15 +228,17 @@ class Room(PlayingField):
         bg_surface.fill(config.BLACK)
 
         for object in self.objects.values():
-            object.render(bg_surface, self.camera.offset)
+            object.render(bg_surface, self.camera.offset, self.dt)
 
         for npc in self.npcs.values():
-            npc.render(bg_surface, self.camera.offset)
+            npc.render(bg_surface, self.camera.offset, self.dt)
 
         for entrance in self.entrances.values():
-            entrance.render(bg_surface, self.camera.offset)
+            entrance.render(bg_surface, self.camera.offset, self.dt)
 
-    def update(self):
+    def update(self, dt):
+        self.dt = dt
+
         self.camera.set_method("stand")
         self.camera.offset = vec(self.camera.CONST.x, self.camera.CONST.y)
 

@@ -11,6 +11,7 @@ class AbstractState(ABC):
         self.screen = screen
         self.og_screen_size = vec(317, 236)
         self.screen_scaling_factor = 3
+        self.dt = 0
 
     @abstractmethod
     def set_up(self):
@@ -21,8 +22,8 @@ class AbstractState(ABC):
         pass
 
     @abstractmethod
-    def update(self):
-        pass
+    def update(self, dt):
+        self.dt = dt
 
     def change_res(self, new_res, new_scaling):
         self.og_screen_size = new_res
