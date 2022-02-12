@@ -31,3 +31,8 @@ class Sprite(pygame.sprite.Sprite):
                          self.rect.y + (-self.rect.h / 2),
                          self.rect.w,
                          self.rect.h)
+
+
+class NPC(Sprite):
+    def animate(self):
+        pass

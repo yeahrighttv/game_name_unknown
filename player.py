@@ -6,19 +6,6 @@ import config
 
 vec = pygame.math.Vector2
 
-# sprites sorted in lists
-walk_up = [pygame.image.load('imgs/player_walk1_up.png'), pygame.image.load('imgs/player_walk2_up.png'), pygame.image.load('imgs/player_walk3_up.png'),  pygame.image.load('imgs/player_walk2_up.png')]
-walk_down = [pygame.image.load('imgs/player_walk1_down.png'), pygame.image.load('imgs/player_walk2_down.png'), pygame.image.load('imgs/player_walk3_down.png'),  pygame.image.load('imgs/player_walk2_down.png')]
-walk_left = [pygame.image.load('imgs/player_walk1_left.png'), pygame.image.load('imgs/player_walk2_left.png')]
-walk_right = [pygame.image.load('imgs/player_walk1_right.png'), pygame.image.load('imgs/player_walk2_right.png')]
-
-directions = {
-    "right": walk_right,
-    "left": walk_left,
-    "up": walk_up,
-    "down": walk_down,
-}
-
 
 class Player(Sprite):
     def __init__(self, path, x, y, center=False):
@@ -35,6 +22,21 @@ class Player(Sprite):
         if center:
             self.center()
 
+        walk_up = [pygame.image.load('imgs/player_walk1_up.png'), pygame.image.load('imgs/player_walk2_up.png'),
+                   pygame.image.load('imgs/player_walk3_up.png'), pygame.image.load('imgs/player_walk2_up.png')]
+        walk_down = [pygame.image.load('imgs/player_walk1_down.png'), pygame.image.load('imgs/player_walk2_down.png'),
+                     pygame.image.load('imgs/player_walk3_down.png'), pygame.image.load('imgs/player_walk2_down.png')]
+        walk_left = [pygame.image.load('imgs/player_walk1_left.png'), pygame.image.load('imgs/player_walk2_left.png')]
+        walk_right = [pygame.image.load('imgs/player_walk1_right.png'),
+                      pygame.image.load('imgs/player_walk2_right.png')]
+
+        self.directions = {
+            "right": walk_right,
+            "left": walk_left,
+            "up": walk_up,
+            "down": walk_down,
+        }
+
     def advance_animation(self):
         self.horizontal_animation_counter += 1
         self.vertical_animation_counter += 1
@@ -48,15 +50,15 @@ class Player(Sprite):
 
         # Temp fix for directions by ordering updates
         if self.vel.y < 0:
-            self.image = directions["up"][self.vertical_animation_counter]
+            self.image = self.directions["up"][self.vertical_animation_counter]
         elif self.vel.y > 0:
-            self.image = directions["down"][self.vertical_animation_counter]
+            self.image = self.directions["down"][self.vertical_animation_counter]
         elif self.vel.x > 0:
-            self.image = directions["right"][self.horizontal_animation_counter]
+            self.image = self.directions["right"][self.horizontal_animation_counter]
         elif self.vel.x < 0:
-            self.image = directions["left"][self.horizontal_animation_counter]
+            self.image = self.directions["left"][self.horizontal_animation_counter]
         else:
-            self.image = walk_down[1]
+            self.image = self.directions["down"][1]
 
     def change_vel(self, dirX, dirY):
         self.vel.xy = dirX * self.speed, dirY * self.speed
