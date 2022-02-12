@@ -59,19 +59,25 @@ class NPC(Sprite):
         self.fight_animation_frequency = 2
         self.fight_image = pygame.image.load(main_fight_sprite_path)
         self.fight_images = [self.fight_image]
+        self.fight_rect = self.fight_image.get_rect()
+        self.animation_fight_counter = 0
 
-    def render_fight(self, dt):
+        self.fight_rect.x, self.fight_rect.y = 240, 40
+
+
+    def render_fight(self, surface, dt):
         self.animate_fight(dt)
+        surface.blit(self.fight_image, (self.fight_rect.x, self.fight_rect.y))
 
     def animate_fight(self, dt):
         self.time_elapsed += dt
 
         if self.time_elapsed > 1000 / self.fight_animation_frequency:
             self.time_elapsed = 0
-            self.fight_image = self.fight_images[self.animation_counter]
-            self.animation_counter += 1
-            if self.animation_counter >= len(self.fight_images):
-                self.animation_counter = 0
+            self.fight_image = self.fight_images[self.animation_fight_counter]
+            self.animation_fight_counter += 1
+            if self.animation_fight_counter >= len(self.fight_images):
+                self.animation_fight_counter = 0
 
     def add_empty_dialog(self, name):
         self.dialogs[name] = []
@@ -88,3 +94,30 @@ class Sans(NPC):
         self.animation_frequency = 1
 
         self.images = [pygame.image.load("imgs/sans_1.png"), pygame.image.load("imgs/sans_2.png")]
+
+        self.fight_rect.x, self.fight_rect.y = 240, 40
+
+
+class DialogBox(pygame.sprite.Sprite):
+    def __init__(self, main_image_path="imgs/dialog_box.png", x=14, y=140, center=False, scale=False):
+        self.path = main_image_path
+        pygame.sprite.Sprite.__init__(self)
+
+        self.image = pygame.image.load(main_image_path)
+        self.images = [self.image]
+        if scale:
+            self.image = pygame.transform.scale(self.image, vec(317, 236))
+        self.rect = self.image.get_rect()
+        self.rect.move_ip(x, y)
+
+        if center:
+            self.center()
+
+    def render(self, surface):
+        surface.blit(self.image, (self.rect.x, self.rect.y))
+
+    def center(self):
+        self.rect.update(self.rect.x + (-self.rect.w / 2),
+                         self.rect.y + (-self.rect.h / 2),
+                         self.rect.w,
+                         self.rect.h)

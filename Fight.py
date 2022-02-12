@@ -3,6 +3,9 @@ import pygame
 import config
 from game_state import GameState
 from program_states import AbstractState
+from sprite import Sprite, NPC, Sans, DialogBox
+
+vec = pygame.math.Vector2
 
 
 class Fight(AbstractState):
@@ -10,6 +13,7 @@ class Fight(AbstractState):
         super().__init__(screen, game)
         self.player = player
         self.npc = None
+        self.dialog_box = DialogBox()
 
         self.set_up()
 
@@ -27,11 +31,14 @@ class Fight(AbstractState):
 
     def render(self, bg_surface=None):
         self.bg_surface.fill(config.BLACK)
+        self.npc.render_fight(self.bg_surface, self.dt)
+        self.dialog_box.render(self.bg_surface)
 
         pygame.transform.scale(self.bg_surface, self.og_screen_size * self.screen_scaling_factor,
                                dest_surface=self.screen)
 
     def update(self, dt):
+        self.dt = dt
         self.render()
         self.handle_events()
 

@@ -212,6 +212,7 @@ class Room(PlayingField):
         for npc in self.npcs.values():
             if self.player.rect.colliderect(npc.rect):
                 self.game.change_state(GameState.FIGHT)
+                self.game.current_state_obj.change_npc(npc)
 
     def enter_room(self, entrance=None):
         self.player.scope = self.objects.get("bg")
