@@ -136,3 +136,40 @@ class DialogBox(Sprite):
                          self.rect.y + (-self.rect.h / 2),
                          self.rect.w,
                          self.rect.h)
+
+
+class DialogOption(DialogBox):
+    def __init__(self, main_image_path="imgs/dialog_box.png", x=14, y=136, center=False, scale=False):
+        super().__init__(main_image_path, x, y, center, scale)
+
+        self.moused_over = False
+        self.cur_animation_value = 0
+        self.animation_changer = 1
+        self.animation_max = 2
+        self.animation_frequency = 100
+
+        self.og_pos = vec(x, y)
+
+    def render(self, surface, dt):
+        self.animate(dt)
+        surface.blit(self.image, (self.rect.x, self.rect.y))
+
+    def animate(self, dt):
+        self.time_elapsed += dt
+
+        if self.time_elapsed > 1000 / self.animation_frequency:
+            self.time_elapsed = 0
+
+            self.rect.x, self.rect.y = self.og_pos.x - self.cur_animation_value / 2, self.og_pos.y - self.cur_animation_value / 2
+
+            # self.image = pygame.transform.scale(self.image,
+            #                                     vec(self.rect.w + self.cur_animation_value,
+            #                                         self.rect.h + self.cur_animation_value))
+
+            if self.moused_over:
+                if self.cur_animation_value < self.animation_max:
+                    self.cur_animation_value += 1
+            else:
+                if self.cur_animation_value > 0:
+                    self.cur_animation_value -= 1
+

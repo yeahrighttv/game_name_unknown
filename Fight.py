@@ -3,7 +3,7 @@ import pygame
 import config
 from game_state import GameState
 from program_states import AbstractState
-from sprite import Sprite, NPC, Sans, DialogBox
+from sprite import Sprite, NPC, Sans, DialogBox, DialogOption
 
 vec = pygame.math.Vector2
 
@@ -17,9 +17,9 @@ class Fight(AbstractState):
 
         self.option = 0
         self.options = [
-            DialogBox("imgs/rock.png", x=14, y=216),
-            DialogBox("imgs/paper.png", x=114, y=216),
-            DialogBox("imgs/scissors.png", x=213, y=216),
+            DialogOption("imgs/rock.png", x=14, y=216),
+            DialogOption("imgs/paper.png", x=114, y=216),
+            DialogOption("imgs/scissors.png", x=213, y=216),
         ]
 
         self.set_up()
@@ -42,15 +42,16 @@ class Fight(AbstractState):
         self.dialog_box.render(self.bg_surface)
 
         for option in self.options:
-            option.render(self.bg_surface)
+            option.render(self.bg_surface, self.dt)
 
         pygame.transform.scale(self.bg_surface, self.og_screen_size * self.screen_scaling_factor,
                                dest_surface=self.screen)
 
     def update(self, dt):
         self.dt = dt
-        self.render()
+        self.check_mouse_events()
         self.handle_events()
+        self.render()
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -67,3 +68,9 @@ class Fight(AbstractState):
             # Check if key is released
             elif event.type == pygame.KEYUP:
                 pass
+
+    def check_mouse_events(self):
+        for option in self.options:
+            option.moused_over = False
+            if option.rect.collidepoint(pygame.mouse.get_pos()[0] / 3, pygame.mouse.get_pos()[1] / 3):
+                option.moused_over = True
