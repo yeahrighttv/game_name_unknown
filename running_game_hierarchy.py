@@ -4,8 +4,8 @@ from abc import abstractmethod
 import pygame
 
 import config
+from game_state import GameState
 from program_states import AbstractState
-from sprite import Sprite
 
 vec = pygame.math.Vector2
 
@@ -97,6 +97,11 @@ class MapScene(GeneralScene):
         self.map = None
         self.set_up()
 
+    def check_for_npc_collisions(self):
+        for npc in self.npcs:
+            if self.player.rect.colliderect(npc.rect):
+                self.game.game_state = GameState.FIGHT
+
     def update_indoor_area(self, area_name, area):
         self.indoors_areas[area_name] = area
 
@@ -127,11 +132,16 @@ class MapScene(GeneralScene):
 
         self.camera.set_method("border")
         self.camera.mode.set_borders(-4000, 4000, -4000, 4000)
+        # self.camera.mode.set_borders(self.map.rect.x,
+        #                              self.map.rect.x + self.map.rect.w,
+        #                              self.map.rect.y,
+        #                              self.map.rect.y + self.map.rect.h)
 
         if self.cur_indoors_area in self.indoors_areas.keys():
             self.indoors_areas.get(self.cur_indoors_area).update(dt)
         else:
             self.player.scope = self.map
+            self.check_for_npc_collisions()
             for area_name, area in self.indoors_areas.items():
                 if self.player.rect.colliderect(area.house_sprite.rect):
                     self.cur_indoors_area = area_name
@@ -197,6 +207,11 @@ class Room(PlayingField):
 
         self.set_up()
 
+    def check_for_npc_collisions(self):
+        for npc in self.npcs.values():
+            if self.player.rect.colliderect(npc.rect):
+                self.game.change_state(GameState.FIGHT)
+
     def enter_room(self, entrance=None):
         self.player.scope = self.objects.get("bg")
         if entrance is None:
@@ -243,6 +258,8 @@ class Room(PlayingField):
 
         self.camera.set_method("stand")
         self.camera.offset = vec(self.camera.CONST.x, self.camera.CONST.y)
+
+        self.check_for_npc_collisions()
 
         for entrance in self.entrances.values():
             if self.player.rect.colliderect(entrance.rect):

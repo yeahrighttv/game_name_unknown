@@ -12,11 +12,6 @@ from sprite import Sprite
 
 vec = pygame.math.Vector2
 
-NONE = GameState.NONE
-RUNNING = GameState.RUNNING
-ENDED = GameState.ENDED
-MENU = GameState.MENU
-
 
 class RunningGame(AbstractState):
     def __init__(self, screen, game, player):
@@ -41,35 +36,6 @@ class RunningGame(AbstractState):
         self.player = player
         self.set_up()
 
-    # # Temp scene fix
-    # def add_kitchen_objects(self):
-    #     self.objects.append(Sprite("imgs/Staircase_1.png"))
-    #     self.objects.append(Sprite("imgs/Room_Entrance.png"))
-    #     self.objects.append(self.player)
-    #     self.objects.append(Sprite("imgs/Railing_asset1.png"))
-    #     self.objects.append(Sprite("imgs/Railing_asset2.png"))
-    #     self.objects.append(Sprite("imgs/Railing_asset3.png"))
-    #
-    #     # Centering objects
-    #     for object in self.objects:
-    #         object.center()
-    #
-    # def add_snowdin_objects(self):
-    #     self.objects.append(Sprite("imgs/snowdin.png"))
-    #     self.objects.append(self.player)
-    #
-    #     # Centering objects
-    #     for object in self.objects:
-    #         object.center()
-    #
-    # def add_zelda_objects(self):
-    #     self.objects.append(Sprite("imgs/zelda_map_test.png"))
-    #     self.objects.append(self.player)
-    #
-    #     # Centering objects
-    #     for object in self.objects:
-    #         object.center()
-
     def set_up(self):
 
         # Camera setup
@@ -92,14 +58,14 @@ class RunningGame(AbstractState):
         self.test_dct = {
             pygame.K_9: lambda x, y: self.game.change_res(x, y - 1),
             pygame.K_0: lambda x, y: self.game.change_res(x, y + 1),
-            pygame.K_7: lambda x, y: self.game.change_state(MENU),
+            pygame.K_7: lambda x, y: self.game.change_state(GameState.MENU),
             pygame.K_o: lambda x, y: self.get_act().change_cur_scene("scene 1"),
             pygame.K_p: lambda x, y: self.get_act().change_cur_scene("scene 2"),
         }
 
         self.act = "act 1"
         self.acts = {
-            "act 1": TestAct(self.screen, self, self.player, self.camera, self),
+            "act 1": TestAct(self.screen, self.game, self.player, self.camera, self),
         }
 
         # print('do set up')
@@ -158,12 +124,12 @@ class RunningGame(AbstractState):
     def handle_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.game.change_state(ENDED)
+                self.game.change_state(GameState.ENDED)
 
             # Check if key is pressed
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    self.game.change_state(ENDED)
+                    self.game.change_state(GameState.ENDED)
 
                 # Changes camera mode, if other keys defaults to empty lambda
                 self.dct_camera_modes.get(event.key, lambda: None)()

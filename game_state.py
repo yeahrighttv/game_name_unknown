@@ -5,4 +5,5 @@ class GameState(Enum):
     NONE = 0
     RUNNING = 1
     MENU = 2
-    ENDED = 3
+    FIGHT = 3
+    ENDED = 4

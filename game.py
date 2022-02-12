@@ -1,3 +1,4 @@
+from Fight import Fight
 from menu import Menu
 from player import Player
 from game_state import GameState
@@ -7,22 +8,17 @@ from running_game import RunningGame
 
 vec = pygame.math.Vector2
 
-NONE = GameState.NONE
-RUNNING = GameState.RUNNING
-ENDED = GameState.ENDED
-MENU = GameState.MENU
-
 
 class Game:
     def __init__(self, screen):
         self.screen = screen
         self.player = Player("imgs/player.png", 0, 0, center=True)
 
-        self.game_state = RUNNING
+        self.game_state = GameState.RUNNING
         self.game_states = {
-            RUNNING: RunningGame(self.screen, self, self.player),
-            MENU: Menu(self.screen, self)
-
+            GameState.RUNNING: RunningGame(self.screen, self, self.player),
+            GameState.MENU: Menu(self.screen, self),
+            GameState.FIGHT: Fight(self.screen, self)
         }
         self.current_state_obj = self.game_states.get(self.game_state)
         self.dt = 0

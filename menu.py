@@ -4,11 +4,6 @@ import config
 from game_state import GameState
 from program_states import AbstractState
 
-NONE = GameState.NONE
-RUNNING = GameState.RUNNING
-ENDED = GameState.ENDED
-MENU = GameState.MENU
-
 
 class Menu(AbstractState):
     def __init__(self, screen, game):
@@ -29,9 +24,9 @@ class Menu(AbstractState):
 
     def set_up(self):
         self.test_dct = {
-            pygame.K_9: lambda x, y: self.game.ch7ange_res(x, y - 1),
+            pygame.K_9: lambda x, y: self.game.change_res(x, y - 1),
             pygame.K_0: lambda x, y: self.game.change_res(x, y + 1),
-            pygame.K_7: lambda x, y: self.game.change_state(RUNNING),
+            pygame.K_7: lambda x, y: self.game.change_state(GameState.RUNNING),
         }
 
     def render(self):
@@ -39,7 +34,7 @@ class Menu(AbstractState):
         self.screen.blit(self.cursor, self.cursor_rect)
         pygame.transform.scale(self.screen, self.og_screen_size * self.screen_scaling_factor)
 
-    def update(self):
+    def update(self, dt):
         self.update_cursor()
         self.handle_events()
         self.render()
@@ -57,7 +52,7 @@ class Menu(AbstractState):
                         self.screen.fill(config.WHITE)
                     elif self.menu_options[self.index] == 'Exit':
                         self.index = 0
-                        self.game.change_state(RUNNING)
+                        self.game.change_state(GameState.RUNNING)
                 self.cursor_rect.y = self.cursor_posy + (self.index * 30)
 
             elif event.type == pygame.KEYUP:
@@ -66,15 +61,14 @@ class Menu(AbstractState):
     def handle_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.game.change_state(ENDED)
+                self.game.change_state(GameState.ENDED)
 
             # Check if key is pressed
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    self.game.change_state(ENDED)
+                    self.game.change_state(GameState.ENDED)
 
                 self.test_dct.get(event.key, lambda x, y: None)(self.og_screen_size, self.screen_scaling_factor)
-
 
             # Check if key is released
             elif event.type == pygame.KEYUP:

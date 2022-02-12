@@ -18,7 +18,6 @@ class Sprite(pygame.sprite.Sprite):
         if scale:
             self.image = pygame.transform.scale(self.image, vec(317, 236))
         self.rect = self.image.get_rect()
-        print(self.rect)
         self.rect.move_ip(x, y)
 
         if center:
