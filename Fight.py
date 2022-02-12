@@ -11,6 +11,8 @@ vec = pygame.math.Vector2
 class Fight(AbstractState):
     def __init__(self, screen, game, player):
         super().__init__(screen, game)
+        self.bg_surface = pygame.surface.Surface(self.og_screen_size)
+
         self.player = player
         self.npc = None
         self.dialog_box = DialogBox()
@@ -27,30 +29,41 @@ class Fight(AbstractState):
             DialogOption("imgs/scissors_outside_box.png", x=60, y=168),
         ]
 
+        self.npc_option = None
+        self.npc_options = [
+            DialogOption("imgs/rock_outside_box.png", x=160, y=168),
+            DialogOption("imgs/paper_outside_box.png", x=160, y=168),
+            DialogOption("imgs/scissors_outside_box.png", x=160, y=168),
+        ]
+
+        self.time_until_cooldown = 0
+        self.cooldown = 5000
+
         self.set_up()
 
     def change_npc(self, npc):
         self.npc = npc
 
     def set_up(self):
-        self.bg_surface = pygame.surface.Surface(self.og_screen_size)
-
         self.test_dct = {
             pygame.K_9: lambda x, y: self.game.change_res(x, y - 1),
             pygame.K_0: lambda x, y: self.game.change_res(x, y + 1),
             pygame.K_7: lambda x, y: self.game.change_state(GameState.RUNNING),
         }
 
-    def render_chosen_option(self, surface):
+    def render_chosen_options(self, surface):
         if self.option is not None:
             self.option_images[self.option].render(surface, self.dt)
+
+        if self.npc_option is not None:
+            self.npc_options[self.npc_option].render(surface, self.dt)
 
     def render(self, bg_surface=None):
         self.bg_surface.fill(config.BLACK)
         self.npc.render_fight(self.bg_surface, self.dt)
         self.dialog_box.render(self.bg_surface)
 
-        self.render_chosen_option(self.bg_surface)
+        self.render_chosen_options(self.bg_surface)
 
         for option in self.options:
             option.render(self.bg_surface, self.dt)
@@ -63,6 +76,10 @@ class Fight(AbstractState):
         self.check_mouse_events()
         self.handle_events()
         self.render()
+        self.cooldown_method()
+
+    def cooldown_method(self):
+        self.time_until_cooldown -= self.dt
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -70,10 +87,13 @@ class Fight(AbstractState):
                 self.game.change_state(GameState.ENDED)
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                for i, option in enumerate(self.options):
-                    if option.moused_over:
-                        self.option = i
-                        break
+                if self.time_until_cooldown <= 0:
+                    for i, option in enumerate(self.options):
+                        if option.moused_over:
+                            self.time_until_cooldown = self.cooldown
+                            self.option = i
+                            break
+
 
             # Check if key is pressed
             elif event.type == pygame.KEYDOWN:
