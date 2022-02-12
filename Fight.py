@@ -15,11 +15,16 @@ class Fight(AbstractState):
         self.npc = None
         self.dialog_box = DialogBox()
 
-        self.option = 0
+        self.option = None
         self.options = [
             DialogOption("imgs/rock.png", x=14, y=216),
             DialogOption("imgs/paper.png", x=114, y=216),
             DialogOption("imgs/scissors.png", x=213, y=216),
+        ]
+        self.option_images = [
+            DialogOption("imgs/rock_outside_box.png", x=60, y=168),
+            DialogOption("imgs/paper_outside_box.png", x=60, y=168),
+            DialogOption("imgs/scissors_outside_box.png", x=60, y=168),
         ]
 
         self.set_up()
@@ -36,10 +41,16 @@ class Fight(AbstractState):
             pygame.K_7: lambda x, y: self.game.change_state(GameState.RUNNING),
         }
 
+    def render_chosen_option(self, surface):
+        if self.option is not None:
+            self.option_images[self.option].render(surface, self.dt)
+
     def render(self, bg_surface=None):
         self.bg_surface.fill(config.BLACK)
         self.npc.render_fight(self.bg_surface, self.dt)
         self.dialog_box.render(self.bg_surface)
+
+        self.render_chosen_option(self.bg_surface)
 
         for option in self.options:
             option.render(self.bg_surface, self.dt)
