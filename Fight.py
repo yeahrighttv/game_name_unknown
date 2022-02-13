@@ -50,16 +50,13 @@ class Fight(AbstractState):
         self.time_until_cooldown = 0
         self.time_until_secondary_cooldown = 0
         self.time_until_sound_cooldown = 0
-        self.cooldown = 5000
+        self.cooldown = 2100
         self.secondary_cooldown = 150
         self.sound_cooldown = 150
 
-        self.set_up()
+        self.can_attack = True
 
-    def change_npc(self, npc):
-        self.npc = npc
-        pygame.mixer.music.load(self.npc.music_path)
-        pygame.mixer.music.play()
+        self.set_up()
 
     def set_up(self):
         self.test_dct = {
@@ -67,6 +64,22 @@ class Fight(AbstractState):
             pygame.K_0: lambda x, y: self.game.change_res(x, y + 1),
             pygame.K_7: lambda x, y: self.game.change_state(GameState.RUNNING),
         }
+
+    def change_npc(self, npc):
+        self.npc = npc
+        pygame.mixer.music.load(self.npc.music_path)
+        pygame.mixer.music.play(-1)
+
+    def find_winner(self):
+        if self.option == 0:
+            if self.npc_option == 2:
+                self.npc.hp -= self.player.dmg
+        elif self.option == 1:
+            if self.npc_option == 0:
+                self.npc.hp -= self.player.dmg
+        elif self.option == 2:
+            if self.npc_option == 1:
+                self.npc.hp -= self.player.dmg
 
     def render_chosen_options(self, surface):
         if self.option is not None:
@@ -108,8 +121,12 @@ class Fight(AbstractState):
             if self.time_until_sound_cooldown <= 0:
                 self.click_sound.play()
                 self.time_until_sound_cooldown = self.sound_cooldown
-        else:
-            self.npc_option = self.real_npc_option
+        elif 0 < self.time_until_cooldown < self.cooldown - 2000:
+            if self.can_attack:
+                self.can_attack = False
+                self.find_winner()
+        elif self.time_until_cooldown <= 0:
+            self.can_attack = True
 
     def npc_choice(self):
         if self.npc_option is None:
@@ -129,7 +146,7 @@ class Fight(AbstractState):
                         if option.moused_over:
                             self.time_until_cooldown = self.cooldown
                             self.option = i
-                            self.real_npc_option = random.randint(0, 2)
+                            # self.real_npc_option = random.randint(0, 2)
                             break
 
             # Check if key is pressed
