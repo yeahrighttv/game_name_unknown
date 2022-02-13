@@ -11,6 +11,9 @@ vec = pygame.math.Vector2
 
 class Game:
     def __init__(self, screen):
+        # pygame.mixer.pre_init(44100, -16, 2, 256)
+        pygame.mixer.init()
+
         self.screen = screen
         self.player = Player("imgs/player.png", 0, 0, center=True)
 
@@ -18,7 +21,7 @@ class Game:
         self.game_states = {
             GameState.RUNNING: RunningGame(self.screen, self, self.player),
             GameState.MENU: Menu(self.screen, self),
-            GameState.FIGHT: Fight(self.screen, self, self.player)
+            GameState.FIGHT: Fight(self.screen, self, self.player, )
         }
         self.current_state_obj = self.game_states.get(self.game_state)
         self.dt = 0

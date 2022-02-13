@@ -13,8 +13,8 @@ vec = pygame.math.Vector2
 
 class Fight(AbstractState):
     def __init__(self, screen, game, player):
-        pygame.mixer.init()
-        # print(pygame.mixer.music.get_volume())
+        self.form_object = None
+
         pygame.mixer.music.set_volume(0.05)
         self.click_sound = pygame.mixer.Sound("audio/click.wav")
         self.click_sound.set_volume(0.05)
@@ -69,9 +69,13 @@ class Fight(AbstractState):
     def end(self):
         self.player.rect.x, self.player.rect.y = self.npc.rect.x - self.player.rect.w, self.npc.rect.y
         self.game.change_state(GameState.RUNNING)
+        self.click_sound.stop()
         pygame.mixer.music.stop()
+        self.form_object.play_music()
 
-    def start(self, npc):
+    def start(self, npc, from_object):
+        self.form_object = from_object
+
         self.change_npc(npc)
         self.option = None
         self.npc_option = None

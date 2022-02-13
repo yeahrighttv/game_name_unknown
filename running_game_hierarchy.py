@@ -39,7 +39,8 @@ class PlayingField(AbstractState):
         for npc in self.npcs.values():
             if self.player.rect.colliderect(npc.rect):
                 self.game.change_state(GameState.FIGHT)
-                self.game.current_state_obj.start(npc)
+                self.game.current_state_obj.start(npc, self)
+                self.parent.music.stop()
 
 
 class Act(PlayingField):
@@ -72,8 +73,9 @@ class Act(PlayingField):
 
 
 class GeneralScene(PlayingField):
-    def __init__(self, screen, game, player, camera, parent):
+    def __init__(self, screen, game, player, camera, parent, music_path=""):
         super().__init__(screen, game, player, camera, parent)
+        self.music_path = music_path
 
     @abstractmethod
     def set_up(self):
@@ -89,8 +91,11 @@ class GeneralScene(PlayingField):
 
 
 class MapScene(GeneralScene):
-    def __init__(self, screen, game, player, camera, parent):
-        super().__init__(screen, game, player, camera, parent)
+    def __init__(self, screen, game, player, camera, parent, music_path=""):
+        super().__init__(screen, game, player, camera, parent, music_path="")
+
+        if self.music_path != "":
+            pygame.mixer.music.load(self.music_path)
 
         self.cur_indoors_area = ""
         self.indoors_areas = dict()
@@ -108,6 +113,17 @@ class MapScene(GeneralScene):
 
     def set_up(self):
         pass
+
+    def play_music(self):
+        pygame.mixer.music.load(self.music_path)
+        pygame.mixer.music.rewind()
+        pygame.mixer.music.play(-1)
+
+    def enter(self):
+        self.play_music()
+
+    def exit(self):
+        pygame.mixer.music.stop()
 
     def render(self, bg_surface):
         bg_surface.fill(config.BLACK)
@@ -143,14 +159,22 @@ class MapScene(GeneralScene):
             for area_name, area in self.indoors_areas.items():
                 if self.player.rect.colliderect(area.house_sprite.rect):
                     self.cur_indoors_area = area_name
-                    self.indoors_areas.get(self.cur_indoors_area).enter_house()
+                    self.indoors_areas.get(self.cur_indoors_area).enter()
+                    self.exit()
                     time.sleep(0.5)
                     break
 
 
 class House(PlayingField):
-    def __init__(self, screen, game, player, camera, parent):
+    def __init__(self, screen, game, player, camera, parent, music_path=""):
         super().__init__(screen, game, player, camera, parent)
+
+        self.music_path = music_path
+        self.music = None
+
+        if self.music_path != "":
+            self.music = pygame.mixer.Sound(self.music_path)
+            self.music.set_volume(0.05)
 
         self.house_sprite = None
 
@@ -163,9 +187,19 @@ class House(PlayingField):
     def set_entry_name(self, entry_room_name):
         self.entry_room = entry_room_name
 
-    def enter_house(self):
+    def play_music(self):
+        """TEMP SOLUTION"""
+        if self.music_path != "":
+            self.music.play(-1)
+
+    def enter(self):
         self.room = self.entry_room
         self.rooms.get(self.room).enter_room()
+
+        self.play_music()
+
+    def exit(self):
+        self.music.stop()
 
     def set_room_by_name(self, room_name):
         self.room = room_name
@@ -225,6 +259,8 @@ class Room(PlayingField):
                                                                         (self.parent.house_sprite.rect.x - self.player.rect.w, self.parent.house_sprite.rect.y))
 
         self.player.scope = self.parent.parent.map
+        self.parent.exit()
+        self.parent.parent.enter()
 
     def update_entrance(self, entrance_name, entrance):
         self.entrances[entrance_name] = entrance
@@ -260,6 +296,13 @@ class Room(PlayingField):
                 self.parent.set_room_by_name(entrance.destination_name)
                 if self.parent.room in self.parent.rooms:
                     self.parent.rooms.get(self.parent.room).enter_room(self.room_name)
+
+    def check_for_npc_collisions(self):
+        for npc in self.npcs.values():
+            if self.player.rect.colliderect(npc.rect):
+                self.game.change_state(GameState.FIGHT)
+                self.game.current_state_obj.start(npc, self.parent)
+                self.parent.music.stop()
 
 
 class Entrance:
