@@ -132,7 +132,9 @@ class MapScene(GeneralScene):
         self.dt = dt
 
         self.camera.set_method("border")
-        self.camera.mode.set_borders(-4000, 4000, -4000, 4000)
+        # print(self.map.rect)
+        # print(self.map.rect.x, self.map.rect.y, self.map.rect.x + self.map.rect.w, self.map.rect.y + self.map.rect.h)
+        self.camera.mode.set_borders(self.map.rect.x, self.map.rect.y, self.map.rect.x + self.map.rect.w, self.map.rect.y + self.map.rect.h)
         # self.camera.mode.set_borders(self.map.rect.x,
         #                              self.map.rect.x + self.map.rect.w,
         #                              self.map.rect.y,

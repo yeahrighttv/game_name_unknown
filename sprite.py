@@ -108,6 +108,8 @@ class NPC(Sprite):
                                                       vec(self.fight_rect.w + self.cur_animation_value,
                                                           self.fight_rect.h + self.cur_animation_value))
 
+            # self.fight_image = pygame.transform.rotate(self.fight_image, self.cur_animation_value)
+
             self.fight_rect.x, self.fight_rect.y = 240 - self.cur_animation_value / 2, 40 - self.cur_animation_value / 2
 
             self.cur_animation_value += self.animation_changer

@@ -20,7 +20,7 @@ class Player(Sprite):
         self.horizontal_animation_counter = 0
         self.vertical_animation_counter = 0
         # pixels / s
-        self.speed = 200
+        self.speed = 2000
 
         walk_up = [pygame.image.load('imgs/player_walk1_up.png'), pygame.image.load('imgs/player_walk2_up.png'),
                    pygame.image.load('imgs/player_walk3_up.png'), pygame.image.load('imgs/player_walk2_up.png')]
@@ -85,6 +85,7 @@ class Player(Sprite):
                                                self.rect.w,
                                                self.rect.h)):
                 self.rect.move_ip(self.vel)
+                # print(self.rect)
 
     def center(self):
         self.rect.update(self.rect.x + (-self.rect.w / 2),

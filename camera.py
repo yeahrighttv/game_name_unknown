@@ -24,7 +24,8 @@ class Camera:
 
 
 class CamScroll(ABC):
-    def __init__(self, camera,player):
+    def __init__(self, camera, player):
+        self.screen_size = vec(317, 236)
         self.camera = camera
         self.player = player
 
@@ -46,8 +47,8 @@ class Follow(CamScroll):
 class Border(CamScroll):
     def __init__(self, camera, player):
         CamScroll.__init__(self, camera, player)
-        self.east_border_const = 280
-        self.south_border_const = 200
+        # self.east_border_const = 317
+        # self.south_border_const = 236
 
         # North, South, West and East borders
         self.borders = {
@@ -57,7 +58,7 @@ class Border(CamScroll):
             "e": 200,
         }
 
-    def set_borders(self, north, south, west, east):
+    def set_borders(self, west, north, east, south):
         self.borders["n"] = north
         self.borders["s"] = south
         self.borders["w"] = west
@@ -68,9 +69,9 @@ class Border(CamScroll):
         self.camera.offset_float.y += (self.player.rect.y - self.camera.offset_float.y + self.camera.CONST.y)
         self.camera.offset.x, self.camera.offset.y = int(self.camera.offset_float.x), int(self.camera.offset_float.y)
         self.camera.offset.x = max(self.borders["w"], self.camera.offset.x)
-        self.camera.offset.x = min(self.borders["e"] - self.east_border_const, self.camera.offset.x)
+        self.camera.offset.x = min(self.borders["e"] - self.screen_size.x, self.camera.offset.x)
         self.camera.offset.y = max(self.borders["n"], self.camera.offset.y)
-        self.camera.offset.y = min(self.borders["s"] - self.south_border_const, self.camera.offset.y)
+        self.camera.offset.y = min(self.borders["s"] - self.screen_size.y, self.camera.offset.y)
 
 
 class Auto(CamScroll):
