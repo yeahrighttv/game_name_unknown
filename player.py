@@ -12,7 +12,7 @@ class Player(Sprite):
         super().__init__(main_image_path, x, y, center, scale)
         self.scope = None
 
-        self.dmg = 10
+        self.dmg = 51
 
         # print('Player Created')
         self.vel = vec(0, 0)

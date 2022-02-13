@@ -63,23 +63,40 @@ class Fight(AbstractState):
             pygame.K_9: lambda x, y: self.game.change_res(x, y - 1),
             pygame.K_0: lambda x, y: self.game.change_res(x, y + 1),
             pygame.K_7: lambda x, y: self.game.change_state(GameState.RUNNING),
+            pygame.K_j: lambda x, y: self.npc.receive_damage(5),
         }
+
+    def end(self):
+        self.player.rect.x, self.player.rect.y = self.npc.rect.x - self.player.rect.w, self.npc.rect.y
+        self.game.change_state(GameState.RUNNING)
+        pygame.mixer.music.stop()
+
+    def start(self, npc):
+        self.change_npc(npc)
+        self.option = None
+        self.npc_option = None
+        self.npc.hp = self.npc.max_hp
+        pygame.mixer.music.play(-1)
 
     def change_npc(self, npc):
         self.npc = npc
         pygame.mixer.music.load(self.npc.music_path)
-        pygame.mixer.music.play(-1)
+        pygame.mixer.music.rewind()
 
     def find_winner(self):
         if self.option == 0:
             if self.npc_option == 2:
-                self.npc.hp -= self.player.dmg
+                self.npc.receive_damage(self.player.dmg)
         elif self.option == 1:
             if self.npc_option == 0:
-                self.npc.hp -= self.player.dmg
+                self.npc.receive_damage(self.player.dmg)
         elif self.option == 2:
             if self.npc_option == 1:
-                self.npc.hp -= self.player.dmg
+                self.npc.receive_damage(self.player.dmg)
+
+    def check_if_npc_died(self):
+        if self.npc.hp <= 0:
+            self.end()
 
     def render_chosen_options(self, surface):
         if self.option is not None:
@@ -108,6 +125,7 @@ class Fight(AbstractState):
         self.handle_events()
         self.render()
         self.cooldown_method()
+        self.check_if_npc_died()
 
     def cooldown_method(self):
         self.time_until_cooldown -= self.dt
@@ -146,7 +164,6 @@ class Fight(AbstractState):
                         if option.moused_over:
                             self.time_until_cooldown = self.cooldown
                             self.option = i
-                            # self.real_npc_option = random.randint(0, 2)
                             break
 
             # Check if key is pressed
