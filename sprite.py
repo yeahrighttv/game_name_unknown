@@ -53,7 +53,9 @@ class Sprite(pygame.sprite.Sprite):
 
 
 class NPC(Sprite):
-    def __init__(self, main_image_path, main_fight_sprite_path, x=0, y=0, center=False, scale=False):
+    def __init__(self, main_image_path, main_fight_sprite_path, music_path="audio/megalovania.ogg", x=0, y=0, center=False, scale=False):
+        self.music_path = music_path
+
         super().__init__(main_image_path, x, y, center, scale)
         self.dialogs = dict()
 
@@ -68,6 +70,8 @@ class NPC(Sprite):
         self.animation_min, self.animation_max = -4, 4
 
         self.fight_rect.x, self.fight_rect.y = 240, 40
+
+        self.hp = 50
 
     def render_fight(self, surface, dt):
         self.animate_fight(dt)
@@ -103,15 +107,18 @@ class NPC(Sprite):
 
 
 class Sans(NPC):
-    def __init__(self, main_image_path="imgs/sans_1.png", main_fight_sprite_path="imgs/sans_large.png", x=0, y=0,
+    def __init__(self, main_image_path="imgs/sans_1.png", main_fight_sprite_path="imgs/sans_large.png",
+                 music_path="audio/megalovania.ogg", x=0, y=0,
                  center=False, scale=False):
-        super().__init__(main_image_path, main_fight_sprite_path, x, y, center, scale)
+        super().__init__(main_image_path, main_fight_sprite_path, music_path, x, y, center, scale)
         # print(self.rect)
         self.animation_frequency = 1
 
         self.images = [pygame.image.load("imgs/sans_1.png"), pygame.image.load("imgs/sans_2.png")]
 
         self.fight_rect.x, self.fight_rect.y = 240, 40
+
+        self.hp = 200
 
 
 class DialogBox(Sprite):

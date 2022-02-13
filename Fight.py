@@ -1,4 +1,5 @@
 import random
+from itertools import cycle
 
 import pygame
 
@@ -12,6 +13,12 @@ vec = pygame.math.Vector2
 
 class Fight(AbstractState):
     def __init__(self, screen, game, player):
+        pygame.mixer.init()
+        # print(pygame.mixer.music.get_volume())
+        pygame.mixer.music.set_volume(0.05)
+        self.click_sound = pygame.mixer.Sound("audio/click.wav")
+        self.click_sound.set_volume(0.05)
+
         super().__init__(screen, game)
         self.bg_surface = pygame.surface.Surface(self.og_screen_size)
 
@@ -31,22 +38,28 @@ class Fight(AbstractState):
             DialogOption("imgs/scissors_outside_box.png", x=60, y=168),
         ]
 
+        self.real_npc_option = None
         self.npc_option = None
         self.npc_options = [
             DialogOption("imgs/rock_outside_box.png", x=240, y=168),
             DialogOption("imgs/paper_outside_box.png", x=240, y=168),
             DialogOption("imgs/scissors_outside_box.png", x=240, y=168),
         ]
+        self.possible_values = cycle([0, 1, 2])
 
         self.time_until_cooldown = 0
         self.time_until_secondary_cooldown = 0
+        self.time_until_sound_cooldown = 0
         self.cooldown = 5000
         self.secondary_cooldown = 150
+        self.sound_cooldown = 150
 
         self.set_up()
 
     def change_npc(self, npc):
         self.npc = npc
+        pygame.mixer.music.load(self.npc.music_path)
+        pygame.mixer.music.play()
 
     def set_up(self):
         self.test_dct = {
@@ -85,14 +98,24 @@ class Fight(AbstractState):
     def cooldown_method(self):
         self.time_until_cooldown -= self.dt
         self.time_until_secondary_cooldown -= self.dt
+        self.time_until_sound_cooldown -= self.dt
 
         if self.time_until_cooldown > self.cooldown - 2000:
             if self.time_until_secondary_cooldown <= 0:
                 self.npc_choice()
                 self.time_until_secondary_cooldown = self.secondary_cooldown
+            if self.time_until_sound_cooldown <= 0:
+                self.click_sound.play()
+                self.time_until_sound_cooldown = self.sound_cooldown
+        else:
+            self.npc_option = self.real_npc_option
 
     def npc_choice(self):
-        self.npc_option = random.randint(0, 2)
+        if self.npc_option is None:
+            self.npc_option = 0
+        else:
+            for _ in range(random.randint(1, 2)):
+                self.npc_option = next(self.possible_values)
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -105,6 +128,7 @@ class Fight(AbstractState):
                         if option.moused_over:
                             self.time_until_cooldown = self.cooldown
                             self.option = i
+                            self.real_npc_option = random.randint(0, 2)
                             break
 
             # Check if key is pressed
