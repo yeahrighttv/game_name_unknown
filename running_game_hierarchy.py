@@ -110,7 +110,7 @@ class MapScene(GeneralScene):
         pass
 
     def render(self, bg_surface):
-        bg_surface.fill(config.BLUE)
+        bg_surface.fill(config.BLACK)
 
         if self.cur_indoors_area in self.indoors_areas.keys():
             self.indoors_areas.get(self.cur_indoors_area).render(bg_surface)
@@ -132,13 +132,8 @@ class MapScene(GeneralScene):
         self.dt = dt
 
         self.camera.set_method("border")
-        # print(self.map.rect)
-        # print(self.map.rect.x, self.map.rect.y, self.map.rect.x + self.map.rect.w, self.map.rect.y + self.map.rect.h)
+
         self.camera.mode.set_borders(self.map.rect.x, self.map.rect.y, self.map.rect.x + self.map.rect.w, self.map.rect.y + self.map.rect.h)
-        # self.camera.mode.set_borders(self.map.rect.x,
-        #                              self.map.rect.x + self.map.rect.w,
-        #                              self.map.rect.y,
-        #                              self.map.rect.y + self.map.rect.h)
 
         if self.cur_indoors_area in self.indoors_areas.keys():
             self.indoors_areas.get(self.cur_indoors_area).update(dt)

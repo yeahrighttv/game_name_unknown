@@ -8,7 +8,7 @@ vec = pygame.math.Vector2
 
 
 class Sprite(pygame.sprite.Sprite):
-    def __init__(self, main_image_path, x=0, y=0, center=False, scale=False):
+    def __init__(self, main_image_path, x=0, y=0, center=False, scale=False, render_collision_box=False):
         self.path = main_image_path
         pygame.sprite.Sprite.__init__(self)
 
@@ -16,10 +16,13 @@ class Sprite(pygame.sprite.Sprite):
 
         self.image = pygame.image.load(main_image_path)
         self.images = [self.image]
+        self.mask = pygame.mask.from_surface(self.image)
+
         if scale:
             self.image = pygame.transform.scale(self.image, vec(317, 236))
         self.rect = self.image.get_rect()
         self.rect.move_ip(x, y)
+        self.render_collision_box = render_collision_box
 
         if center:
             self.center()
@@ -33,7 +36,8 @@ class Sprite(pygame.sprite.Sprite):
         surface.blit(self.image, (self.rect.x - offset.x, self.rect.y - offset.y))
 
         # Collision box
-        pygame.draw.rect(surface, config.RED, pygame.Rect(self.rect.x - offset.x, self.rect.y - offset.y, self.rect.w, self.rect.h), width=1)
+        if self.render_collision_box:
+            pygame.draw.rect(surface, config.RED, pygame.Rect(self.rect.x - offset.x, self.rect.y - offset.y, self.rect.w, self.rect.h), width=1)
 
     def center(self):
         self.rect.update(self.rect.x + (-self.rect.w / 2),
@@ -50,6 +54,44 @@ class Sprite(pygame.sprite.Sprite):
             self.animation_counter += 1
             if self.animation_counter >= len(self.images):
                 self.animation_counter = 0
+
+
+class Map(Sprite):
+    def __init__(self, main_image_path, x=0, y=0, center=False, scale=False, render_mask=False):
+        super().__init__(main_image_path, x, y, center, scale)
+        self.mask.invert()
+
+        self.mask_outline = None
+        self.create_outline()
+
+        self.render_mask = render_mask
+        # self.rect_list = []
+        # self.create_outline_2()
+
+    def change_render_mask(self):
+        self.render_mask = not self.render_mask
+
+    def render(self, surface, offset, dt):
+        if self.render_mask:
+            self.render_outline(surface, offset)
+
+        # for point in self.rect_list:
+        #     pygame.draw.rect(surface, config.RED, point)
+
+        # pygame.draw.rect(surface, config.RED, self.mask)
+
+        super().render(surface, offset, dt)
+
+    def create_outline(self):
+        self.mask_outline = pygame.mask.from_surface(self.image)
+        self.mask_outline = self.mask_outline.to_surface()
+        self.mask_outline.set_colorkey((0, 0, 0))
+
+    def render_outline(self, surface, offset):
+        surface.blit(self.mask_outline, (self.rect.x - offset.x - 1, self.rect.y - offset.y))
+        surface.blit(self.mask_outline, (self.rect.x - offset.x + 1, self.rect.y - offset.y))
+        surface.blit(self.mask_outline, (self.rect.x - offset.x, self.rect.y - offset.y - 1))
+        surface.blit(self.mask_outline, (self.rect.x - offset.x, self.rect.y - offset.y + 1))
 
 
 class NPC(Sprite):

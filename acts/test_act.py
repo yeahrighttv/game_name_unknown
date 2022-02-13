@@ -1,7 +1,7 @@
 import config
 from running_game_hierarchy import Act, MapScene, House, Room, Entrance, ReturnEntrance, EastEntrance, NorthEntrance, \
     SouthEntrance, WestEntrance
-from sprite import Sprite, Sans
+from sprite import Sprite, Sans, Map
 
 
 class Kitchen(Room):
@@ -84,7 +84,7 @@ class TestHouse(House):
 
 class TestScene1(MapScene):
     def set_up(self):
-        self.map = Sprite("imgs/ruins.png", center=True)
+        self.map = Map("imgs/ruins.png", center=True)
         # self.map = Sprite("imgs/zelda_map_test.png", center=True)
         self.update_indoor_area("house 1", TestHouse(self.screen, self.game, self.player, self.camera, self))
         self.player.rect.x, self.player.rect.y = -4620, 1450

@@ -40,6 +40,9 @@ class Player(Sprite):
     def change_speed(self, new_speed):
         self.speed = new_speed
 
+    def change_collison_box_render(self):
+        self.render_collision_box = not self.render_collision_box
+
     def animate(self, dt):
         self.time_elapsed += dt
 
@@ -88,7 +91,10 @@ class Player(Sprite):
                                                self.rect.w,
                                                self.rect.h)):
                 self.rect.move_ip(self.vel)
-                print(self.rect)
+                if pygame.sprite.spritecollide(self, pygame.sprite.GroupSingle(self.scope), False,
+                                               pygame.sprite.collide_mask):
+                    self.rect.move_ip(-self.vel)
+                # print(self.rect)
 
     def center(self):
         self.rect.update(self.rect.x + (-self.rect.w / 2),

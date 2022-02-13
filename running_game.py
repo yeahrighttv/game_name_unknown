@@ -63,6 +63,8 @@ class RunningGame(AbstractState):
             pygame.K_p: lambda x, y: self.get_act().change_cur_scene("scene 2"),
             pygame.K_k: lambda x, y: self.player.change_speed(200),
             pygame.K_l: lambda x, y: self.player.change_speed(2000),
+            pygame.K_h: lambda x, y: self.player.change_collison_box_render(),
+            pygame.K_g: lambda x, y: self.player.scope.change_render_mask(),            # NEEDS FURTHER DEVELOPMENT
         }
 
         self.act = "act 1"
