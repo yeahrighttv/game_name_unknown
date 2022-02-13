@@ -164,6 +164,13 @@ class MapScene(GeneralScene):
                     time.sleep(0.5)
                     break
 
+    def check_for_npc_collisions(self):
+        for npc in self.npcs.values():
+            if self.player.rect.colliderect(npc.rect):
+                self.game.change_state(GameState.FIGHT)
+                self.game.current_state_obj.start(npc, self)
+                self.exit()
+
 
 class House(PlayingField):
     def __init__(self, screen, game, player, camera, parent, music_path=""):

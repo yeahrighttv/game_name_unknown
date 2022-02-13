@@ -97,6 +97,8 @@ class TestScene1(MapScene):
         pygame.mixer.music.load(self.music_path)
         self.enter()
 
+        self.npcs["sans"] = Sans(x=-4600, y=900, center=True)
+
 
 # class TestScene2(MapScene):
 #     def set_up(self):
