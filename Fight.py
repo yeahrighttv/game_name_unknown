@@ -77,6 +77,7 @@ class Fight(AbstractState):
 
     def render(self, bg_surface=None):
         self.bg_surface.fill(config.BLACK)
+        self.npc.render_hp(self.bg_surface)
         self.npc.render_fight(self.bg_surface, self.dt)
         self.dialog_box.render(self.bg_surface)
 

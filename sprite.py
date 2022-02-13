@@ -53,7 +53,8 @@ class Sprite(pygame.sprite.Sprite):
 
 
 class NPC(Sprite):
-    def __init__(self, main_image_path, main_fight_sprite_path, music_path="audio/megalovania.ogg", x=0, y=0, center=False, scale=False):
+    def __init__(self, main_image_path, main_fight_sprite_path, music_path="audio/megalovania.ogg", x=0, y=0,
+                 center=False, scale=False, hp=50, max_hp=50):
         self.music_path = music_path
 
         super().__init__(main_image_path, x, y, center, scale)
@@ -71,7 +72,16 @@ class NPC(Sprite):
 
         self.fight_rect.x, self.fight_rect.y = 240, 40
 
-        self.hp = 50
+        self.hp = hp
+        self.max_hp = max_hp
+
+    def render_hp(self, surface):
+        hp_procentage = self.hp / self.max_hp
+        pygame.draw.rect(surface, (255, 0, 00), pygame.Rect(99, 9, 102, 12),
+                         border_radius=3)
+        pygame.draw.rect(surface, (255 - 255 * hp_procentage, 255 * hp_procentage, 0),
+                         pygame.Rect(100, 10, 100 * hp_procentage, 10),
+                         border_radius=3)
 
     def render_fight(self, surface, dt):
         self.animate_fight(dt)
@@ -109,8 +119,8 @@ class NPC(Sprite):
 class Sans(NPC):
     def __init__(self, main_image_path="imgs/sans_1.png", main_fight_sprite_path="imgs/sans_large.png",
                  music_path="audio/megalovania.ogg", x=0, y=0,
-                 center=False, scale=False):
-        super().__init__(main_image_path, main_fight_sprite_path, music_path, x, y, center, scale)
+                 center=False, scale=False, hp=200, max_hp=200):
+        super().__init__(main_image_path, main_fight_sprite_path, music_path, x, y, center, scale, hp, max_hp)
         # print(self.rect)
         self.animation_frequency = 1
 
@@ -118,7 +128,6 @@ class Sans(NPC):
 
         self.fight_rect.x, self.fight_rect.y = 240, 40
 
-        self.hp = 200
 
 
 class DialogBox(Sprite):
