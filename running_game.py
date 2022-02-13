@@ -61,6 +61,8 @@ class RunningGame(AbstractState):
             pygame.K_7: lambda x, y: self.game.change_state(GameState.MENU),
             pygame.K_o: lambda x, y: self.get_act().change_cur_scene("scene 1"),
             pygame.K_p: lambda x, y: self.get_act().change_cur_scene("scene 2"),
+            pygame.K_k: lambda x, y: self.player.change_speed(200),
+            pygame.K_l: lambda x, y: self.player.change_speed(2000),
         }
 
         self.act = "act 1"

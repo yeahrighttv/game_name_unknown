@@ -85,8 +85,9 @@ class TestHouse(House):
 class TestScene1(MapScene):
     def set_up(self):
         self.map = Sprite("imgs/ruins.png", center=True)
-        self.map = Sprite("imgs/zelda_map_test.png", center=True)
+        # self.map = Sprite("imgs/zelda_map_test.png", center=True)
         self.update_indoor_area("house 1", TestHouse(self.screen, self.game, self.player, self.camera, self))
+        self.player.rect.x, self.player.rect.y = -4620, 1450
 
 
 # class TestScene2(MapScene):

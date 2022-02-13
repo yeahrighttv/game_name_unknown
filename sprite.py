@@ -138,7 +138,6 @@ class Sans(NPC):
         self.fight_rect.x, self.fight_rect.y = 240, 40
 
 
-
 class DialogBox(Sprite):
     def __init__(self, main_image_path="imgs/dialog_box.png", x=14, y=136, center=False, scale=False):
         super().__init__(main_image_path, x, y, center, scale)
