@@ -40,7 +40,6 @@ class Game:
 
     def change_resI(self, new_res, new_scaling):
         self.resolution_factor += 1
-        print(self.resolution_factor)
         pygame.display.set_mode(new_res * new_scaling)
         self.current_state_obj.change_res(new_res, new_scaling)
 
@@ -52,5 +51,4 @@ class Game:
 
         if self.resolution_factor >= -1:
             self.resolution_factor -= 1
-        print(self.resolution_factor)
         
