@@ -366,8 +366,7 @@ class Entrance:
         self.rect.w, self.rect.h = w, h
 
     def render(self, surface, offset):
-        pygame.draw.rect(surface, config.BLUE,
-                         pygame.Rect(self.rect.x - offset.x, self.rect.y - offset.y, self.rect.w, self.rect.h), width=1)
+        pygame.draw.rect(surface, config.BLUE, pygame.Rect(self.rect.x - offset.x, self.rect.y - offset.y, self.rect.w, self.rect.h), width=1)
 
 
 class HorizontalEntrance(Entrance):

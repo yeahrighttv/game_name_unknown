@@ -35,6 +35,7 @@ class Player(Sprite):
             "up": walk_up,
             "down": walk_down,
         }
+        self.mask = pygame.mask.from_surface(pygame.image.load('imgs/player_walk1_down.png'))
 
     def change_speed(self, new_speed):
         self.speed = new_speed

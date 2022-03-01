@@ -82,7 +82,6 @@ class RunningGame(AbstractState):
     def render(self, bg_surface):
         self.screen.fill(config.BLACK)
         self.bg_surface.fill(config.BLACK)
-
         self.get_act().render(self.bg_surface)
 
         pygame.transform.scale(self.bg_surface, self.og_screen_size * self.screen_scaling_factor, dest_surface=self.screen)
