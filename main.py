@@ -1,4 +1,5 @@
 import pygame
+from acts.test_act import TestHouse
 import config
 from game import Game
 from game_state import GameState
@@ -6,6 +7,7 @@ from game_state import GameState
 
 def main():
     pygame.init()
+
 
 
 screen = pygame.display.set_mode((317 * 3, 236 * 3))

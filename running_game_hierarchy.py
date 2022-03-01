@@ -144,6 +144,15 @@ class MapScene(GeneralScene):
 
             self.player.render(bg_surface, self.camera.offset, self.dt)
 
+    def entrance_collision_check(self):
+        for area_name, area in self.indoors_areas.items():
+                if self.player.rect.colliderect(area.house_sprite.rect):
+                    self.cur_indoors_area = area_name
+                    self.indoors_areas.get(self.cur_indoors_area).enter()
+                    self.exit()
+                    time.sleep(0.5)
+                    break
+
     def update(self, dt):
         self.dt = dt
 
@@ -156,13 +165,7 @@ class MapScene(GeneralScene):
         else:
             self.player.scope = self.map
             self.check_for_npc_collisions()
-            for area_name, area in self.indoors_areas.items():
-                if self.player.rect.colliderect(area.house_sprite.rect):
-                    self.cur_indoors_area = area_name
-                    self.indoors_areas.get(self.cur_indoors_area).enter()
-                    self.exit()
-                    time.sleep(0.5)
-                    break
+            self.entrance_collision_check()
 
     def check_for_npc_collisions(self):
         for npc in self.npcs.values():
