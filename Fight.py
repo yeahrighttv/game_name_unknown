@@ -15,9 +15,7 @@ class Fight(AbstractState):
     def __init__(self, screen, game, player):
         self.form_object = None
 
-        pygame.mixer.music.set_volume(0.05)
         self.click_sound = pygame.mixer.Sound("audio/click.wav")
-        self.click_sound.set_volume(0.05)
 
         super().__init__(screen, game)
         self.bg_surface = pygame.surface.Surface(self.og_screen_size)
@@ -63,14 +61,13 @@ class Fight(AbstractState):
             pygame.K_9: lambda x, y: self.game.change_res(x, y - 1),
             pygame.K_0: lambda x, y: self.game.change_res(x, y + 1),
             pygame.K_7: lambda x, y: self.game.change_state(GameState.RUNNING),
-            pygame.K_j: lambda x, y: self.npc.receive_damage(5),
+            pygame.K_j: lambda x, y: self.npc.receive_damage(50),
         }
 
     def end(self):
         self.player.rect.x, self.player.rect.y = self.npc.rect.x - self.player.rect.w, self.npc.rect.y
         self.game.change_state(GameState.RUNNING)
         self.click_sound.stop()
-        pygame.mixer.music.stop()
         self.form_object.play_music()
 
     def start(self, npc, from_object):
@@ -80,6 +77,7 @@ class Fight(AbstractState):
         self.option = None
         self.npc_option = None
         self.npc.hp = self.npc.max_hp
+        pygame.mixer.music.stop()
         pygame.mixer.music.play(-1)
 
     def change_npc(self, npc):

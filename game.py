@@ -11,8 +11,9 @@ vec = pygame.math.Vector2
 
 class Game:
     def __init__(self, screen):
-        # pygame.mixer.pre_init(44100, -16, 2, 256)
+        self.volume = 1
         pygame.mixer.init()
+        pygame.mixer.music.set_volume(self.volume)
 
         self.screen = screen
         self.player = Player("imgs/player.png", 0, 0, center=True)
