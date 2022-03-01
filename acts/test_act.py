@@ -83,8 +83,7 @@ class TestHouse(House):
         self.update_room("kitchen", Kitchen("kitchen", self.screen, self.game, self.player, self.camera, self))
         self.house_sprite = Sprite("imgs/house_test.png", -4604, 1267, center=True)
         self.music_path = "audio/home.ogg"
-        self.music = pygame.mixer.Sound(self.music_path)
-        self.music.set_volume(0.05)
+        # self.play_music()
 
 
 class TestScene1(MapScene):
@@ -94,7 +93,7 @@ class TestScene1(MapScene):
         self.update_indoor_area("house 1", TestHouse(self.screen, self.game, self.player, self.camera, self))
         self.player.rect.x, self.player.rect.y = -4620, 1450
         self.music_path = "audio/ruins.ogg"
-        pygame.mixer.music.load(self.music_path)
+        # pygame.mixer.music.load(self.music_path)
         self.enter()
 
         self.npcs["sans"] = Sans(x=-4600, y=900, center=True)
