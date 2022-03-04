@@ -154,9 +154,8 @@ class MapScene(GeneralScene):
     def update(self, dt):
         self.dt = dt
 
-        self.camera.set_method("border")
+        self.camera.set_method("follow")
 
-        self.camera.mode.set_borders(self.map.rect.x, self.map.rect.y, self.map.rect.x + self.map.rect.w, self.map.rect.y + self.map.rect.h)
 
         if self.cur_indoors_area in self.indoors_areas.keys():
             self.indoors_areas.get(self.cur_indoors_area).update(dt)
@@ -291,8 +290,7 @@ class Room(PlayingField):
     def update(self, dt):
         self.dt = dt
 
-        self.camera.set_method("stand")
-        self.camera.offset = vec(self.camera.CONST.x, self.camera.CONST.y)
+        self.camera.set_method("follow")
 
         self.check_for_npc_collisions()
 
@@ -366,7 +364,7 @@ class Entrance:
         self.rect.w, self.rect.h = w, h
 
     def render(self, surface, offset):
-        pygame.draw.rect(surface, config.BLUE, pygame.Rect(self.rect.x - offset.x, self.rect.y - offset.y, self.rect.w, self.rect.h), width=1)
+        pygame.draw.rect(surface, config.GREEN, pygame.Rect(self.rect.x - offset.x, self.rect.y - offset.y, self.rect.w, self.rect.h), width=1)
 
 
 class HorizontalEntrance(Entrance):
@@ -403,7 +401,6 @@ class EastEntrance(HorizontalEntrance):
     def __init__(self, player, destination_name, enter_from="e", x=0, y=0, width=16, height=16):
         super().__init__(player, destination_name, enter_from, x, y, width, height)
         self.set_default_east()
-
 
 class ReturnEntrance(Entrance):
     def __init__(self, room, player, destination_name="", enter_from="", x=0, y=0, width=16, height=16,
