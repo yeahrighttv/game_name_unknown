@@ -30,7 +30,8 @@ class EastHallway(Room):
         self.objects["player"] = self.player
 
         self.update_entrance("entrance_room", WestEntrance(self.player, "entrance_room"))
-        self.entrances.get("entrance_room").set_default_west_center_lower()
+        self.entrances.get("entrance_room").set_shape(2,32)
+        self.entrances.get("entrance_room").set_pos(-373, 0)
 
         self.update_entrance("secret_1", SouthEntrance(self.player, "entrance_room"))
 
