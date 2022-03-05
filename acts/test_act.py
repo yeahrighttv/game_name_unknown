@@ -3,7 +3,7 @@ import pygame
 import config
 from running_game_hierarchy import Act, MapScene, House, Room, Entrance, ReturnEntrance, EastEntrance, NorthEntrance, \
     SouthEntrance, WestEntrance, RoomFollow, RoomBorder
-from sprite import Sprite, Sans, Map
+from sprite import Sprite, Sans, Map, Bear
 
 
 class Kitchen(Room):
@@ -16,6 +16,8 @@ class Kitchen(Room):
         self.update_entrance("west_room", SouthEntrance(self.player, "west_room"))
         self.entrances.get("west_room").set_shape(32, 2)
         self.entrances.get("west_room").set_pos(-80, 116)
+
+        self.npcs["bear"] = Bear(x=0, y=0, center=True)
 
         # self.update_entrance("secret_1", NorthEntrance(self.player, "west_room"))
         # self.update_entrance("secret_2", WestEntrance(self.player, "west_room"))

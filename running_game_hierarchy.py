@@ -441,6 +441,7 @@ class EastEntrance(HorizontalEntrance):
         super().__init__(player, destination_name, enter_from, x, y, width, height)
         self.set_default_east()
 
+
 class ReturnEntrance(Entrance):
     def __init__(self, room, player, destination_name="", enter_from="", x=0, y=0, width=16, height=16,
                  return_side="w"):

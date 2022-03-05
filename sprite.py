@@ -180,6 +180,19 @@ class Sans(NPC):
         self.fight_rect.x, self.fight_rect.y = 240, 40
 
 
+class Bear(NPC):
+    def __init__(self, main_image_path="imgs/teddy1.png", main_fight_sprite_path="imgs/fuckedupbear.png",
+                 music_path="audio/run.ogg", x=0, y=0,
+                 center=False, scale=False, hp=100, max_hp=100):
+        super().__init__(main_image_path, main_fight_sprite_path, music_path, x, y, center, scale, hp, max_hp)
+        # print(self.rect)
+        self.animation_frequency = 2
+
+        self.images = [pygame.image.load("imgs/teddy1.png"), pygame.image.load("imgs/teddy2.png")]
+
+        self.fight_rect.x, self.fight_rect.y = 240, 40
+
+
 class DialogBox(Sprite):
     def __init__(self, main_image_path="imgs/dialog_box.png", x=14, y=136, center=False, scale=False):
         super().__init__(main_image_path, x, y, center, scale)
