@@ -142,25 +142,27 @@ class MapScene(GeneralScene):
 
             self.player.render(bg_surface, self.camera.offset, self.dt)
 
-    def update(self, dt):
-        self.dt = dt
-
-        self.camera.set_method("border")
-
-        self.camera.mode.set_borders(self.map.rect.x, self.map.rect.y, self.map.rect.x + self.map.rect.w, self.map.rect.y + self.map.rect.h)
-
-        if self.cur_indoors_area in self.indoors_areas.keys():
-            self.indoors_areas.get(self.cur_indoors_area).update(dt)
-        else:
-            self.player.scope = self.map
-            self.check_for_npc_collisions()
-            for area_name, area in self.indoors_areas.items():
+    def entrance_collision_check(self):
+        for area_name, area in self.indoors_areas.items():
                 if self.player.rect.colliderect(area.house_sprite.rect):
                     self.cur_indoors_area = area_name
                     self.indoors_areas.get(self.cur_indoors_area).enter()
                     self.exit()
                     time.sleep(0.5)
                     break
+
+    def update(self, dt):
+        self.dt = dt
+
+        self.camera.set_method("follow")
+
+
+        if self.cur_indoors_area in self.indoors_areas.keys():
+            self.indoors_areas.get(self.cur_indoors_area).update(dt)
+        else:
+            self.player.scope = self.map
+            self.check_for_npc_collisions()
+            self.entrance_collision_check()
 
     def check_for_npc_collisions(self):
         for npc in self.npcs.values():
@@ -288,8 +290,7 @@ class Room(PlayingField):
     def update(self, dt):
         self.dt = dt
 
-        self.camera.set_method("stand")
-        self.camera.offset = vec(self.camera.CONST.x, self.camera.CONST.y)
+        self.camera.set_method("follow")
 
         self.check_for_npc_collisions()
 
@@ -363,8 +364,7 @@ class Entrance:
         self.rect.w, self.rect.h = w, h
 
     def render(self, surface, offset):
-        pygame.draw.rect(surface, config.BLUE,
-                         pygame.Rect(self.rect.x - offset.x, self.rect.y - offset.y, self.rect.w, self.rect.h), width=1)
+        pygame.draw.rect(surface, config.GREEN, pygame.Rect(self.rect.x - offset.x, self.rect.y - offset.y, self.rect.w, self.rect.h), width=1)
 
 
 class HorizontalEntrance(Entrance):
@@ -401,7 +401,6 @@ class EastEntrance(HorizontalEntrance):
     def __init__(self, player, destination_name, enter_from="e", x=0, y=0, width=16, height=16):
         super().__init__(player, destination_name, enter_from, x, y, width, height)
         self.set_default_east()
-
 
 class ReturnEntrance(Entrance):
     def __init__(self, room, player, destination_name="", enter_from="", x=0, y=0, width=16, height=16,

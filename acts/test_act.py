@@ -26,22 +26,22 @@ class EastHallway(Room):
     def set_up(self):
         self.default_entrance = "entrance room"
 
-        self.objects["bg"] = Map("imgs/Assets/EastHallway.png", center=True)
+        self.objects["bg"] = Map("imgs/Assets/EastHallwaydecored.png", center=True)
         self.objects["player"] = self.player
 
         self.update_entrance("entrance_room", WestEntrance(self.player, "entrance_room"))
-        self.entrances.get("entrance_room").set_default_west_center_lower()
+        self.entrances.get("entrance_room").set_shape(2,32)
+        self.entrances.get("entrance_room").set_pos(-373, 0)
 
         self.update_entrance("secret_1", SouthEntrance(self.player, "entrance_room"))
 
-        self.npcs["sans"] = Sans(x=100, y=0, center=True)
+        self.npcs["sans"] = Sans(x=300, y=-10, center=True)
 
 
 class WestRoom(Room):
     def set_up(self):
         self.default_entrance = "entrance room"
         self.objects["bg"] = Map("imgs/Assets/Room_West_Floor.png", center=True)
-        self.objects["bg_walls"] = Sprite("imgs/Assets/Room_West_Walls.png", center=True)
         self.objects["player"] = self.player
 
         self.update_entrance("entrance_room", EastEntrance(self.player, "entrance_room"))
