@@ -190,9 +190,7 @@ class InventoryBox(ChoosingBox):
         self.player = player
         self.font = pygame.font.Font("fonts/DeterminationMono.ttf", self.step)
 
-    def render(self, surface):
-        self.bg.render(surface)
-
+    def render_text(self, surface):
         player_lvl = self.font.render(f"LVL: {self.player.lvl}", False, (255, 255, 255))
         player_xp_stats = self.font.render(f"XP: {self.player.xp}/{self.player.max_xp}", False, (255, 255, 255))
         player_hp_stats = self.font.render(f"HP: {self.player.hp}/{self.player.max_hp}", False, (255, 255, 255))
@@ -203,6 +201,11 @@ class InventoryBox(ChoosingBox):
                                        self.bg.rect.y + self.bg.rect.h - self.step * 2.5))
         surface.blit(player_hp_stats, (self.bg.rect.x + self.margin.x * 0.5,
                                        self.bg.rect.y + self.bg.rect.h - self.step * 1.5))
+
+    def render(self, surface):
+        self.bg.render(surface)
+
+        self.render_text(surface)
 
         if self.show_cursor:
             self.cursor.render(surface)
@@ -218,9 +221,7 @@ class MenuBox(ChoosingBox):
         self.player = player
         self.font = pygame.font.Font("fonts/DeterminationMono.ttf", self.step // 2)
 
-    def render(self, surface):
-        self.bg.render(surface)
-
+    def render_text(self, surface):
         player_name = self.font.render(self.player.name, False, (255, 255, 255))
         player_lvl = self.font.render(f"LVL:{self.player.lvl}", False, (255, 255, 255))
         player_hp_stats = self.font.render(f"HP: {self.player.hp}/{self.player.max_hp}", False, (255, 255, 255))
@@ -228,6 +229,11 @@ class MenuBox(ChoosingBox):
         surface.blit(player_name, (self.bg.rect.x + self.margin.x * 0.5, self.bg.rect.y + self.step // 2))
         surface.blit(player_lvl, (self.bg.rect.x + self.margin.x * 0.5, self.bg.rect.y + self.step // 2 * 2))
         surface.blit(player_hp_stats, (self.bg.rect.x + self.margin.x * 0.5, self.bg.rect.y + self.step // 2 * 3))
+
+    def render(self, surface):
+        self.bg.render(surface)
+
+        self.render_text(surface)
 
         if self.show_cursor:
             self.cursor.render(surface)
