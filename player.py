@@ -15,9 +15,9 @@ class Player(Sprite):
 
         self.name = "Anon"
         self.dmg = 51
-        self.hp = 20
+        self.hp = 17
         self.max_hp = 20
-        self.xp = 0
+        self.xp = 5
         self.max_xp = 20
         self.lvl = 0
 

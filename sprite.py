@@ -124,12 +124,12 @@ class NPC(Sprite):
             self.hp = 0
 
     def render_hp(self, surface):
-        hp_procentage = self.hp / self.max_hp
+        hp_percentage = self.hp / self.max_hp
         pygame.draw.rect(surface, (200, 100, 150), pygame.Rect(99, 9, 102, 12),
                          border_radius=3)
         if self.hp > 0:
-            pygame.draw.rect(surface, (255 - 255 * hp_procentage, 255 * hp_procentage, 0),
-                             pygame.Rect(100, 10, 100 * hp_procentage, 10),
+            pygame.draw.rect(surface, (255 - 255 * hp_percentage, 255 * hp_percentage, 0),
+                             pygame.Rect(100, 10, 100 * hp_percentage, 10),
                              border_radius=3)
 
     def render_fight(self, surface, dt):

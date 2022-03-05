@@ -191,16 +191,60 @@ class InventoryBox(ChoosingBox):
         self.font = pygame.font.Font("fonts/DeterminationMono.ttf", self.step)
 
     def render_text(self, surface):
-        player_lvl = self.font.render(f"LVL: {self.player.lvl}", False, (255, 255, 255))
-        player_xp_stats = self.font.render(f"XP: {self.player.xp}/{self.player.max_xp}", False, (255, 255, 255))
+        player_lvl_and_xp = self.font.render(f"LVL: {self.player.lvl} XP: {self.player.xp}/{self.player.max_xp}",
+                                             False,
+                                             (255, 255, 255))
         player_hp_stats = self.font.render(f"HP: {self.player.hp}/{self.player.max_hp}", False, (255, 255, 255))
 
-        surface.blit(player_lvl, (self.bg.rect.x + self.margin.x * 0.5,
-                                  self.bg.rect.y + self.bg.rect.h - self.step * 2.5))
-        surface.blit(player_xp_stats, (self.bg.rect.x + player_lvl.get_rect().w + self.margin.x * 0.5,
-                                       self.bg.rect.y + self.bg.rect.h - self.step * 2.5))
+        surface.blit(player_lvl_and_xp, (self.bg.rect.x + self.margin.x * 0.5,
+                                         self.bg.rect.y + self.bg.rect.h - self.step * 2.5))
         surface.blit(player_hp_stats, (self.bg.rect.x + self.margin.x * 0.5,
                                        self.bg.rect.y + self.bg.rect.h - self.step * 1.5))
+
+        # XP rendering
+        self.draw_relative_filled_boxes(surface,
+                                        self.player.xp,
+                                        self.player.max_xp,
+                                        color=(0, 0, 200),
+                                        start_box_y=self.bg.rect.y + self.bg.rect.h - self.step * 2.5,
+                                        start_box_x=self.bg.rect.x + self.margin.x * 0.5 + player_lvl_and_xp.get_rect().w,
+                                        end_box_x=self.bg.rect.x + self.bg.rect.w,
+                                        margin=vec(10, 2),
+                                        inner_box_margin=3)
+
+        # HP rendering
+        self.draw_relative_filled_boxes(surface,
+                                        self.player.hp,
+                                        self.player.max_hp,
+                                        color=(200, 0, 0),
+                                        start_box_y=self.bg.rect.y + self.bg.rect.h - self.step * 1.5,
+                                        start_box_x=self.bg.rect.x + self.margin.x * 0.5 + player_hp_stats.get_rect().w,
+                                        end_box_x=self.bg.rect.x + self.bg.rect.w,
+                                        margin=vec(10, 2),
+                                        inner_box_margin=3)
+
+    def draw_relative_filled_boxes(self, surface, cur, tot, color, start_box_y, start_box_x, end_box_x, margin, inner_box_margin):
+        percentage = cur / tot
+        start_box_x += margin.x
+        end_box_x -= margin.x
+        end_box_w = end_box_x - start_box_x
+        outer_box_rect = pygame.Rect(start_box_x,
+                                     start_box_y + margin.y,
+                                     end_box_w,
+                                     self.step - margin.y * 2)
+        pygame.draw.rect(surface, (255, 255, 255), outer_box_rect)
+
+        pygame.draw.rect(surface, (0, 0, 0),
+                         pygame.Rect(outer_box_rect.x + inner_box_margin,
+                                     outer_box_rect.y + inner_box_margin,
+                                     (outer_box_rect.w - inner_box_margin * 2),
+                                     outer_box_rect.h - inner_box_margin * 2))
+        if cur > 0:
+            pygame.draw.rect(surface, color,
+                             pygame.Rect(outer_box_rect.x + inner_box_margin,
+                                         outer_box_rect.y + inner_box_margin,
+                                         (outer_box_rect.w - inner_box_margin * 2) * percentage,
+                                         outer_box_rect.h - inner_box_margin * 2))
 
     def render(self, surface):
         self.bg.render(surface)
