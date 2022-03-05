@@ -21,7 +21,7 @@ class Menu(AbstractState):
 
         self.menu = pygame.image.load('imgs/Assets/menu.png')
         self.menu_rect = self.menu.get_rect()
-        self.menu_rect.x = self.inventory_box.rect.x - 110
+        self.menu_rect.x = self.inventory_box.rect.x - self.menu_rect.w - 10
         self.menu_rect.y = self.inventory_box.rect.y + self.inventory_box.rect.h - self.menu_rect.h
 
         # Set the cursor and menu states

@@ -35,14 +35,9 @@ class EastHallway(RoomBorder):
                                      borders_rect.x + borders_rect.w,
                                      borders_rect.y + borders_rect.h + 50)
 
+        self.check_for_entrance_collisions()
         self.check_for_npc_collisions()
-
-        for entrance in self.entrances.values():
-            if self.player.rect.colliderect(entrance.rect):
-                entrance.action()
-                self.parent.set_room_by_name(entrance.destination_name)
-                if self.parent.room in self.parent.rooms:
-                    self.parent.rooms.get(self.parent.room).enter_room(self.room_name)
+        self.check_for_item_collisions()
 
     def set_up(self):
         self.default_entrance = "entrance_room"
