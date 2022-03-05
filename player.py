@@ -96,12 +96,17 @@ class Player(Sprite):
 
 
 class Inventory:
-    def __init__(self):
+    def __init__(self, max_len=16):
         self.items = dict()
+        self.max_len = max_len
+
+    def check_if_can_add(self):
+        return len(self.items) + 1 <= self.max_len
 
     def add_item(self, item):
-        count = len([i for i in self.items if item.display_name in i])
-        self.items[f"{item.display_name} {count}"] = item
+        if self.check_if_can_add():
+            count = len([i for i in self.items if item.display_name in i])
+            self.items[f"{item.display_name} {count}"] = item
 
     def remove_item(self, item_name):
         self.items.pop(item_name)

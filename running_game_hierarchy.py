@@ -40,7 +40,17 @@ class PlayingField(AbstractState):
             if self.player.rect.colliderect(npc.rect):
                 self.game.change_state(GameState.FIGHT)
                 self.game.current_state_obj.start(npc, self)
-                self.parent.music.stop()
+                self.exit()
+                break
+
+    def check_for_item_collisions(self):
+        if self.player.inventory.check_if_can_add():
+            for item in self.items.values():
+                if self.player.rect.colliderect(item.rect):
+                    self.player.inventory.add_item(item)
+                    self.items.pop(item.dict_name)
+                    self.pop_sound.play()
+                    break
 
 
 class Act(PlayingField):
@@ -102,6 +112,8 @@ class MapScene(GeneralScene):
 
         self.objects = dict()
         self.items = dict()
+
+        self.pop_sound = pygame.mixer.Sound("audio/pop.wav")
 
         self.map = None
         self.set_up()
@@ -171,21 +183,6 @@ class MapScene(GeneralScene):
                 self.indoors_areas.get(self.cur_indoors_area).enter()
                 self.exit()
                 time.sleep(0.5)
-                break
-
-    def check_for_npc_collisions(self):
-        for npc in self.npcs.values():
-            if self.player.rect.colliderect(npc.rect):
-                self.game.change_state(GameState.FIGHT)
-                self.game.current_state_obj.start(npc, self)
-                self.exit()
-                break
-
-    def check_for_item_collisions(self):
-        for item in self.items.values():
-            if self.player.rect.colliderect(item.rect):
-                self.player.inventory.add_item(item)
-                self.items.pop(item.dict_name)
                 break
 
 
@@ -258,6 +255,9 @@ class Room(PlayingField):
         self.npcs = dict()
 
         self.default_entrance = ""
+
+        self.pop_sound = pygame.mixer.Sound("audio/pop.wav")
+
 
         self.set_up()
 
