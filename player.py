@@ -12,7 +12,13 @@ class Player(Sprite):
         super().__init__(main_image_path, x, y, center, scale)
 
         self.inventory = Inventory()
+
+        self.name = "Anon"
         self.dmg = 51
+        self.hp = 20
+        self.max_hp = 20
+        self.xp = 0
+        self.lvl = 0
 
         # print('Player Created')
         self.vel = vec(0, 0)

@@ -29,8 +29,9 @@ class Menu(AbstractState):
         # Menu Box
         menu_margin = vec(25, 90)
         menu_step = 25
-        self.menu_box = ChoosingBox("imgs/Assets/menu_empty.png",
+        self.menu_box = MenuBox("imgs/Assets/menu_empty.png",
                                 [MenuItem("Items", menu_margin, menu_step), MenuItem("Exit", menu_margin, menu_step)],
+                                self.player,
                                 screen_size=screen_size,
                                 margin=menu_margin,
                                 offset=vec(self.inventory_box.bg.rect.x - 10,
@@ -94,6 +95,9 @@ class Menu(AbstractState):
 
                         self.game.change_state(GameState.RUNNING)
 
+                elif self.selected_box == self.inventory_box:
+                    pass
+
             elif event.key == pygame.K_LEFT:
                 if self.selected_box == self.inventory_box:
                     self.show_items = False
@@ -129,7 +133,9 @@ class ChoosingBox:
         super().__init__()
 
         self.options = options
+
         self.step = self.calc_right_step(step)
+        self.margin = margin
 
         self.bg = DialogBox(bg_path)
         self.bg.rect.x = x
@@ -173,6 +179,31 @@ class ChoosingBox:
         text = font.render("", False, (255, 255, 255))
         step = text.get_rect().h
         return step
+
+
+class MenuBox(ChoosingBox):
+    def __init__(self, bg_path, options, player, x=0, y=0, screen_size=vec(0, 0), margin=vec(0, 0), offset=vec(0, 0),
+                 custom_pos=False, center=False, step=30):
+        super().__init__(bg_path, options, x, y, screen_size, margin, offset, custom_pos, center, step)
+
+        self.player = player
+        self.font = pygame.font.Font("fonts/DeterminationMono.ttf", self.step // 2)
+
+    def render(self, surface):
+        self.bg.render(surface)
+
+        player_name = self.font.render(self.player.name, False, (255, 255, 255))
+        player_lvl = self.font.render(f"LVL:{self.player.lvl}", False, (255, 255, 255))
+        player_hp_stats = self.font.render(f"HP: {self.player.hp}/{self.player.max_hp}", False, (255, 255, 255))
+
+        surface.blit(player_name, (self.bg.rect.x + self.margin.x * 0.5, self.bg.rect.y + self.step // 2))
+        surface.blit(player_lvl, (self.bg.rect.x + self.margin.x * 0.5, self.bg.rect.y + self.step // 2 * 2))
+        surface.blit(player_hp_stats, (self.bg.rect.x + self.margin.x * 0.5, self.bg.rect.y + self.step // 2 * 3))
+
+        if self.show_cursor:
+            self.cursor.render(surface)
+        for i, item in enumerate(self.options):
+            item.render_item_in_box(surface, vec(self.bg.rect.x, self.bg.rect.y), i)
 
 
 class MenuItem:
