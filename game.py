@@ -21,7 +21,7 @@ class Game:
         self.game_state = GameState.RUNNING
         self.game_states = {
             GameState.RUNNING: RunningGame(self.screen, self, self.player),
-            GameState.MENU: Menu(self.screen, self),
+            GameState.MENU: Menu(self.screen, self, self.player),
             GameState.FIGHT: Fight(self.screen, self, self.player, )
         }
         self.current_state_obj = self.game_states.get(self.game_state)
