@@ -11,6 +11,7 @@ class Player(Sprite):
     def __init__(self, main_image_path, x, y, center=False, scale=False):
         super().__init__(main_image_path, x, y, center, scale)
 
+        self.inventory = Inventory()
         self.dmg = 51
 
         # print('Player Created')
@@ -87,16 +88,16 @@ class Player(Sprite):
         self.rect.update(self.rect.x + (-self.rect.w / 2), self.rect.y + (-self.rect.h / 2), self.rect.w, self.rect.h)
 
 
-class Inventory():
+class Inventory:
     def __init__(self):
-
         self.items = dict()
 
-    def add_item(self):
-        pass
+    def add_item(self, item):
+        self.items[item.display_name] = item
 
-    def remove_item(self):
-        pass
+    def remove_item(self, item_name):
+        self.items.pop(item_name)
 
     def render_inventory(self):
-        pass
+        for i, item in enumerate(self.items.values()):
+            item.render_item_inv(i)

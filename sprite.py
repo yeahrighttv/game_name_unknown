@@ -254,10 +254,13 @@ class DialogOption(DialogBox):
 
 
 class Item(Sprite):
-    def __init__(self, main_image_path, display_name="Unknown", x=0, y=0, center=False, scale=False, render_collision_box=False):
+    def __init__(self, main_image_path, display_name="Unknown", x=0, y=0, center=False, scale=False,
+                 render_collision_box=False):
         super().__init__(main_image_path, x, y, center, scale, render_collision_box)
 
         self.display_name = display_name
+        self.font = pygame.font.Font("fonts/DeterminationMono.ttf", 20)
+        self.text = self.font.render(self.display_name, False, (0, 0, 0))
 
     def render_item_inv(self):
         pass
