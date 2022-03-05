@@ -333,13 +333,6 @@ class Room(PlayingField):
                 self.game.current_state_obj.start(npc, self.parent)
                 break
 
-    def check_for_item_collisions(self):
-        for item in self.items.values():
-            if self.player.rect.colliderect(item.rect):
-                self.player.inventory.add_item(item)
-                self.items.pop(item.display_name)
-                break
-
 
 class RoomFollow(Room):
     def update(self, dt):

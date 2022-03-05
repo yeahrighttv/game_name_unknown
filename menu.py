@@ -50,13 +50,16 @@ class Menu(AbstractState):
                                           parent=self.menu_box)
 
         # Info box
+        info_margin = vec(25, 180)
+        info_step = 25
         self.info_box = InfoBox("imgs/Assets/info_box.png",
-                                [MenuItem("Items", menu_margin, menu_step), MenuItem("Exit", menu_margin, menu_step)],
+                                [MenuItem("Use", info_margin, info_step),
+                                 MenuItem("Remove", info_margin, info_step)],
                                 self.player,
                                 x=info_rect.x,
                                 y=info_rect.y,
-                                margin=menu_margin,
-                                step=menu_step,
+                                margin=info_margin,
+                                step=info_step,
                                 parent=self.inventory_box)
 
         # Set the selected box
@@ -109,20 +112,40 @@ class Menu(AbstractState):
                 elif self.selected_box == self.inventory_box:
                     if len(self.selected_box.options) > 0:
                         self.selected_box = self.info_box
+                        self.selected_box.item = list(self.selected_box.parent.options)[self.selected_box.parent.index]
                         self.selected_box.show_cursor = True
                         self.selected_box.show = True
 
+                elif self.selected_box == self.info_box:
+                    if self.selected_box.get_selected_item().display_name == "Use":
+                        self.selected_box = self.inventory_box
+                        self.selected_box.show = True
+                        self.selected_box.parent.show_cursor = False
+                        if len(self.selected_box.options) > 0:
+                            self.selected_box.show_cursor = True
+
+                    elif self.selected_box.get_selected_item().display_name == "Remove":
+                        self.player.inventory.items.pop(self.selected_box.item.dict_name)
+
+                        self.go_back()
+
+                        if len(self.selected_box.options) == 0:
+                            self.go_back()
+
             elif event.key == pygame.K_LEFT:
                 if self.selected_box != self.menu_box:
-                    self.selected_box.show_cursor = False
-                    self.selected_box.parent.show_cursor = True
-                    self.game.game_states.get(GameState.RUNNING).render(None)
-                    self.selected_box.reset_box()
-                    self.selected_box = self.selected_box.parent
-                    self.render()
+                    self.go_back()
 
         elif event.type == pygame.KEYUP:
             pass
+
+    def go_back(self):
+        self.selected_box.show_cursor = False
+        self.selected_box.parent.show_cursor = True
+        self.game.game_states.get(GameState.RUNNING).render(None)
+        self.selected_box.reset_box()
+        self.selected_box = self.selected_box.parent
+        self.render()
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -310,7 +333,8 @@ class InfoBox(ChoosingBox):
 
         self.player = player
         self.parent = parent
-        self.font = pygame.font.Font("fonts/DeterminationMono.ttf", self.step // 2)
+        self.item = None
+        self.font = pygame.font.Font("fonts/DeterminationMono.ttf", self.step)
 
         self.show = False
 
@@ -320,13 +344,23 @@ class InfoBox(ChoosingBox):
         self.cursor.rect.x, self.cursor.rect.y = self.cursor_pos_og.xy
 
     def render_text(self, surface):
-        player_name = self.font.render(self.player.name, False, (255, 255, 255))
-        player_lvl = self.font.render(f"LVL:{self.player.lvl}", False, (255, 255, 255))
-        player_hp_stats = self.font.render(f"HP: {self.player.hp}/{self.player.max_hp}", False, (255, 255, 255))
-
-        surface.blit(player_name, (self.bg.rect.x + self.margin.x * 0.5, self.bg.rect.y + self.step // 2))
-        surface.blit(player_lvl, (self.bg.rect.x + self.margin.x * 0.5, self.bg.rect.y + self.step // 2 * 2))
-        surface.blit(player_hp_stats, (self.bg.rect.x + self.margin.x * 0.5, self.bg.rect.y + self.step // 2 * 3))
+        start_at = self.bg.rect.x + self.margin.x * 0.5
+        end_at = self.bg.rect.x + self.bg.rect.w - self.margin.x * 0.5
+        w = end_at - start_at
+        cur_w = 0
+        x = 0
+        y = 0
+        # print(self.item.desc.split(" "))
+        for word in self.item.desc.split(" "):
+            word_text = self.font.render(word + " ", False, (255, 255, 255))
+            cur_w += word_text.get_rect().w
+            x = cur_w - word_text.get_rect().w
+            if cur_w >= w:
+                y += 1
+                cur_w = word_text.get_rect().w
+                x = 0
+            surface.blit(word_text, (self.bg.rect.x + self.margin.x * 0.5 + x,
+                                     self.bg.rect.y + self.step // 2 + self.step * y))
 
     def render(self, surface):
         if self.show:

@@ -1,6 +1,6 @@
 from functools import partial
 from os import spawnle
-from sprite import Sprite
+from sprite import Sprite, Item
 import pygame
 import config
 
@@ -99,14 +99,25 @@ class Inventory:
     def __init__(self, max_len=16):
         self.items = dict()
         self.max_len = max_len
+        self.id = 0
+
+    def create_item(self, main_image_path, display_name="Unknown",
+                 desc="Item without a description", x=0, y=0, center=False, scale=False,
+                 render_collision_box=False, margin=vec(30, 15), step=30):
+        self.id += 1
+        dict_name = f"{display_name} {self.id}"
+        item = Item(main_image_path, display_name, dict_name, self.id, desc,
+                    x, y, center, scale, render_collision_box,
+                    margin, step)
+
+        return item
 
     def check_if_can_add(self):
         return len(self.items) + 1 <= self.max_len
 
     def add_item(self, item):
         if self.check_if_can_add():
-            count = len([i for i in self.items if item.display_name in i])
-            self.items[f"{item.display_name} {count}"] = item
+            self.items[item.dict_name] = item
 
     def remove_item(self, item_name):
         self.items.pop(item_name)

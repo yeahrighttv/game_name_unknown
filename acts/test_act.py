@@ -54,8 +54,13 @@ class EastHallway(RoomBorder):
 
         self.npcs["sans"] = Sans(x=300, y=-10, center=True)
 
-        self.items["Basket"] = Item("imgs/basket.png", "Basket", x=-100, y=0, center=True)
-        self.items["Chest"] = Item("imgs/chest2.png", "Chest", x=100, y=0, center=True)
+        basket = self.player.inventory.create_item("imgs/basket.png", "Basket", "A basket you can pick up.",
+                                                   x=-100, y=0, center=True)
+        chest = self.player.inventory.create_item("imgs/chest2.png", "Chest",
+                                                  "A chest you can pick up. Nice thing this.",
+                                                  x=100, y=0, center=True)
+        self.items[basket.dict_name] = basket
+        self.items[chest.dict_name] = chest
 
 
 class WestRoom(Room):
@@ -71,8 +76,13 @@ class WestRoom(Room):
         self.entrances.get("kitchen").set_shape(32, 2)
         self.entrances.get("kitchen").set_pos(-110, -118)
 
-        self.items["Basket"] = Item("imgs/basket.png", "Basket", x=-100, y=0, center=True)
-        self.items["Chest"] = Item("imgs/chest2.png", "Chest", x=100, y=0, center=True)
+        basket = self.player.inventory.create_item("imgs/basket.png", "Basket", "A basket you can pick up.",
+                                                   x=-100, y=0, center=True)
+        chest = self.player.inventory.create_item("imgs/chest2.png", "Chest",
+                                                  "A chest you can pick up. Nice thing this.",
+                                                  x=100, y=0, center=True)
+        self.items[basket.dict_name] = basket
+        self.items[chest.dict_name] = chest
 
 
 class EntranceRoom(Room):
@@ -96,8 +106,13 @@ class EntranceRoom(Room):
         self.update_entrance("east_hallway", EastEntrance(self.player, "east_hallway"))
         self.entrances.get("east_hallway").set_default_east_lower()
 
-        self.items["Basket"] = Item("imgs/basket.png", "Basket", x=-100, y=0, center=True)
-        self.items["Chest"] = Item("imgs/chest2.png", "Chest", x=100, y=0, center=True)
+        basket = self.player.inventory.create_item("imgs/basket.png", "Basket", "A basket you can pick up.",
+                                                   x=-100, y=0, center=True)
+        chest = self.player.inventory.create_item("imgs/chest2.png", "Chest",
+                                                  "A chest you can pick up. Nice thing this.",
+                                                  x=100, y=0, center=True)
+        self.items[basket.dict_name] = basket
+        self.items[chest.dict_name] = chest
 
 
 class TestHouse(House):
@@ -128,8 +143,13 @@ class TestScene1(MapScene):
         step = 20
         start_at_y = 1350
         for i, y in enumerate(range(start_at_y, start_at_y - step * amount, -step)):
-            self.items[f"Basket {i}"] = Item("imgs/basket.png", "Basket", f"Basket {i}", x=-4680, y=y, center=True)
-            self.items[f"Chest {i}"] = Item("imgs/chest2.png", "Chest", f"Chest {i}", x=-4520, y=y, center=True)
+            basket = self.player.inventory.create_item("imgs/basket.png", "Basket", "A basket you can pick up.",
+                                                       x=-4680, y=y, center=True)
+            chest = self.player.inventory.create_item("imgs/chest2.png", "Chest",
+                                                      "A chest you can pick up. Nice thing this.",
+                                                      x=-4520, y=y, center=True)
+            self.items[basket.dict_name] = basket
+            self.items[chest.dict_name] = chest
 
 
 
