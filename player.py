@@ -100,4 +100,4 @@ class Inventory:
 
     def render_inventory(self, surface, start_at):
         for i, item in enumerate(self.items.values()):
-            item.render_item_inv(surface, start_at, i)
+            item.render_item_in_box(surface, start_at, i)

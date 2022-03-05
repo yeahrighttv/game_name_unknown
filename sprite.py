@@ -255,16 +255,15 @@ class DialogOption(DialogBox):
 
 class Item(Sprite):
     def __init__(self, main_image_path, display_name="Unknown", x=0, y=0, center=False, scale=False,
-                 render_collision_box=False):
+                 render_collision_box=False, margin=vec(30, 30), step=30):
         super().__init__(main_image_path, x, y, center, scale, render_collision_box)
 
+        self.margin = margin
+        self.step = step
+
         self.display_name = display_name
-        self.step = 40
-        self.margin = 10
         self.font = pygame.font.Font("fonts/DeterminationMono.ttf", self.step)
         self.text = self.font.render(self.display_name, False, (255, 255, 255))
 
-    def render_item_inv(self, surface, start_at, i=0):
-        surface.blit(self.text, (start_at.x + self.margin, start_at.y + self.step * i))
-
-
+    def render_item_in_box(self, surface, start_at, i=0):
+        surface.blit(self.text, (start_at.x + self.margin.x, start_at.y + self.margin.y + self.step * i))

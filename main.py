@@ -15,7 +15,6 @@ def main():
 
     clock = pygame.time.Clock()
 
-
     time_elapsed = 0
 
     while game.game_state != GameState.ENDED:
