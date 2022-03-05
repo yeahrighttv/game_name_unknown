@@ -251,31 +251,3 @@ class DialogOption(DialogBox):
             else:
                 if self.cur_animation_value > 0:
                     self.cur_animation_value -= 1
-
-
-class Item(Sprite):
-    def __init__(self, main_image_path, display_name="Unknown", dict_name="Unknown 0", id=0,
-                 desc="Item without a description", x=0, y=0, center=False, scale=False,
-                 render_collision_box=False, margin=vec(30, 15), step=30, usable=False):
-        super().__init__(main_image_path, x, y, center, scale, render_collision_box)
-
-        self.margin = margin
-        self.step = step
-
-        self.display_name = display_name
-        self.dict_name = dict_name
-        self.id = id
-        self.desc = desc
-
-        self.font = pygame.font.Font("fonts/DeterminationMono.ttf", self.step)
-
-        self.name_text = self.font.render(self.display_name, False, (255, 255, 255))
-        self.desc_text = self.font.render(self.desc, False, (255, 255, 255))
-
-        self.usable = usable
-
-    def render_item_in_box(self, surface, start_at, i=0):
-        surface.blit(self.name_text, (start_at.x + self.margin.x, start_at.y + self.margin.y + self.step * i))
-
-    def use(self, player):
-        print("use")

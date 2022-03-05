@@ -3,7 +3,7 @@ import pygame
 import config
 from running_game_hierarchy import Act, MapScene, House, Room, Entrance, ReturnEntrance, EastEntrance, NorthEntrance, \
     SouthEntrance, WestEntrance, RoomFollow, RoomBorder
-from sprite import Sprite, Sans, Map, Bear, Item
+from sprite import Sprite, Sans, Map, Bear
 
 
 class Kitchen(Room):
@@ -138,6 +138,15 @@ class TestScene1(MapScene):
         self.enter()
 
         self.npcs["sans"] = Sans(x=-4600, y=900, center=True)
+
+        potion = self.player.inventory.create_item("imgs/potion_2.png", "Potion", "A potion which restores 7HP.",
+                                                   x=-4520, y=1380, center=True, usable=True,
+                                                   heal=7, type="HealPotion")
+        potion_2 = self.player.inventory.create_item("imgs/potion_2.png", "Potion", "A potion which restores 2HP.",
+                                                     x=-4680, y=1380, center=True, usable=True,
+                                                     heal=2, type="HealPotion")
+        self.items[potion.dict_name] = potion
+        self.items[potion_2.dict_name] = potion_2
 
         amount = 10
         step = 20

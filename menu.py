@@ -4,7 +4,7 @@ import config
 from game_state import GameState
 from player import Inventory
 from program_states import AbstractState
-from sprite import DialogBox, Item
+from sprite import DialogBox
 
 vec = pygame.math.Vector2
 
