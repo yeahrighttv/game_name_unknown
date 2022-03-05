@@ -26,7 +26,7 @@ class Menu(AbstractState):
         menu_rect.x, menu_rect.y = inv_rect.x - menu_rect.w - margin, inv_rect.y + inv_rect.h - menu_rect.h
 
         info_rect = pygame.image.load("imgs/Assets/info_box.png").get_rect()
-        info_rect.x, info_rect.y = inv_rect.x + menu_rect.w + margin, inv_rect.y + inv_rect.h - menu_rect.h
+        info_rect.x, info_rect.y = inv_rect.x + inv_rect.w + margin, inv_rect.y + inv_rect.h - info_rect.h
 
         # Menu Box
         menu_margin = vec(25, 90)
@@ -54,7 +54,7 @@ class Menu(AbstractState):
                                 [MenuItem("Items", menu_margin, menu_step), MenuItem("Exit", menu_margin, menu_step)],
                                 self.player,
                                 x=info_rect.x,
-                                y=inv_rect.y,
+                                y=info_rect.y,
                                 margin=menu_margin,
                                 step=menu_step,
                                 parent=self.inventory_box)
@@ -74,7 +74,7 @@ class Menu(AbstractState):
     def render(self):
         self.menu_box.render(self.screen)
         self.inventory_box.render(self.screen)
-        self.menu_box.render(self.screen)
+        self.info_box.render(self.screen)
 
         pygame.transform.scale(self.screen, self.og_screen_size * self.screen_scaling_factor)
 
@@ -95,7 +95,7 @@ class Menu(AbstractState):
                         self.selected_box = self.inventory_box
                         self.selected_box.show = True
                         self.selected_box.parent.show_cursor = False
-                        if len(self.inventory_box.options) > 0:
+                        if len(self.selected_box.options) > 0:
                             self.selected_box.show_cursor = True
 
                     elif self.selected_box.get_selected_item().display_name == "Exit":
@@ -107,13 +107,19 @@ class Menu(AbstractState):
                         self.game.change_state(GameState.RUNNING)
 
                 elif self.selected_box == self.inventory_box:
-                    pass
+                    if len(self.selected_box.options) > 0:
+                        self.selected_box = self.info_box
+                        self.selected_box.show_cursor = True
+                        self.selected_box.show = True
 
             elif event.key == pygame.K_LEFT:
                 if self.selected_box != self.menu_box:
-                    self.selected_box.show = False
+                    self.selected_box.show_cursor = False
                     self.selected_box.parent.show_cursor = True
+                    self.game.game_states.get(GameState.RUNNING).render(None)
+                    self.selected_box.reset_box()
                     self.selected_box = self.selected_box.parent
+                    self.render()
 
         elif event.type == pygame.KEYUP:
             pass
