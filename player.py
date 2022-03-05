@@ -103,3 +103,10 @@ class Player(Sprite):
                          self.rect.h)
 
 
+class Inventory():
+    def __init__(self):
+
+        self.items = dict()
+
+    def add_item(self):
+        pass

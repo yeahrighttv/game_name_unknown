@@ -6,10 +6,10 @@ from program_states import AbstractState
 
 
 class Menu(AbstractState):
-    def __init__(self, screen, game):
+    def __init__(self, screen, game, player):
         super().__init__(screen, game)
 
-        self.set_up()
+        self.player = player
         self.menu = pygame.image.load('imgs/Assets/menu.png')
         self.menu_rect = self.menu.get_rect()
         self.menu_rect.center = (150 * .85, (236 * 3) * .4)
@@ -21,6 +21,7 @@ class Menu(AbstractState):
         self.cursor_rect = self.cursor.get_rect()
         self.cursor_posy = self.menu_rect.y + 98
         self.cursor_rect.x, self.cursor_rect.y = self.menu_rect.x + 10, self.cursor_posy
+        self.set_up()
 
     def set_up(self):
         self.test_dct = {

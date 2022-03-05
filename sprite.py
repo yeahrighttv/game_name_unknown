@@ -239,3 +239,14 @@ class DialogOption(DialogBox):
                 if self.cur_animation_value > 0:
                     self.cur_animation_value -= 1
 
+
+class Item(Sprite):
+    def __init__(self, main_image_path, display_name="Unknown", x=0, y=0, center=False, scale=False, render_collision_box=False):
+        super().__init__(main_image_path, x, y, center, scale, render_collision_box)
+
+        self.display_name = display_name
+
+    def render_item_inv(self):
+        pass
+
+
