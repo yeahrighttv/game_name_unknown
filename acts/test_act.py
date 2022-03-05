@@ -2,7 +2,7 @@ import pygame
 
 import config
 from running_game_hierarchy import Act, MapScene, House, Room, Entrance, ReturnEntrance, EastEntrance, NorthEntrance, \
-    SouthEntrance, WestEntrance
+    SouthEntrance, WestEntrance, RoomFollow, RoomBorder
 from sprite import Sprite, Sans, Map
 
 
@@ -17,30 +17,50 @@ class Kitchen(Room):
         self.entrances.get("west_room").set_shape(32, 2)
         self.entrances.get("west_room").set_pos(-80, 116)
 
-        self.update_entrance("secret_1", NorthEntrance(self.player, "west_room"))
-        self.update_entrance("secret_2", WestEntrance(self.player, "west_room"))
-        self.update_entrance("secret_3", EastEntrance(self.player, "west_room"))
+        # self.update_entrance("secret_1", NorthEntrance(self.player, "west_room"))
+        # self.update_entrance("secret_2", WestEntrance(self.player, "west_room"))
+        # self.update_entrance("secret_3", EastEntrance(self.player, "west_room"))
 
 
-class EastHallway(Room):
+class EastHallway(RoomBorder):
+    def update(self, dt):
+        self.dt = dt
+
+        self.camera.set_method("border")
+        borders_rect = self.objects.get("bg").rect
+        self.camera.mode.set_borders(borders_rect.x,
+                                     borders_rect.y,
+                                     borders_rect.x + borders_rect.w,
+                                     borders_rect.y + borders_rect.h + 50)
+
+        self.check_for_npc_collisions()
+
+        for entrance in self.entrances.values():
+            if self.player.rect.colliderect(entrance.rect):
+                entrance.action()
+                self.parent.set_room_by_name(entrance.destination_name)
+                if self.parent.room in self.parent.rooms:
+                    self.parent.rooms.get(self.parent.room).enter_room(self.room_name)
+
     def set_up(self):
-        self.default_entrance = "entrance room"
+        self.default_entrance = "entrance_room"
 
         self.objects["bg"] = Map("imgs/Assets/EastHallwaydecored.png", center=True)
         self.objects["player"] = self.player
 
         self.update_entrance("entrance_room", WestEntrance(self.player, "entrance_room"))
-        self.entrances.get("entrance_room").set_shape(2,32)
-        self.entrances.get("entrance_room").set_pos(-373, 0)
+        self.entrances.get("entrance_room").set_default_west_center_lower()
+        self.entrances.get("entrance_room").set_pos(self.objects.get("bg").rect.x,
+                                                    self.entrances.get("entrance_room").rect.y)
 
-        self.update_entrance("secret_1", SouthEntrance(self.player, "entrance_room"))
+        # self.update_entrance("secret_1", SouthEntrance(self.player, "entrance_room"))
 
         self.npcs["sans"] = Sans(x=300, y=-10, center=True)
 
 
 class WestRoom(Room):
     def set_up(self):
-        self.default_entrance = "entrance room"
+        self.default_entrance = "entrance_room"
         self.objects["bg"] = Map("imgs/Assets/Room_West_Floor.png", center=True)
         self.objects["player"] = self.player
 

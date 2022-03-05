@@ -154,8 +154,11 @@ class MapScene(GeneralScene):
     def update(self, dt):
         self.dt = dt
 
-        self.camera.set_method("follow")
-
+        self.camera.set_method("border")
+        self.camera.mode.set_borders(self.map.rect.x,
+                                     self.map.rect.y,
+                                     self.map.rect.x + self.map.rect.w,
+                                     self.map.rect.y + self.map.rect.h)
 
         if self.cur_indoors_area in self.indoors_areas.keys():
             self.indoors_areas.get(self.cur_indoors_area).update(dt)
@@ -199,7 +202,6 @@ class House(PlayingField):
     def enter(self):
         self.room = self.entry_room
         self.rooms.get(self.room).enter_room()
-
 
         self.play_music()
 
@@ -290,7 +292,8 @@ class Room(PlayingField):
     def update(self, dt):
         self.dt = dt
 
-        self.camera.set_method("follow")
+        self.camera.set_method("stand")
+        self.camera.mode.set_default_offset()
 
         self.check_for_npc_collisions()
 
@@ -306,7 +309,43 @@ class Room(PlayingField):
             if self.player.rect.colliderect(npc.rect):
                 self.game.change_state(GameState.FIGHT)
                 self.game.current_state_obj.start(npc, self.parent)
-                # self.parent.music.stop()
+
+
+class RoomFollow(Room):
+    def update(self, dt):
+        self.dt = dt
+
+        self.camera.set_method("follow")
+
+        self.check_for_npc_collisions()
+
+        for entrance in self.entrances.values():
+            if self.player.rect.colliderect(entrance.rect):
+                entrance.action()
+                self.parent.set_room_by_name(entrance.destination_name)
+                if self.parent.room in self.parent.rooms:
+                    self.parent.rooms.get(self.parent.room).enter_room(self.room_name)
+
+
+class RoomBorder(Room):
+    def update(self, dt):
+        self.dt = dt
+
+        self.camera.set_method("border")
+        borders_rect = self.objects.get("bg").rect
+        self.camera.mode.set_borders(borders_rect.x,
+                                     borders_rect.y,
+                                     borders_rect.x + borders_rect.w,
+                                     borders_rect.y + borders_rect.h)
+
+        self.check_for_npc_collisions()
+
+        for entrance in self.entrances.values():
+            if self.player.rect.colliderect(entrance.rect):
+                entrance.action()
+                self.parent.set_room_by_name(entrance.destination_name)
+                if self.parent.room in self.parent.rooms:
+                    self.parent.rooms.get(self.parent.room).enter_room(self.room_name)
 
 
 class Entrance:

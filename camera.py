@@ -94,5 +94,10 @@ class Stand(CamScroll):
         self.camera.offset_float.y += (self.player.rect.y - self.camera.offset_float.y + self.camera.CONST.y)
         self.camera.offset.x, self.camera.offset.y = int(self.camera.offset_float.x), int(self.camera.offset_float.y)
 
+    def set_default_offset(self):
+        self.camera.offset_float.x = self.camera.CONST.x
+        self.camera.offset_float.y = self.camera.CONST.y
+        self.camera.offset.x, self.camera.offset.y = int(self.camera.offset_float.x), int(self.camera.offset_float.y)
+
     def scroll(self):
         pass
