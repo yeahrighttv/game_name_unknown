@@ -5,6 +5,8 @@ from game_state import GameState
 from program_states import AbstractState
 from sprite import DialogBox
 
+vec = pygame.math.Vector2
+
 
 class Menu(AbstractState):
     def __init__(self, screen, game, player):
@@ -51,7 +53,7 @@ class Menu(AbstractState):
 
         if self.show_items:
             self.inventory_box.render(self.screen)
-            self.player.inventory.render_inventory()
+            self.player.inventory.render_inventory(self.screen, vec(self.inventory_box.rect.x, self.inventory_box.rect.y))
 
         pygame.transform.scale(self.screen, self.og_screen_size * self.screen_scaling_factor)
 

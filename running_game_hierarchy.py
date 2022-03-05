@@ -135,6 +135,9 @@ class MapScene(GeneralScene):
             for object in self.objects.values():
                 object.render(bg_surface, self.camera.offset, self.dt)
 
+            for item in self.items.values():
+                item.render(bg_surface, self.camera.offset, self.dt)
+
             for npc in self.npcs.values():
                 npc.render(bg_surface, self.camera.offset, self.dt)
 
@@ -298,6 +301,9 @@ class Room(PlayingField):
 
         for entrance in self.entrances.values():
             entrance.render(bg_surface, self.camera.offset)
+
+        for item in self.items.values():
+            item.render(bg_surface, self.camera.offset, self.dt)
 
         self.player.render(bg_surface, self.camera.offset, self.dt)
 

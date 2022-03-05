@@ -3,7 +3,7 @@ import pygame
 import config
 from running_game_hierarchy import Act, MapScene, House, Room, Entrance, ReturnEntrance, EastEntrance, NorthEntrance, \
     SouthEntrance, WestEntrance, RoomFollow, RoomBorder
-from sprite import Sprite, Sans, Map, Bear
+from sprite import Sprite, Sans, Map, Bear, Item
 
 
 class Kitchen(Room):
@@ -114,6 +114,8 @@ class TestScene1(MapScene):
         self.enter()
 
         self.npcs["sans"] = Sans(x=-4600, y=900, center=True)
+        self.items["Basket"] = Item("imgs/basket.png", "Basket", x=-4680, y=1350, center=True)
+        self.items["Chest"] = Item("imgs/chest2.png", "Chest", x=-4520, y=1350, center=True)
 
 
 # class TestScene2(MapScene):

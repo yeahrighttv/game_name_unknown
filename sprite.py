@@ -259,10 +259,12 @@ class Item(Sprite):
         super().__init__(main_image_path, x, y, center, scale, render_collision_box)
 
         self.display_name = display_name
-        self.font = pygame.font.Font("fonts/DeterminationMono.ttf", 20)
-        self.text = self.font.render(self.display_name, False, (0, 0, 0))
+        self.step = 40
+        self.margin = 10
+        self.font = pygame.font.Font("fonts/DeterminationMono.ttf", self.step)
+        self.text = self.font.render(self.display_name, False, (255, 255, 255))
 
-    def render_item_inv(self):
-        pass
+    def render_item_inv(self, surface, start_at, i=0):
+        surface.blit(self.text, (start_at.x + self.margin, start_at.y + self.step * i))
 
 

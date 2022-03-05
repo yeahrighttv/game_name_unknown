@@ -98,6 +98,6 @@ class Inventory:
     def remove_item(self, item_name):
         self.items.pop(item_name)
 
-    def render_inventory(self):
+    def render_inventory(self, surface, start_at):
         for i, item in enumerate(self.items.values()):
-            item.render_item_inv(i)
+            item.render_item_inv(surface, start_at, i)
