@@ -17,15 +17,16 @@ class Menu(AbstractState):
 
         screen_size = self.og_screen_size * self.screen_scaling_factor
 
-        # Inventory box
-        self.inventory_box = InventoryBox("imgs/inventory_box.png",
-                                         self.player.inventory.items.values(),
-                                         player=self.player,
-                                         screen_size=screen_size,
-                                         margin=vec(30, 16),
-                                         step=29,
-                                         custom_pos=True,
-                                         center=True)
+        inv_rect = pygame.image.load("imgs/Assets/inventory_box.png").get_rect()
+        inv_rect.x, inv_rect.y = screen_size.x // 2 - inv_rect.w // 2, screen_size.y // 2 - inv_rect.h // 2
+
+        margin = 10
+
+        menu_rect = pygame.image.load("imgs/Assets/menu_empty.png").get_rect()
+        menu_rect.x, menu_rect.y = inv_rect.x - menu_rect.w - margin, inv_rect.y + inv_rect.h - menu_rect.h
+
+        info_rect = pygame.image.load("imgs/Assets/info_box.png").get_rect()
+        info_rect.x, info_rect.y = inv_rect.x + menu_rect.w + margin, inv_rect.y + inv_rect.h - menu_rect.h
 
         # Menu Box
         menu_margin = vec(25, 90)
@@ -33,19 +34,33 @@ class Menu(AbstractState):
         self.menu_box = MenuBox("imgs/Assets/menu_empty.png",
                                 [MenuItem("Items", menu_margin, menu_step), MenuItem("Exit", menu_margin, menu_step)],
                                 self.player,
-                                screen_size=screen_size,
+                                x=menu_rect.x,
+                                y=menu_rect.y,
                                 margin=menu_margin,
-                                offset=vec(self.inventory_box.bg.rect.x - 10,
-                                           self.inventory_box.bg.rect.y + self.inventory_box.bg.rect.h),
-                                custom_pos=True,
-                                center=False,
                                 step=menu_step)
+
+        # Inventory box
+        self.inventory_box = InventoryBox("imgs/Assets/inventory_box.png",
+                                          self.player.inventory.items.values(),
+                                          self.player,
+                                          x=inv_rect.x,
+                                          y=inv_rect.y,
+                                          margin=vec(30, 16),
+                                          step=29,
+                                          parent=self.menu_box)
+
+        # Info box
+        self.info_box = InfoBox("imgs/Assets/info_box.png",
+                                [MenuItem("Items", menu_margin, menu_step), MenuItem("Exit", menu_margin, menu_step)],
+                                self.player,
+                                x=info_rect.x,
+                                y=inv_rect.y,
+                                margin=menu_margin,
+                                step=menu_step,
+                                parent=self.inventory_box)
 
         # Set the selected box
         self.selected_box = self.menu_box
-
-        # Variables for the cursor
-        self.show_items = False
 
         self.set_up()
 
@@ -57,13 +72,9 @@ class Menu(AbstractState):
         }
 
     def render(self):
-        # self.screen.blit(self.menu, self.menu_rect)
-        # self.screen.blit(self.cursor, self.cursor_rect)
         self.menu_box.render(self.screen)
-
-        if self.show_items:
-            self.inventory_box.render(self.screen)
-            self.player.inventory.render_inventory(self.screen, vec(self.inventory_box.bg.rect.x, self.inventory_box.bg.rect.y))
+        self.inventory_box.render(self.screen)
+        self.menu_box.render(self.screen)
 
         pygame.transform.scale(self.screen, self.og_screen_size * self.screen_scaling_factor)
 
@@ -81,17 +92,16 @@ class Menu(AbstractState):
             elif event.key == pygame.K_RETURN or event.key == pygame.K_RIGHT:
                 if self.selected_box == self.menu_box:
                     if self.selected_box.get_selected_item().display_name == "Items":
-                        self.show_items = True
                         self.selected_box = self.inventory_box
-                        self.menu_box.show_cursor = False
+                        self.selected_box.show = True
+                        self.selected_box.parent.show_cursor = False
                         if len(self.inventory_box.options) > 0:
-                            self.inventory_box.show_cursor = True
+                            self.selected_box.show_cursor = True
 
                     elif self.selected_box.get_selected_item().display_name == "Exit":
-                        self.show_items = False
-
                         self.menu_box.reset_box()
                         self.inventory_box.reset_box()
+                        self.info_box.reset_box()
                         self.selected_box = self.menu_box
 
                         self.game.change_state(GameState.RUNNING)
@@ -100,10 +110,10 @@ class Menu(AbstractState):
                     pass
 
             elif event.key == pygame.K_LEFT:
-                if self.selected_box == self.inventory_box:
-                    self.show_items = False
-                    self.menu_box.show_cursor = True
-                    self.selected_box = self.menu_box
+                if self.selected_box != self.menu_box:
+                    self.selected_box.show = False
+                    self.selected_box.parent.show_cursor = True
+                    self.selected_box = self.selected_box.parent
 
         elif event.type == pygame.KEYUP:
             pass
@@ -116,12 +126,14 @@ class Menu(AbstractState):
             # Check if key is pressed
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    if self.selected_box == self.inventory_box:
-                        self.show_items = False
-                        self.menu_box.show_cursor = True
-                        self.selected_box = self.menu_box
-                    else:
-                        self.game.change_state(GameState.ENDED)
+                    # if self.selected_box == self.inventory_box:
+                    #     self.show_items = False
+                    #     self.menu_box.show_cursor = True
+                    #     self.selected_box = self.menu_box
+                    # else:
+                    #     self.game.change_state(GameState.ENDED)
+
+                    self.game.change_state(GameState.ENDED)
 
                 self.test_dct.get(event.key, lambda x, y: None)(self.og_screen_size, self.screen_scaling_factor)
 
@@ -129,8 +141,7 @@ class Menu(AbstractState):
 
 
 class ChoosingBox:
-    def __init__(self, bg_path, options, x=0, y=0, screen_size=vec(0, 0), margin=vec(0, 0), offset=vec(0, 0),
-                 custom_pos=False, center=False, step=30):
+    def __init__(self, bg_path, options, x=0.0, y=0.0, margin=vec(0, 0), step=30):
         super().__init__()
 
         self.options = options
@@ -141,12 +152,6 @@ class ChoosingBox:
         self.bg = DialogBox(bg_path)
         self.bg.rect.x = x
         self.bg.rect.y = y
-
-        if custom_pos:
-            center_factor = 0.5 if center else 0
-            bg_factor = 0.5 if center else 1
-            self.bg.rect.x = screen_size.x * center_factor - self.bg.rect.w * bg_factor + offset.x
-            self.bg.rect.y = screen_size.y * center_factor - self.bg.rect.h * bg_factor + offset.y
 
         self.cursor = DialogBox('imgs/Assets/cursor.png')
         self.cursor.rect.x = self.bg.rect.x + margin.x - self.step // 2 - self.cursor.rect.w // 2
@@ -182,13 +187,47 @@ class ChoosingBox:
         return step
 
 
-class InventoryBox(ChoosingBox):
-    def __init__(self, bg_path, options, player, x=0, y=0, screen_size=vec(0, 0), margin=vec(0, 0), offset=vec(0, 0),
-                 custom_pos=False, center=False, step=30):
-        super().__init__(bg_path, options, x, y, screen_size, margin, offset, custom_pos, center, step)
+class MenuBox(ChoosingBox):
+    def __init__(self, bg_path, options, player, x=0, y=0, margin=vec(0, 0), step=30):
+        super().__init__(bg_path, options, x, y, margin, step)
 
         self.player = player
+        self.font = pygame.font.Font("fonts/DeterminationMono.ttf", self.step // 2)
+
+    def render_text(self, surface):
+        player_name = self.font.render(self.player.name, False, (255, 255, 255))
+        player_lvl = self.font.render(f"LVL:{self.player.lvl}", False, (255, 255, 255))
+        player_hp_stats = self.font.render(f"HP: {self.player.hp}/{self.player.max_hp}", False, (255, 255, 255))
+
+        surface.blit(player_name, (self.bg.rect.x + self.margin.x * 0.5, self.bg.rect.y + self.step // 2))
+        surface.blit(player_lvl, (self.bg.rect.x + self.margin.x * 0.5, self.bg.rect.y + self.step // 2 * 2))
+        surface.blit(player_hp_stats, (self.bg.rect.x + self.margin.x * 0.5, self.bg.rect.y + self.step // 2 * 3))
+
+    def render(self, surface):
+        self.bg.render(surface)
+
+        self.render_text(surface)
+
+        if self.show_cursor:
+            self.cursor.render(surface)
+        for i, item in enumerate(self.options):
+            item.render_item_in_box(surface, vec(self.bg.rect.x, self.bg.rect.y), i)
+
+
+class InventoryBox(ChoosingBox):
+    def __init__(self, bg_path, options, player, parent, x=0, y=0, margin=vec(0, 0), step=30):
+        super().__init__(bg_path, options, x, y, margin, step)
+
+        self.player = player
+        self.parent = parent
         self.font = pygame.font.Font("fonts/DeterminationMono.ttf", self.step)
+
+        self.show = False
+
+    def reset_box(self):
+        self.show = False
+        self.index = 0
+        self.cursor.rect.x, self.cursor.rect.y = self.cursor_pos_og.xy
 
     def render_text(self, surface):
         player_lvl_and_xp = self.font.render(f"LVL: {self.player.lvl} XP: {self.player.xp}/{self.player.max_xp}",
@@ -248,23 +287,31 @@ class InventoryBox(ChoosingBox):
                                          outer_box_rect.h - inner_box_margin * 2))
 
     def render(self, surface):
-        self.bg.render(surface)
+        if self.show:
+            self.bg.render(surface)
 
-        self.render_text(surface)
+            self.render_text(surface)
 
-        if self.show_cursor:
-            self.cursor.render(surface)
-        for i, item in enumerate(self.options):
-            item.render_item_in_box(surface, vec(self.bg.rect.x, self.bg.rect.y), i)
+            if self.show_cursor:
+                self.cursor.render(surface)
+            for i, item in enumerate(self.options):
+                item.render_item_in_box(surface, vec(self.bg.rect.x, self.bg.rect.y), i)
 
 
-class MenuBox(ChoosingBox):
-    def __init__(self, bg_path, options, player, x=0, y=0, screen_size=vec(0, 0), margin=vec(0, 0), offset=vec(0, 0),
-                 custom_pos=False, center=False, step=30):
-        super().__init__(bg_path, options, x, y, screen_size, margin, offset, custom_pos, center, step)
+class InfoBox(ChoosingBox):
+    def __init__(self, bg_path, options, player, parent, x=0, y=0, margin=vec(0, 0), step=30):
+        super().__init__(bg_path, options, x, y, margin, step)
 
         self.player = player
+        self.parent = parent
         self.font = pygame.font.Font("fonts/DeterminationMono.ttf", self.step // 2)
+
+        self.show = False
+
+    def reset_box(self):
+        self.show = False
+        self.index = 0
+        self.cursor.rect.x, self.cursor.rect.y = self.cursor_pos_og.xy
 
     def render_text(self, surface):
         player_name = self.font.render(self.player.name, False, (255, 255, 255))
@@ -276,14 +323,15 @@ class MenuBox(ChoosingBox):
         surface.blit(player_hp_stats, (self.bg.rect.x + self.margin.x * 0.5, self.bg.rect.y + self.step // 2 * 3))
 
     def render(self, surface):
-        self.bg.render(surface)
+        if self.show:
+            self.bg.render(surface)
 
-        self.render_text(surface)
+            self.render_text(surface)
 
-        if self.show_cursor:
-            self.cursor.render(surface)
-        for i, item in enumerate(self.options):
-            item.render_item_in_box(surface, vec(self.bg.rect.x, self.bg.rect.y), i)
+            if self.show_cursor:
+                self.cursor.render(surface)
+            for i, item in enumerate(self.options):
+                item.render_item_in_box(surface, vec(self.bg.rect.x, self.bg.rect.y), i)
 
 
 class MenuItem:
