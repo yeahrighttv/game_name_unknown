@@ -100,7 +100,8 @@ class Inventory:
         self.items = dict()
 
     def add_item(self, item):
-        self.items[item.display_name] = item
+        count = len([i for i in self.items if item.display_name in i])
+        self.items[f"{item.display_name} {count}"] = item
 
     def remove_item(self, item_name):
         self.items.pop(item_name)

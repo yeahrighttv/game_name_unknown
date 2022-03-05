@@ -90,6 +90,10 @@ class EntranceRoom(Room):
         self.update_entrance("east_hallway", EastEntrance(self.player, "east_hallway"))
         self.entrances.get("east_hallway").set_default_east_lower()
 
+        self.items["Basket"] = Item("imgs/basket.png", "Basket", x=-100, y=0, center=True)
+        self.items["Chest"] = Item("imgs/chest2.png", "Chest", x=100, y=0, center=True)
+        print(self.items)
+
 
 class TestHouse(House):
     def set_up(self):
@@ -116,6 +120,8 @@ class TestScene1(MapScene):
         self.npcs["sans"] = Sans(x=-4600, y=900, center=True)
         self.items["Basket"] = Item("imgs/basket.png", "Basket", x=-4680, y=1350, center=True)
         self.items["Chest"] = Item("imgs/chest2.png", "Chest", x=-4520, y=1350, center=True)
+        print(self.items)
+
 
 
 # class TestScene2(MapScene):

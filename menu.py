@@ -223,7 +223,8 @@ class InventoryBox(ChoosingBox):
                                         margin=vec(10, 2),
                                         inner_box_margin=3)
 
-    def draw_relative_filled_boxes(self, surface, cur, tot, color, start_box_y, start_box_x, end_box_x, margin, inner_box_margin):
+    def draw_relative_filled_boxes(self, surface, cur, tot, color, start_box_y, start_box_x, end_box_x, margin,
+                                   inner_box_margin):
         percentage = cur / tot
         start_box_x += margin.x
         end_box_x -= margin.x
