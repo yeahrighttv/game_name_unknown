@@ -107,10 +107,10 @@ class EntranceRoom(Room):
         self.entrances.get("east_hallway").set_default_east_lower()
 
         basket = self.player.inventory.create_item("imgs/basket.png", "Basket", "A basket you can pick up.",
-                                                   x=-100, y=0, center=True)
+                                                   x=-100, y=0, center=True, usable=True)
         chest = self.player.inventory.create_item("imgs/chest2.png", "Chest",
                                                   "A chest you can pick up. Nice thing this.",
-                                                  x=100, y=0, center=True)
+                                                  x=100, y=0, center=True, usable=True)
         self.items[basket.dict_name] = basket
         self.items[chest.dict_name] = chest
 

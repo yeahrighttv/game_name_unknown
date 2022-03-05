@@ -103,12 +103,12 @@ class Inventory:
 
     def create_item(self, main_image_path, display_name="Unknown",
                  desc="Item without a description", x=0, y=0, center=False, scale=False,
-                 render_collision_box=False, margin=vec(30, 15), step=30):
+                 render_collision_box=False, margin=vec(30, 15), step=30, usable=False):
         self.id += 1
         dict_name = f"{display_name} {self.id}"
         item = Item(main_image_path, display_name, dict_name, self.id, desc,
                     x, y, center, scale, render_collision_box,
-                    margin, step)
+                    margin, step, usable)
 
         return item
 

@@ -118,11 +118,14 @@ class Menu(AbstractState):
 
                 elif self.selected_box == self.info_box:
                     if self.selected_box.get_selected_item().display_name == "Use":
-                        self.selected_box = self.inventory_box
-                        self.selected_box.show = True
-                        self.selected_box.parent.show_cursor = False
-                        if len(self.selected_box.options) > 0:
-                            self.selected_box.show_cursor = True
+                        self.selected_box.item.use(self.player)
+                        if self.selected_box.item.usable:
+                            self.player.inventory.items.pop(self.selected_box.item.dict_name)
+
+                        self.go_back()
+
+                        if len(self.selected_box.options) == 0:
+                            self.go_back()
 
                     elif self.selected_box.get_selected_item().display_name == "Remove":
                         self.player.inventory.items.pop(self.selected_box.item.dict_name)
