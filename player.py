@@ -18,6 +18,7 @@ class Player(Sprite):
         self.hp = 20
         self.max_hp = 20
         self.xp = 0
+        self.max_xp = 20
         self.lvl = 0
 
         # print('Player Created')

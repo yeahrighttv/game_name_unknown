@@ -18,8 +18,9 @@ class Menu(AbstractState):
         screen_size = self.og_screen_size * self.screen_scaling_factor
 
         # Inventory box
-        self.inventory_box = ChoosingBox("imgs/inventory_box.png",
+        self.inventory_box = InventoryBox("imgs/inventory_box.png",
                                          self.player.inventory.items.values(),
+                                         player=self.player,
                                          screen_size=screen_size,
                                          margin=vec(30, 30),
                                          step=30,
@@ -179,6 +180,34 @@ class ChoosingBox:
         text = font.render("", False, (255, 255, 255))
         step = text.get_rect().h
         return step
+
+
+class InventoryBox(ChoosingBox):
+    def __init__(self, bg_path, options, player, x=0, y=0, screen_size=vec(0, 0), margin=vec(0, 0), offset=vec(0, 0),
+                 custom_pos=False, center=False, step=30):
+        super().__init__(bg_path, options, x, y, screen_size, margin, offset, custom_pos, center, step)
+
+        self.player = player
+        self.font = pygame.font.Font("fonts/DeterminationMono.ttf", self.step)
+
+    def render(self, surface):
+        self.bg.render(surface)
+
+        player_lvl = self.font.render(f"LVL: {self.player.lvl}", False, (255, 255, 255))
+        player_xp_stats = self.font.render(f"XP: {self.player.xp}/{self.player.max_xp}", False, (255, 255, 255))
+        player_hp_stats = self.font.render(f"HP: {self.player.hp}/{self.player.max_hp}", False, (255, 255, 255))
+
+        surface.blit(player_lvl, (self.bg.rect.x + self.margin.x * 0.5,
+                                  self.bg.rect.y + self.bg.rect.h - self.step * 2.5))
+        surface.blit(player_xp_stats, (self.bg.rect.x + player_lvl.get_rect().w + self.margin.x * 0.5,
+                                       self.bg.rect.y + self.bg.rect.h - self.step * 2.5))
+        surface.blit(player_hp_stats, (self.bg.rect.x + self.margin.x * 0.5,
+                                       self.bg.rect.y + self.bg.rect.h - self.step * 1.5))
+
+        if self.show_cursor:
+            self.cursor.render(surface)
+        for i, item in enumerate(self.options):
+            item.render_item_in_box(surface, vec(self.bg.rect.x, self.bg.rect.y), i)
 
 
 class MenuBox(ChoosingBox):
