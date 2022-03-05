@@ -22,8 +22,8 @@ class Menu(AbstractState):
                                          self.player.inventory.items.values(),
                                          player=self.player,
                                          screen_size=screen_size,
-                                         margin=vec(30, 30),
-                                         step=30,
+                                         margin=vec(30, 16),
+                                         step=29,
                                          custom_pos=True,
                                          center=True)
 

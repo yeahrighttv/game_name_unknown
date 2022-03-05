@@ -185,7 +185,7 @@ class MapScene(GeneralScene):
         for item in self.items.values():
             if self.player.rect.colliderect(item.rect):
                 self.player.inventory.add_item(item)
-                self.items.pop(item.display_name)
+                self.items.pop(item.dict_name)
                 break
 
 

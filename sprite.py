@@ -254,14 +254,16 @@ class DialogOption(DialogBox):
 
 
 class Item(Sprite):
-    def __init__(self, main_image_path, display_name="Unknown", desc="Item without a description", x=0, y=0, center=False, scale=False,
-                 render_collision_box=False, margin=vec(30, 30), step=30):
+    def __init__(self, main_image_path, display_name="Unknown", dict_name="Unknown 0",
+                 desc="Item without a description", x=0, y=0, center=False, scale=False,
+                 render_collision_box=False, margin=vec(30, 15), step=30):
         super().__init__(main_image_path, x, y, center, scale, render_collision_box)
 
         self.margin = margin
         self.step = step
 
         self.display_name = display_name
+        self.dict_name = dict_name
         self.desc = desc
 
         self.font = pygame.font.Font("fonts/DeterminationMono.ttf", self.step)

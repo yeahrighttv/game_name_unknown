@@ -54,6 +54,9 @@ class EastHallway(RoomBorder):
 
         self.npcs["sans"] = Sans(x=300, y=-10, center=True)
 
+        self.items["Basket"] = Item("imgs/basket.png", "Basket", x=-100, y=0, center=True)
+        self.items["Chest"] = Item("imgs/chest2.png", "Chest", x=100, y=0, center=True)
+
 
 class WestRoom(Room):
     def set_up(self):
@@ -67,6 +70,9 @@ class WestRoom(Room):
         self.update_entrance("kitchen", NorthEntrance(self.player, "kitchen"))
         self.entrances.get("kitchen").set_shape(32, 2)
         self.entrances.get("kitchen").set_pos(-110, -118)
+
+        self.items["Basket"] = Item("imgs/basket.png", "Basket", x=-100, y=0, center=True)
+        self.items["Chest"] = Item("imgs/chest2.png", "Chest", x=100, y=0, center=True)
 
 
 class EntranceRoom(Room):
@@ -92,7 +98,6 @@ class EntranceRoom(Room):
 
         self.items["Basket"] = Item("imgs/basket.png", "Basket", x=-100, y=0, center=True)
         self.items["Chest"] = Item("imgs/chest2.png", "Chest", x=100, y=0, center=True)
-        print(self.items)
 
 
 class TestHouse(House):
@@ -118,9 +123,13 @@ class TestScene1(MapScene):
         self.enter()
 
         self.npcs["sans"] = Sans(x=-4600, y=900, center=True)
-        self.items["Basket"] = Item("imgs/basket.png", "Basket", x=-4680, y=1350, center=True)
-        self.items["Chest"] = Item("imgs/chest2.png", "Chest", x=-4520, y=1350, center=True)
-        print(self.items)
+
+        amount = 10
+        step = 20
+        start_at_y = 1350
+        for i, y in enumerate(range(start_at_y, start_at_y - step * amount, -step)):
+            self.items[f"Basket {i}"] = Item("imgs/basket.png", "Basket", f"Basket {i}", x=-4680, y=y, center=True)
+            self.items[f"Chest {i}"] = Item("imgs/chest2.png", "Chest", f"Chest {i}", x=-4520, y=y, center=True)
 
 
 
