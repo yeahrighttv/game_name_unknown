@@ -237,6 +237,8 @@ class Room(PlayingField):
 
         self.objects = dict()
 
+        self.hitboxes = dict()
+
         self.npc = ""
         self.npcs = dict()
 
@@ -275,6 +277,9 @@ class Room(PlayingField):
 
     def render(self, bg_surface):
         bg_surface.fill(config.BLACK)
+
+        for hitboxes in self.hitboxes.values():
+            hitboxes.render(bg_surface, self.camera.offset, self.dt)
 
         for object in self.objects.values():
             object.render(bg_surface, self.camera.offset, self.dt)

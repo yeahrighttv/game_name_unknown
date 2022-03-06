@@ -4,6 +4,7 @@ import config
 from running_game_hierarchy import Act, MapScene, House, Room, Entrance, ReturnEntrance, EastEntrance, NorthEntrance, \
     SouthEntrance, WestEntrance
 from sprite import Sprite, Sans, Map
+from hitboxes import Hitbox
 
 
 class Kitchen(Room):
@@ -63,6 +64,8 @@ class EntranceRoom(Room):
         self.objects["rail_1"] = Sprite("imgs/Railing_asset1.png", center=True)
         self.objects["rail_2"] = Sprite("imgs/Railing_asset2.png", center=True)
         self.objects["rail_3"] = Sprite("imgs/Railing_asset3.png", center=True)
+
+        self.hitboxes["box1"] = Hitbox( surface =self.screen, x = 0, y = 0, height = 100, width = 100)
 
         self.update_entrance("entrance_room", ReturnEntrance(self, self.player, enter_from="s", return_side="s"))
         self.entrances.get("entrance_room").set_default_south()
