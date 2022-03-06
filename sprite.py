@@ -124,12 +124,12 @@ class NPC(Sprite):
             self.hp = 0
 
     def render_hp(self, surface):
-        hp_procentage = self.hp / self.max_hp
+        hp_percentage = self.hp / self.max_hp
         pygame.draw.rect(surface, (200, 100, 150), pygame.Rect(99, 9, 102, 12),
                          border_radius=3)
         if self.hp > 0:
-            pygame.draw.rect(surface, (255 - 255 * hp_procentage, 255 * hp_procentage, 0),
-                             pygame.Rect(100, 10, 100 * hp_procentage, 10),
+            pygame.draw.rect(surface, (255 - 255 * hp_percentage, 255 * hp_percentage, 0),
+                             pygame.Rect(100, 10, 100 * hp_percentage, 10),
                              border_radius=3)
 
     def render_fight(self, surface, dt):
@@ -176,6 +176,19 @@ class Sans(NPC):
         self.animation_frequency = 1
 
         self.images = [pygame.image.load("imgs/sans_1.png"), pygame.image.load("imgs/sans_2.png")]
+
+        self.fight_rect.x, self.fight_rect.y = 240, 40
+
+
+class Bear(NPC):
+    def __init__(self, main_image_path="imgs/teddy1.png", main_fight_sprite_path="imgs/fuckedupbear.png",
+                 music_path="audio/run.ogg", x=0, y=0,
+                 center=False, scale=False, hp=100, max_hp=100):
+        super().__init__(main_image_path, main_fight_sprite_path, music_path, x, y, center, scale, hp, max_hp)
+        # print(self.rect)
+        self.animation_frequency = 2
+
+        self.images = [pygame.image.load("imgs/teddy1.png"), pygame.image.load("imgs/teddy2.png")]
 
         self.fight_rect.x, self.fight_rect.y = 240, 40
 
@@ -238,4 +251,3 @@ class DialogOption(DialogBox):
             else:
                 if self.cur_animation_value > 0:
                     self.cur_animation_value -= 1
-

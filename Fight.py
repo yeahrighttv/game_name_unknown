@@ -65,6 +65,12 @@ class Fight(AbstractState):
         }
 
     def end(self):
+        self.time_until_cooldown = 0
+        self.time_until_secondary_cooldown = 0
+        self.time_until_sound_cooldown = 0
+        self.option = None
+        self.npc_option = None
+
         self.player.rect.x, self.player.rect.y = self.npc.rect.x - self.player.rect.w, self.npc.rect.y
         self.game.change_state(GameState.RUNNING)
         self.click_sound.stop()

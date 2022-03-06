@@ -1,5 +1,7 @@
 from functools import partial
 from os import spawnle
+
+from inventory import Inventory
 from sprite import Sprite
 import pygame
 import config
@@ -11,7 +13,15 @@ class Player(Sprite):
     def __init__(self, main_image_path, x, y, center=False, scale=False):
         super().__init__(main_image_path, x, y, center, scale)
 
+        self.inventory = Inventory()
+
+        self.name = "Anon"
         self.dmg = 51
+        self.hp = 17
+        self.max_hp = 20
+        self.xp = 5
+        self.max_xp = 20
+        self.lvl = 0
 
         # print('Player Created')
         self.vel = vec(0, 0)
@@ -85,5 +95,3 @@ class Player(Sprite):
 
     def center(self):
         self.rect.update(self.rect.x + (-self.rect.w / 2), self.rect.y + (-self.rect.h / 2), self.rect.w, self.rect.h)
-
-

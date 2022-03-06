@@ -40,7 +40,17 @@ class PlayingField(AbstractState):
             if self.player.rect.colliderect(npc.rect):
                 self.game.change_state(GameState.FIGHT)
                 self.game.current_state_obj.start(npc, self)
-                self.parent.music.stop()
+                self.exit()
+                break
+
+    def check_for_item_collisions(self):
+        if self.player.inventory.check_if_can_add():
+            for item in self.items.values():
+                if self.player.rect.colliderect(item.rect):
+                    self.player.inventory.add_item(item)
+                    self.items.pop(item.dict_name)
+                    self.pop_sound.play()
+                    break
 
 
 class Act(PlayingField):
@@ -101,6 +111,9 @@ class MapScene(GeneralScene):
         self.npcs = dict()
 
         self.objects = dict()
+        self.items = dict()
+
+        self.pop_sound = pygame.mixer.Sound("audio/pop.wav")
 
         self.map = None
         self.set_up()
@@ -134,6 +147,9 @@ class MapScene(GeneralScene):
             for object in self.objects.values():
                 object.render(bg_surface, self.camera.offset, self.dt)
 
+            for item in self.items.values():
+                item.render(bg_surface, self.camera.offset, self.dt)
+
             for npc in self.npcs.values():
                 npc.render(bg_surface, self.camera.offset, self.dt)
 
@@ -142,34 +158,32 @@ class MapScene(GeneralScene):
 
             self.player.render(bg_surface, self.camera.offset, self.dt)
 
-    def entrance_collision_check(self):
-        for area_name, area in self.indoors_areas.items():
-                if self.player.rect.colliderect(area.house_sprite.rect):
-                    self.cur_indoors_area = area_name
-                    self.indoors_areas.get(self.cur_indoors_area).enter()
-                    self.exit()
-                    time.sleep(0.5)
-                    break
-
     def update(self, dt):
         self.dt = dt
 
-        self.camera.set_method("follow")
-
+        self.camera.set_method("border")
+        self.camera.mode.set_borders(self.map.rect.x,
+                                     self.map.rect.y,
+                                     self.map.rect.x + self.map.rect.w,
+                                     self.map.rect.y + self.map.rect.h)
 
         if self.cur_indoors_area in self.indoors_areas.keys():
             self.indoors_areas.get(self.cur_indoors_area).update(dt)
         else:
             self.player.scope = self.map
-            self.check_for_npc_collisions()
-            self.entrance_collision_check()
 
-    def check_for_npc_collisions(self):
-        for npc in self.npcs.values():
-            if self.player.rect.colliderect(npc.rect):
-                self.game.change_state(GameState.FIGHT)
-                self.game.current_state_obj.start(npc, self)
+            self.check_for_entrance_collision()
+            self.check_for_npc_collisions()
+            self.check_for_item_collisions()
+
+    def check_for_entrance_collision(self):
+        for area_name, area in self.indoors_areas.items():
+            if self.player.rect.colliderect(area.house_sprite.rect):
+                self.cur_indoors_area = area_name
+                self.indoors_areas.get(self.cur_indoors_area).enter()
                 self.exit()
+                time.sleep(0.5)
+                break
 
 
 class House(PlayingField):
@@ -199,7 +213,6 @@ class House(PlayingField):
     def enter(self):
         self.room = self.entry_room
         self.rooms.get(self.room).enter_room()
-
 
         self.play_music()
 
@@ -236,6 +249,7 @@ class Room(PlayingField):
         self.entrances = dict()
 
         self.objects = dict()
+        self.items = dict()
 
         self.hitboxes = dict()
 
@@ -243,6 +257,9 @@ class Room(PlayingField):
         self.npcs = dict()
 
         self.default_entrance = ""
+
+        self.pop_sound = pygame.mixer.Sound("audio/pop.wav")
+
 
         self.set_up()
 
@@ -290,28 +307,63 @@ class Room(PlayingField):
         for entrance in self.entrances.values():
             entrance.render(bg_surface, self.camera.offset)
 
+        for item in self.items.values():
+            item.render(bg_surface, self.camera.offset, self.dt)
+
         self.player.render(bg_surface, self.camera.offset, self.dt)
 
     def update(self, dt):
         self.dt = dt
 
-        self.camera.set_method("follow")
+        self.camera.set_method("stand")
+        self.camera.mode.set_default_offset()
 
+        self.check_for_entrance_collisions()
         self.check_for_npc_collisions()
+        self.check_for_item_collisions()
 
+    def check_for_entrance_collisions(self):
         for entrance in self.entrances.values():
             if self.player.rect.colliderect(entrance.rect):
                 entrance.action()
                 self.parent.set_room_by_name(entrance.destination_name)
                 if self.parent.room in self.parent.rooms:
                     self.parent.rooms.get(self.parent.room).enter_room(self.room_name)
+                break
 
     def check_for_npc_collisions(self):
         for npc in self.npcs.values():
             if self.player.rect.colliderect(npc.rect):
                 self.game.change_state(GameState.FIGHT)
                 self.game.current_state_obj.start(npc, self.parent)
-                # self.parent.music.stop()
+                break
+
+
+class RoomFollow(Room):
+    def update(self, dt):
+        self.dt = dt
+
+        self.camera.set_method("follow")
+
+        self.check_for_entrance_collisions()
+        self.check_for_npc_collisions()
+        self.check_for_item_collisions()
+
+
+class RoomBorder(Room):
+    def update(self, dt):
+        self.dt = dt
+
+        self.camera.set_method("border")
+        borders_rect = self.objects.get("bg").rect
+        self.camera.mode.set_borders(borders_rect.x,
+                                     borders_rect.y,
+                                     borders_rect.x + borders_rect.w,
+                                     borders_rect.y + borders_rect.h)
+
+        self.check_for_entrance_collisions()
+        self.check_for_npc_collisions()
+        self.check_for_item_collisions()
 
 
 class Entrance:
@@ -406,6 +458,7 @@ class EastEntrance(HorizontalEntrance):
     def __init__(self, player, destination_name, enter_from="e", x=0, y=0, width=16, height=16):
         super().__init__(player, destination_name, enter_from, x, y, width, height)
         self.set_default_east()
+
 
 class ReturnEntrance(Entrance):
     def __init__(self, room, player, destination_name="", enter_from="", x=0, y=0, width=16, height=16,
