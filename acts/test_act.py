@@ -164,7 +164,6 @@ class TestScene1(MapScene):
             self.items[chest.dict_name] = chest
 
 
-
 # class TestScene2(MapScene):
 #     def set_up(self):
 #         self.map = Sprite("imgs/zelda_map_test.png", center=True)
