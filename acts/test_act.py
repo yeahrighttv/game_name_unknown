@@ -3,7 +3,7 @@ import pygame
 import config
 from running_game_hierarchy import Act, MapScene, House, Room, Entrance, ReturnEntrance, EastEntrance, NorthEntrance, \
     SouthEntrance, WestEntrance, RoomBorder
-from sprite import Sprite, Sans, Map, Bear
+from sprite import Sprite, Sans, Map, Bear, TestNPC
 from hitboxes import Hitbox
 
 
@@ -82,6 +82,7 @@ class WestRoom(Room):
         chest = self.player.inventory.create_item("imgs/chest2.png", "Chest",
                                                   "A chest you can pick up. Nice thing this.",
                                                   x=100, y=0, center=True)
+        TestNPC
         self.items[basket.dict_name] = basket
         self.items[chest.dict_name] = chest
 

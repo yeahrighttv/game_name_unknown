@@ -167,6 +167,13 @@ class NPC(Sprite):
         self.dialogs[name].append(new_string)
 
 
+class TestNPC(NPC):
+    def __init__(self, main_image_path="imgs/older_player.png", main_fight_sprite_path="imgs/older_player.png"):
+        super().__init__(main_image_path, main_fight_sprite_path, music_path, x, y, center, scale, hp, max_hp)
+
+        self.images = [pygame.image.load("imgs/older_player.png")]
+
+
 class Sans(NPC):
     def __init__(self, main_image_path="imgs/sans_1.png", main_fight_sprite_path="imgs/sans_large.png",
                  music_path="audio/megalovania.ogg", x=0, y=0,
