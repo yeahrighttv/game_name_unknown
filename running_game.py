@@ -8,7 +8,7 @@ import config
 from camera import Camera, Follow, Border, Auto, Stand
 from game_state import GameState
 from running_game_hierarchy import Act
-from sprite import Sprite
+from sprite import Sprite, Hitbox
 
 vec = pygame.math.Vector2
 
