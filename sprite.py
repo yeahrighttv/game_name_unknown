@@ -11,9 +11,8 @@ class Sprite(pygame.sprite.Sprite):
     def __init__(self, main_image_path, x=0, y=0, center=False, scale=False, render_collision_box=False):
         self.path = main_image_path
         pygame.sprite.Sprite.__init__(self)
-
         self.vel = vec(0, 0)
-
+        
         self.image = pygame.image.load(main_image_path)
         self.images = [self.image]
         self.mask = pygame.mask.from_surface(self.image)
@@ -22,8 +21,9 @@ class Sprite(pygame.sprite.Sprite):
             self.image = pygame.transform.scale(self.image, vec(317, 236))
         self.rect = self.image.get_rect()
         self.rect.move_ip(x, y)
-        self.render_collision_box = render_collision_box
 
+        self.hitbox = Hitbox(self.rect.x, self.rect.y, self.rect.w, self.rect.h, main_image_path)
+        
         if center:
             self.center()
 
@@ -36,8 +36,9 @@ class Sprite(pygame.sprite.Sprite):
         surface.blit(self.image, (self.rect.x - offset.x, self.rect.y - offset.y))
 
         # Collision box
-        if self.render_collision_box:
-            pygame.draw.rect(surface, config.RED, pygame.Rect(self.rect.x - offset.x, self.rect.y - offset.y, self.rect.w, self.rect.h), width=1)
+        #if self.render_collision_box:
+        #    pygame.draw.rect(surface, config.RED, pygame.Rect(self.rect.x - offset.x, self.rect.y - offset.y, self.rect.w, self.rect.h), width=1)
+        self.hitbox.render(surface, offset, dt)
 
     def center(self):
         self.rect.update(self.rect.x + (-self.rect.w / 2),
@@ -96,7 +97,7 @@ class Map(Sprite):
 
 class NPC(Sprite):
     def __init__(self, main_image_path, main_fight_sprite_path, music_path="audio/megalovania.ogg", x=0, y=0,
-                 center=False, scale=False, hp=50, max_hp=50):
+                 center=False, scale=False, hp=50, max_hp=50, boss=False):
         self.music_path = music_path
 
         super().__init__(main_image_path, x, y, center, scale)
@@ -167,10 +168,18 @@ class NPC(Sprite):
         self.dialogs[name].append(new_string)
 
 
+class TestNPC(NPC):
+    def __init__(self, main_image_path="imgs/older_player.png", main_fight_sprite_path="imgs/older_player.png",
+                 music_path="audio/ruins.ogg", x=0, y=0, center=False, scale=False, hp=1, max_hp=1, boss=False):
+        super().__init__(main_image_path, main_fight_sprite_path, music_path, x, y, center, scale, hp, max_hp)
+
+        self.images = [pygame.image.load("imgs/older_player.png")]
+
+
 class Sans(NPC):
     def __init__(self, main_image_path="imgs/sans_1.png", main_fight_sprite_path="imgs/sans_large.png",
                  music_path="audio/megalovania.ogg", x=0, y=0,
-                 center=False, scale=False, hp=200, max_hp=200):
+                 center=False, scale=False, hp=200, max_hp=200, boss=True):
         super().__init__(main_image_path, main_fight_sprite_path, music_path, x, y, center, scale, hp, max_hp)
         # print(self.rect)
         self.animation_frequency = 1
@@ -183,7 +192,7 @@ class Sans(NPC):
 class Bear(NPC):
     def __init__(self, main_image_path="imgs/teddy1.png", main_fight_sprite_path="imgs/fuckedupbear.png",
                  music_path="audio/run.ogg", x=0, y=0,
-                 center=False, scale=False, hp=100, max_hp=100):
+                 center=False, scale=False, hp=100, max_hp=100, boss=True):
         super().__init__(main_image_path, main_fight_sprite_path, music_path, x, y, center, scale, hp, max_hp)
         # print(self.rect)
         self.animation_frequency = 2
@@ -251,3 +260,18 @@ class DialogOption(DialogBox):
             else:
                 if self.cur_animation_value > 0:
                     self.cur_animation_value -= 1
+
+class Hitbox(pygame.Rect):
+    def __init__(self, x, y, width, height, main_image_path):
+        self.hitbox = pygame.Rect(x, y, width, height)
+            #player hitbox
+        self.mask = pygame.mask.from_surface(pygame.image.load(main_image_path))
+        self.mask_rect = self.mask.get_rect()
+        self.mask_rect.x = x - width / 2
+        self.mask_rect.y = y - height / 2
+
+
+    def render(self, surface, offset, dt):
+        hitbox_width_offset = pygame.Rect(self.mask_rect.x - offset.x, self.mask_rect.y - offset.y, self.mask_rect.width, self.mask_rect.height)
+        pygame.draw.rect(surface, config.GREEN, hitbox_width_offset, width= 1)
+        
