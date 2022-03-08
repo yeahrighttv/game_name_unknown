@@ -96,8 +96,18 @@ class Map(Sprite):
 
 
 class NPC(Sprite):
+    def __init__(self, main_image_path, x=0, y=0, center=False, scale=False):
+        super().__init__(main_image_path, x, y, center, scale)
+
+
+class Neutral(NPC):
+    def __init__(self, main_image_path, x=0, y=0, center=False, scale=False):
+        super().__init__(main_image_path, x, y, center, scale)
+
+
+class Boss(NPC):
     def __init__(self, main_image_path, main_fight_sprite_path, music_path="audio/megalovania.ogg", x=0, y=0,
-                 center=False, scale=False, hp=50, max_hp=50, boss=False):
+                 center=False, scale=False, hp=50, max_hp=50):
         self.music_path = music_path
 
         super().__init__(main_image_path, x, y, center, scale)
@@ -169,17 +179,16 @@ class NPC(Sprite):
 
 
 class TestNPC(NPC):
-    def __init__(self, main_image_path="imgs/older_player.png", main_fight_sprite_path="imgs/older_player.png",
-                 music_path="audio/ruins.ogg", x=0, y=0, center=False, scale=False, hp=1, max_hp=1, boss=False):
-        super().__init__(main_image_path, main_fight_sprite_path, music_path, x, y, center, scale, hp, max_hp)
+    def __init__(self, main_image_path="imgs/older_player.png", x=0, y=0, center=False, scale=False):
+        super().__init__(main_image_path, x, y, center, scale)
 
         self.images = [pygame.image.load("imgs/older_player.png")]
 
 
-class Sans(NPC):
+class Sans(Boss):
     def __init__(self, main_image_path="imgs/sans_1.png", main_fight_sprite_path="imgs/sans_large.png",
                  music_path="audio/megalovania.ogg", x=0, y=0,
-                 center=False, scale=False, hp=200, max_hp=200, boss=True):
+                 center=False, scale=False, hp=200, max_hp=200):
         super().__init__(main_image_path, main_fight_sprite_path, music_path, x, y, center, scale, hp, max_hp)
         # print(self.rect)
         self.animation_frequency = 1
@@ -189,10 +198,10 @@ class Sans(NPC):
         self.fight_rect.x, self.fight_rect.y = 240, 40
 
 
-class Bear(NPC):
+class Bear(Boss):
     def __init__(self, main_image_path="imgs/teddy1.png", main_fight_sprite_path="imgs/fuckedupbear.png",
                  music_path="audio/run.ogg", x=0, y=0,
-                 center=False, scale=False, hp=100, max_hp=100, boss=True):
+                 center=False, scale=False, hp=100, max_hp=100):
         super().__init__(main_image_path, main_fight_sprite_path, music_path, x, y, center, scale, hp, max_hp)
         # print(self.rect)
         self.animation_frequency = 2
