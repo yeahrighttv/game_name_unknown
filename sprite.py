@@ -96,7 +96,7 @@ class Map(Sprite):
 
 class NPC(Sprite):
     def __init__(self, main_image_path, main_fight_sprite_path, music_path="audio/megalovania.ogg", x=0, y=0,
-                 center=False, scale=False, hp=50, max_hp=50):
+                 center=False, scale=False, hp=50, max_hp=50, boss=False):
         self.music_path = music_path
 
         super().__init__(main_image_path, x, y, center, scale)
@@ -168,7 +168,8 @@ class NPC(Sprite):
 
 
 class TestNPC(NPC):
-    def __init__(self, main_image_path="imgs/older_player.png", main_fight_sprite_path="imgs/older_player.png"):
+    def __init__(self, main_image_path="imgs/older_player.png", main_fight_sprite_path="imgs/older_player.png",
+                 music_path="audio/ruins.ogg", x=0, y=0, center=False, scale=False, hp=1, max_hp=1, boss=False):
         super().__init__(main_image_path, main_fight_sprite_path, music_path, x, y, center, scale, hp, max_hp)
 
         self.images = [pygame.image.load("imgs/older_player.png")]
@@ -177,7 +178,7 @@ class TestNPC(NPC):
 class Sans(NPC):
     def __init__(self, main_image_path="imgs/sans_1.png", main_fight_sprite_path="imgs/sans_large.png",
                  music_path="audio/megalovania.ogg", x=0, y=0,
-                 center=False, scale=False, hp=200, max_hp=200):
+                 center=False, scale=False, hp=200, max_hp=200, boss=True):
         super().__init__(main_image_path, main_fight_sprite_path, music_path, x, y, center, scale, hp, max_hp)
         # print(self.rect)
         self.animation_frequency = 1
@@ -190,7 +191,7 @@ class Sans(NPC):
 class Bear(NPC):
     def __init__(self, main_image_path="imgs/teddy1.png", main_fight_sprite_path="imgs/fuckedupbear.png",
                  music_path="audio/run.ogg", x=0, y=0,
-                 center=False, scale=False, hp=100, max_hp=100):
+                 center=False, scale=False, hp=100, max_hp=100, boss=True):
         super().__init__(main_image_path, main_fight_sprite_path, music_path, x, y, center, scale, hp, max_hp)
         # print(self.rect)
         self.animation_frequency = 2
