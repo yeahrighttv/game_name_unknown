@@ -1,6 +1,7 @@
 from Fight import Fight
 from menu import Menu
 from player import Player
+from dialogue import Dialogue
 from game_state import GameState
 import pygame
 
@@ -23,7 +24,8 @@ class Game:
         self.game_states = {
             GameState.RUNNING: RunningGame(self.screen, self, self.player),
             GameState.MENU: Menu(self.screen, self, self.player),
-            GameState.FIGHT: Fight(self.screen, self, self.player, )
+            GameState.FIGHT: Fight(self.screen, self, self.player),
+            GameState.DIALOGUE: Dialogue(self.screen, self)
         }
         self.current_state_obj = self.game_states.get(self.game_state)
         self.dt = 0
