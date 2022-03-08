@@ -169,7 +169,7 @@ class NPC(Sprite):
 
 class TestNPC(NPC):
     def __init__(self, main_image_path="imgs/older_player.png", main_fight_sprite_path="imgs/older_player.png",
-                 music_path="audio/ruins.ogg", x=0, y=0, center=False, hp=0, max_hp=0):
+                 music_path="audio/ruins.ogg", x=0, y=0, center=False, scale=False, hp=0, max_hp=0):
         super().__init__(main_image_path, main_fight_sprite_path, music_path, x, y, center, scale, hp, max_hp)
 
         self.images = [pygame.image.load("imgs/older_player.png")]
