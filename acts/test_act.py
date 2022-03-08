@@ -4,7 +4,6 @@ import config
 from running_game_hierarchy import Act, MapScene, House, Room, Entrance, ReturnEntrance, EastEntrance, NorthEntrance, \
     SouthEntrance, WestEntrance, RoomBorder
 from sprite import Sprite, Sans, Map, Bear, TestNPC
-from hitboxes import Hitbox
 
 
 class Kitchen(Room):
