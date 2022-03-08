@@ -101,7 +101,8 @@ class NPC(Sprite):
 
 
 class Neutral(NPC):
-    def __init__(self, main_image_path, x=0, y=0, center=False, scale=False):
+    def __init__(self, main_image_path, portrait, x=0, y=0, center=False, scale=False):
+        self.portrait = portrait
         super().__init__(main_image_path, x, y, center, scale)
 
 
