@@ -13,8 +13,11 @@ vec = pygame.math.Vector2
 
 
 class Dialogue(AbstractState):
-    def __init__(self, screen, game):
+    def __init__(self, screen, game, player):
         super().__init__(screen, game)
+
+        self.player = player
+        self.npc = None
 
         #self.dialogue_text = dialogue_text
 
@@ -41,7 +44,12 @@ class Dialogue(AbstractState):
         #dialog_box.set_portrait(f"imgs/{main_fight_sprite_path}", (portrait_width, portrait_height))
 
     def start(self, npc, from_object):
+        self.npc = npc
         pass
+
+    def end(self):
+        self.player.rect.x, self.player.rect.y = self.npc.rect.x - self.player.rect.w, self.npc.rect.y
+        self.game.change_state(GameState.RUNNING)
 
     def set_up(self):
         self.test_dct = {
@@ -75,3 +83,4 @@ class Dialogue(AbstractState):
                         self.dialog_box.reset(hard=True)
                         self.dialog_box.set_text("this is just bugged now, byebye")
                         self.dialog_box.kill()
+                        self.end()

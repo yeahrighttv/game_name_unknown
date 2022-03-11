@@ -25,7 +25,7 @@ class Game:
             GameState.RUNNING: RunningGame(self.screen, self, self.player),
             GameState.MENU: Menu(self.screen, self, self.player),
             GameState.FIGHT: Fight(self.screen, self, self.player),
-            GameState.DIALOGUE: Dialogue(self.screen, self)
+            GameState.DIALOGUE: Dialogue(self.screen, self, self.player)
         }
         self.current_state_obj = self.game_states.get(self.game_state)
         self.dt = 0
