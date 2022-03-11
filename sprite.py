@@ -290,17 +290,18 @@ class DialogOption(DialogBox):
                 if self.cur_animation_value > 0:
                     self.cur_animation_value -= 1
 
+
 class Hitbox(pygame.Rect):
     def __init__(self, x, y, width, height, main_image_path):
         self.hitbox = pygame.Rect(x, y, width, height)
-            #player hitbox
         self.mask = pygame.mask.from_surface(pygame.image.load(main_image_path))
         self.mask_rect = self.mask.get_rect()
         self.mask_rect.x = x - width / 2
         self.mask_rect.y = y - height / 2
 
 
+
     def render(self, surface, offset, dt):
-        hitbox_width_offset = pygame.Rect(self.mask_rect.x - offset.x, self.mask_rect.y - offset.y, self.mask_rect.width, self.mask_rect.height)
-        pygame.draw.rect(surface, config.GREEN, hitbox_width_offset, width= 1)
-        
+        hitbox_width_offset = pygame.Rect(self.mask_rect.x - offset.x, self.mask_rect.y - offset.y,
+                                          self.mask_rect.width, self.mask_rect.height)
+        pygame.draw.rect(surface, config.GREEN, hitbox_width_offset, width=1)

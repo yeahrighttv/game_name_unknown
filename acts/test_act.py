@@ -140,6 +140,8 @@ class TestScene1(MapScene):
         # pygame.mixer.music.load(self.music_path)
         self.enter()
 
+        self.objects["test_hitbox"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=True)
+
         self.npcs["sans"] = Sans(x=-4600, y=900, center=True)
 
         potion = self.player.inventory.create_item("imgs/potion_2.png", "Potion", "A potion which restores 7HP.",
