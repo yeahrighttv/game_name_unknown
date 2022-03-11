@@ -106,12 +106,16 @@ class NPC(Sprite):
 
 class Neutral(NPC):
     def __init__(self, main_image_path, portrait, x=0, y=0, center=False, scale=False):
-        self.portrait = portrait
+        self.portrait = pygame.image.load(portrait)
         super().__init__(main_image_path, x, y, center, scale)
         self.game_state = GameState.DIALOGUE
 
     def collide(self, game):
         game.change_state(self.game_state)
+        self.talk()
+
+    def talk(self):
+        pass
 
 
 class Boss(NPC):
@@ -193,11 +197,12 @@ class Boss(NPC):
 
 
 class TestNPC(Neutral):
-    def __init__(self, main_image_path="imgs/older_player.png", portrait="imgs/older_player.png", x=0, y=0, center=False, scale=False):
-        super().__init__(main_image_path, x, y, center, scale)
+    def __init__(self, main_image_path="imgs/older_player.png", portrait="imgs/older_player.png", x=0, y=0,
+                 center=False, scale=False):
+        super().__init__(main_image_path, portrait, x, y, center, scale)
 
-        self.images = [pygame.image.load("imgs/older_player.png")]
-        self.portrait = [pygame.image.load("imgs/older_player.png")]
+#        self.images = [pygame.image.load("imgs/older_player.png")]
+#        self.portrait = [pygame.image.load("imgs/older_player.png")]
 
 
 class Sans(Boss):

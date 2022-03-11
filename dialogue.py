@@ -5,7 +5,7 @@ import config
 
 from game_state import GameState
 from program_states import AbstractState
-from sprite import NPC
+from sprite import Neutral, TestNPC
 from textboxify.borders import DEFAULT
 from textboxify.util import load_image
 
@@ -20,12 +20,8 @@ class Dialogue(AbstractState):
 
         screen_size = self.og_screen_size * self.screen_scaling_factor
 
-        #portrait = main_fight_sprite_path.get_rect()
-        #portrait_width = int(portrait.x)
-        #portrait_height = int(portrait.y)
-
-        dialog_box = textboxify.TextBoxFrame(
-            text='hi',
+        self.dialog_box = textboxify.TextBoxFrame(
+            text='What the fuck did you just fucking say about me, you little bitch?',
             text_width=(screen_size.x // 2),
             lines=2,
             pos=((screen_size.x // 8), (screen_size.y // 2)),
@@ -37,10 +33,10 @@ class Dialogue(AbstractState):
             alpha=255
         )
 
-#        draw_group = pygame.sprite.LayeredDirty()
+        self.draw_group = pygame.sprite.LayeredDirty()
 #        draw_group.clear(screen)
 
-        dialog_box.set_indicator()
+        self.dialog_box.set_indicator()
 
         #dialog_box.set_portrait(f"imgs/{main_fight_sprite_path}", (portrait_width, portrait_height))
 
@@ -55,11 +51,14 @@ class Dialogue(AbstractState):
         }
 
     def render(self):
-        self.screen.fill(config.WHITE)
+        if not self.draw_group:
+            self.draw_group.add(self.dialog_box)
+        self.dialog_box.update()
 
     def update(self, dt):
         self.render()
         self.handle_events()
+        self.draw_group.draw(self.screen)
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -69,3 +68,10 @@ class Dialogue(AbstractState):
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.game.change_state(GameState.ENDED)
+                if event.key == pygame.K_RETURN:
+                    if self.dialog_box.words:
+                        self.dialog_box.reset()
+                    else:
+                        self.dialog_box.reset(hard=True)
+                        self.dialog_box.set_text("this is just bugged now, byebye")
+                        self.dialog_box.kill()
