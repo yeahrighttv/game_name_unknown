@@ -23,7 +23,7 @@ class Sprite(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.move_ip(x, y)
 
-        self.hitbox = Hitbox(self.rect.x, self.rect.y, self.rect.w, self.rect.h, main_image_path)
+        self.hitbox = Hitbox(self.rect.x, self.rect.y, main_image_path, self.rect.w, self.rect.h)
         
         if center:
             self.center()
@@ -56,6 +56,9 @@ class Sprite(pygame.sprite.Sprite):
             self.animation_counter += 1
             if self.animation_counter >= len(self.images):
                 self.animation_counter = 0
+
+    def collide(self, game):
+        print("Collided")
 
 
 class Map(Sprite):
@@ -292,14 +295,22 @@ class DialogOption(DialogBox):
 
 
 class Hitbox(pygame.Rect):
-    def __init__(self, x, y, width, height, main_image_path):
+    def __init__(self, x, y, main_image_path, width=0, height=0):
         self.hitbox = pygame.Rect(x, y, width, height)
         self.mask = pygame.mask.from_surface(pygame.image.load(main_image_path))
         self.mask_rect = self.mask.get_rect()
-        self.mask_rect.x = x - width / 2
-        self.mask_rect.y = y - height / 2
 
+        if width != 0:
+            self.mask_rect.x = x - width / 2
+            self.mask_rect.w = width
+        else:
+            self.mask_rect.x = x - self.mask_rect.width / 2
 
+        if height != 0:
+            self.mask_rect.y = y - height / 2
+            self.mask_rect.h = height
+        else:
+            self.mask_rect.x = x - self.mask_rect.width / 2
 
     def render(self, surface, offset, dt):
         hitbox_width_offset = pygame.Rect(self.mask_rect.x - offset.x, self.mask_rect.y - offset.y,

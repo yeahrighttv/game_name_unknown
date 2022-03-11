@@ -52,6 +52,17 @@ class PlayingField(AbstractState):
                     self.pop_sound.play()
                     break
 
+    def check_for_obejct_collisions(self):
+        for obj in self.objects.values():
+            if self.player.rect.colliderect(obj.hitbox.mask_rect):
+                obj.collide(self.game)
+
+    def checks(self):
+        self.check_for_entrance_collision()
+        self.check_for_npc_collisions()
+        self.check_for_item_collisions()
+        self.check_for_obejct_collisions()
+
 
 class Act(PlayingField):
     def __init__(self, screen, game, player, camera, parent):
@@ -172,9 +183,7 @@ class MapScene(GeneralScene):
         else:
             self.player.scope = self.map
 
-            self.check_for_entrance_collision()
-            self.check_for_npc_collisions()
-            self.check_for_item_collisions()
+            self.checks()
 
     def check_for_entrance_collision(self):
         for area_name, area in self.indoors_areas.items():
@@ -321,6 +330,7 @@ class Room(PlayingField):
         self.check_for_entrance_collisions()
         self.check_for_npc_collisions()
         self.check_for_item_collisions()
+        self.check_for_obejct_collisions()
 
     def check_for_entrance_collisions(self):
         for entrance in self.entrances.values():

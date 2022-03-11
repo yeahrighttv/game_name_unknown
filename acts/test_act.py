@@ -3,7 +3,7 @@ import pygame
 import config
 from running_game_hierarchy import Act, MapScene, House, Room, Entrance, ReturnEntrance, EastEntrance, NorthEntrance, \
     SouthEntrance, WestEntrance, RoomBorder
-from sprite import Sprite, Sans, Map, Bear, TestNPC
+from sprite import Sprite, Sans, Map, Bear, TestNPC, Hitbox
 
 
 class Kitchen(Room):
@@ -141,6 +141,7 @@ class TestScene1(MapScene):
         self.enter()
 
         self.objects["test_hitbox"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=True)
+        self.objects["test_hitbox"].hitbox = Hitbox(-4620, 1500, "imgs/empty_sprite.png", 100, 100)
 
         self.npcs["sans"] = Sans(x=-4600, y=900, center=True)
 
