@@ -38,7 +38,7 @@ class PlayingField(AbstractState):
     def check_for_npc_collisions(self):
         for npc in self.npcs.values():
             if self.player.rect.colliderect(npc.rect):
-                self.game.change_state(GameState.FIGHT)
+                npc.collide(self.game)
                 self.game.current_state_obj.start(npc, self)
                 self.exit()
                 break
@@ -334,7 +334,7 @@ class Room(PlayingField):
     def check_for_npc_collisions(self):
         for npc in self.npcs.values():
             if self.player.rect.colliderect(npc.rect):
-                self.game.change_state(GameState.FIGHT)
+                npc.collide(self.game)
                 self.game.current_state_obj.start(npc, self.parent)
                 break
 

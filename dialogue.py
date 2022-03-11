@@ -37,9 +37,15 @@ class Dialogue(AbstractState):
             alpha=255
         )
 
+#        draw_group = pygame.sprite.LayeredDirty()
+#        draw_group.clear(screen)
+
         dialog_box.set_indicator()
 
         #dialog_box.set_portrait(f"imgs/{main_fight_sprite_path}", (portrait_width, portrait_height))
+
+    def start(self, npc, from_object):
+        pass
 
     def set_up(self):
         self.test_dct = {

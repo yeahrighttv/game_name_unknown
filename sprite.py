@@ -3,6 +3,7 @@ import random
 
 import pygame
 import config
+from game_state import GameState
 
 vec = pygame.math.Vector2
 
@@ -99,11 +100,18 @@ class NPC(Sprite):
     def __init__(self, main_image_path, x=0, y=0, center=False, scale=False):
         super().__init__(main_image_path, x, y, center, scale)
 
+    def collide(self, game):
+        pass
+
 
 class Neutral(NPC):
     def __init__(self, main_image_path, portrait, x=0, y=0, center=False, scale=False):
         self.portrait = portrait
         super().__init__(main_image_path, x, y, center, scale)
+        self.game_state = GameState.DIALOGUE
+
+    def collide(self, game):
+        game.change_state(self.game_state)
 
 
 class Boss(NPC):
@@ -128,6 +136,11 @@ class Boss(NPC):
 
         self.hp = hp
         self.max_hp = max_hp
+
+        self.game_state = GameState.FIGHT
+
+    def collide(self, game):
+        game.change_state(self.game_state)
 
     def receive_damage(self, dmg):
         if self.hp - dmg > 0:
@@ -179,11 +192,12 @@ class Boss(NPC):
         self.dialogs[name].append(new_string)
 
 
-class TestNPC(NPC):
-    def __init__(self, main_image_path="imgs/older_player.png", x=0, y=0, center=False, scale=False):
+class TestNPC(Neutral):
+    def __init__(self, main_image_path="imgs/older_player.png", portrait="imgs/older_player.png", x=0, y=0, center=False, scale=False):
         super().__init__(main_image_path, x, y, center, scale)
 
         self.images = [pygame.image.load("imgs/older_player.png")]
+        self.portrait = [pygame.image.load("imgs/older_player.png")]
 
 
 class Sans(Boss):
