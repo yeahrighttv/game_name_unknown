@@ -13,6 +13,12 @@ class Kitchen(Room):
         self.objects["bg"] = Map("imgs/Kitchen.png", -33, 36, center=True, scale=False)
         self.objects["player"] = self.player
 
+        self.objects["box1"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
+        self.objects["box1"].hitbox = Hitbox(-32, 50, "imgs/empty_sprite.png", 160, 95)
+
+        self.objects["box2"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
+        self.objects["box2"].hitbox = Hitbox(-65, 100, "imgs/empty_sprite.png", 42, 45)
+
         self.update_entrance("west_room", SouthEntrance(self.player, "west_room"))
         self.entrances.get("west_room").set_shape(32, 2)
         self.entrances.get("west_room").set_pos(-80, 116)
@@ -41,12 +47,16 @@ class EastHallway(RoomBorder):
 
     def set_up(self):
         self.default_entrance = "entrance_room"
-
+        
         self.objects["bg"] = Map("imgs/Assets/EastHallwaydecored.png", center=True)
         self.objects["player"] = self.player
 
+        self.objects["box1"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
+        self.objects["box1"].hitbox = Hitbox(-10, 18, "imgs/empty_sprite.png", 730, 80)
+
         self.update_entrance("entrance_room", WestEntrance(self.player, "entrance_room"))
-        self.entrances.get("entrance_room").set_default_west_center_lower()
+        self.entrances.get("entrance_room").set_pos(-158, 0)
+        self.entrances.get("entrance_room").set_shape(2, 48)
         self.entrances.get("entrance_room").set_pos(self.objects.get("bg").rect.x,
                                                     self.entrances.get("entrance_room").rect.y)
 
@@ -68,6 +78,15 @@ class WestRoom(Room):
         self.default_entrance = "entrance_room"
         self.objects["bg"] = Map("imgs/Assets/Room_West_Floor.png", center=True)
         self.objects["player"] = self.player
+
+        self.objects["box1"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
+        self.objects["box1"].hitbox = Hitbox(150, 56, "imgs/empty_sprite.png", 32, 60)
+
+        self.objects["box2"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
+        self.objects["box2"].hitbox = Hitbox(-93, -80, "imgs/empty_sprite.png", 40, 90)
+
+        self.objects["box3"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
+        self.objects["box3"].hitbox = Hitbox(0, 15, "imgs/empty_sprite.png", 280, 170)
 
         self.update_entrance("entrance_room", EastEntrance(self.player, "entrance_room"))
         self.entrances.get("entrance_room").set_default_east_lower()
@@ -98,7 +117,27 @@ class EntranceRoom(Room):
         self.objects["rail_2"] = Sprite("imgs/Railing_asset2.png", center=True)
         self.objects["rail_3"] = Sprite("imgs/Railing_asset3.png", center=True)
 
-        #self.hitboxes["box1"] = Hitbox( surface =self.screen, x = 0, y = 0, height = 100, width = 100)
+        self.objects["box1"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=True)
+        self.objects["box1"].hitbox = Hitbox(0, 65, "imgs/empty_sprite.png", 244, 75)
+
+        self.objects["box2"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=True)
+        self.objects["box2"].hitbox = Hitbox(0, 59, "imgs/empty_sprite.png", 330, 60)
+
+        self.objects["box3"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
+        self.objects["box3"].hitbox = Hitbox(-107, -10, "imgs/empty_sprite.png", 30, 95)
+
+        self.objects["box4"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
+        self.objects["box4"].hitbox = Hitbox(0, 80, "imgs/empty_sprite.png", 40, 95)
+
+        self.objects["box5"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
+        self.objects["box5"].hitbox = Hitbox(95, -15, "imgs/empty_sprite.png", 55, 110)
+
+        self.objects["box6"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
+        self.objects["box6"].hitbox = Hitbox(-5, -54, "imgs/empty_sprite.png", 155, 35)
+
+        self.objects["box7"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
+        self.objects["box7"].hitbox = Hitbox(-13, -26, "imgs/empty_sprite.png", 137, 75)
+
 
         self.update_entrance("entrance_room", ReturnEntrance(self, self.player, enter_from="s", return_side="s"))
         self.entrances.get("entrance_room").set_default_south()
@@ -140,8 +179,17 @@ class TestScene1(MapScene):
         # pygame.mixer.music.load(self.music_path)
         self.enter()
 
-        self.objects["test_hitbox"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=True)
-        self.objects["test_hitbox"].hitbox = Hitbox(-4620, 1500, "imgs/empty_sprite.png", 100, 100)
+        self.objects["box1"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=True)
+        self.objects["box1"].hitbox = Hitbox(-4605, 1467, "imgs/empty_sprite.png", 41, 42)
+
+        self.objects["box2"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=True)
+        self.objects["box2"].hitbox = Hitbox(-4605, 1437, "imgs/empty_sprite.png", 47, 21)
+
+        self.objects["box3"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=True)
+        self.objects["box3"].hitbox = Hitbox(-4605, 1276, "imgs/empty_sprite.png", 201, 302)
+
+        self.objects["box4"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=True)
+        self.objects["box4"].hitbox = Hitbox(-4605, 1166, "imgs/empty_sprite.png", 242, 82)
 
         self.npcs["sans"] = Sans(x=-4600, y=900, center=True)
 
