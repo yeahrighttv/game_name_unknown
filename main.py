@@ -9,7 +9,7 @@ def main():
     screen = pygame.display.set_mode((317 * 3, 236 * 3))
     game = Game(screen)
 
-    pygame.display.set_caption('Undertale Game')
+    pygame.display.set_caption('Game Name Unkown')
     icon = pygame.image.load('imgs/game_icon.png')
     pygame.display.set_icon(icon)
 
