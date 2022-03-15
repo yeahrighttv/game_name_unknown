@@ -1,3 +1,4 @@
+from acts.school import SchoolAct
 from acts.test_act import TestAct
 from program_states import AbstractState
 from functools import partial
@@ -62,12 +63,13 @@ class RunningGame(AbstractState):
             pygame.K_o: lambda x, y: self.get_act().change_cur_scene("scene 1"),
             pygame.K_p: lambda x, y: self.get_act().change_cur_scene("scene 2"),
             pygame.K_k: lambda x, y: self.player.change_speed(200),
-            pygame.K_l: lambda x, y: self.player.change_speed(130),
+            pygame.K_l: lambda x, y: self.player.change_speed(1000),
         }
 
         self.act = "act 1"
         self.acts = {
-            "act 1": TestAct(self.screen, self.game, self.player, self.camera, self),
+            # "act 1": TestAct(self.screen, self.game, self.player, self.camera, self),
+            "act 1": SchoolAct(self.screen, self.game, self.player, self.camera, self),
         }
 
         # print('do set up')
