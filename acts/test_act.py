@@ -13,11 +13,11 @@ class Kitchen(Room):
         self.objects["bg"] = Map("imgs/Kitchen.png", -33, 36, center=True, scale=False)
         self.objects["player"] = self.player
 
-        self.objects["Kbox1"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
-        self.objects["Kbox1"].hitbox = Hitbox(-32, 50, "imgs/empty_sprite.png", 160, 95)
+        #self.objects["Kbox1"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
+        #self.objects["Kbox1"].hitbox = Hitbox(-32, 50, "imgs/empty_sprite.png", 160, 95, collideable= True)
 
-        self.objects["Kbox2"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
-        self.objects["Kbox2"].hitbox = Hitbox(-65, 100, "imgs/empty_sprite.png", 42, 45)
+        #self.objects["Kbox2"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
+        #self.objects["Kbox2"].hitbox = Hitbox(-65, 100, "imgs/empty_sprite.png", 42, 45, collideable= True)
 
         self.update_entrance("west_room", SouthEntrance(self.player, "west_room"))
         self.entrances.get("west_room").set_shape(32, 2)
@@ -49,8 +49,17 @@ class EastHallway(RoomBorder):
         self.objects["bg"] = Map("imgs/Assets/EastHallwaydecored.png", center=True)
         self.objects["player"] = self.player
 
+        #self.objects["EHbox1"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
+        #self.objects["EHbox1"].hitbox = Hitbox(-10, 18, "imgs/empty_sprite.png", 730, 80, collideable= True)
+
         self.objects["EHbox1"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
-        self.objects["EHbox1"].hitbox = Hitbox(-10, 18, "imgs/empty_sprite.png", 730, 80)
+        self.objects["EHbox1"].hitbox = Hitbox(-10, 72, "imgs/empty_sprite.png", 730, 30, collideable= True)
+
+        self.objects["EHbox2"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
+        self.objects["EHbox2"].hitbox = Hitbox(-10, -32, "imgs/empty_sprite.png", 730, 30, collideable= True)
+
+        self.objects["EHbox3"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
+        self.objects["EHbox3"].hitbox = Hitbox(370, -32, "imgs/empty_sprite.png", 30, 730, collideable= True)
 
         self.update_entrance("entrance_room", WestEntrance(self.player, "entrance_room"))
         self.entrances.get("entrance_room").set_pos(-158, 0)
@@ -76,14 +85,14 @@ class WestRoom(Room):
         self.objects["bg"] = Map("imgs/Assets/Room_West_Floor.png", center=True)
         self.objects["player"] = self.player
 
-        self.objects["Wbox1"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
-        self.objects["Wbox1"].hitbox = Hitbox(150, 56, "imgs/empty_sprite.png", 32, 60)
+        #self.objects["Wbox1"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
+        #self.objects["Wbox1"].hitbox = Hitbox(150, 56, "imgs/empty_sprite.png", 72, 60, collideable= True)
 
-        self.objects["Wbox2"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
-        self.objects["Wbox2"].hitbox = Hitbox(-93, -80, "imgs/empty_sprite.png", 40, 90)
+        #self.objects["Wbox2"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
+        #self.objects["Wbox2"].hitbox = Hitbox(-93, -80, "imgs/empty_sprite.png", 40, 90, collideable= True)
 
-        self.objects["Wbox3"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
-        self.objects["Wbox3"].hitbox = Hitbox(0, 15, "imgs/empty_sprite.png", 280, 170)
+        #self.objects["Wbox3"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
+        #self.objects["Wbox3"].hitbox = Hitbox(0, 15, "imgs/empty_sprite.png", 280, 170, collideable= True)
 
         self.update_entrance("entrance_room", EastEntrance(self.player, "entrance_room"))
         self.entrances.get("entrance_room").set_default_east_lower()
@@ -114,26 +123,26 @@ class EntranceRoom(Room):
         self.objects["rail_2"] = Sprite("imgs/Railing_asset2.png", center=True)
         self.objects["rail_3"] = Sprite("imgs/Railing_asset3.png", center=True)
 
-        self.objects["Ebox1"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=True)
-        self.objects["Ebox1"].hitbox = Hitbox(0, 65, "imgs/empty_sprite.png", 244, 75)
+        #self.objects["Ebox1"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=True)
+        #self.objects["Ebox1"].hitbox = Hitbox(0, 65, "imgs/empty_sprite.png", 244, 75, collideable= True)
 
-        self.objects["Ebox2"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=True)
-        self.objects["Ebox2"].hitbox = Hitbox(0, 59, "imgs/empty_sprite.png", 330, 60)
+        #self.objects["Ebox2"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=True)
+        #self.objects["Ebox2"].hitbox = Hitbox(0, 59, "imgs/empty_sprite.png", 330, 60, collideable= True)
 
-        self.objects["Ebox3"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
-        self.objects["Ebox3"].hitbox = Hitbox(-107, -10, "imgs/empty_sprite.png", 30, 95)
+        #self.objects["Ebox3"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
+        #self.objects["Ebox3"].hitbox = Hitbox(-107, -10, "imgs/empty_sprite.png", 30, 95, collideable= True)
 
-        self.objects["Ebox4"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
-        self.objects["Ebox4"].hitbox = Hitbox(0, 80, "imgs/empty_sprite.png", 40, 95)
+        #self.objects["Ebox4"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
+        #self.objects["Ebox4"].hitbox = Hitbox(0, 80, "imgs/empty_sprite.png", 40, 95, collideable= True)
 
-        self.objects["Ebox5"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
-        self.objects["Ebox5"].hitbox = Hitbox(95, -15, "imgs/empty_sprite.png", 55, 110)
+        #self.objects["Ebox5"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
+        #self.objects["Ebox5"].hitbox = Hitbox(95, -15, "imgs/empty_sprite.png", 55, 110, collideable= True)
 
-        self.objects["Ebox6"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
-        self.objects["Ebox6"].hitbox = Hitbox(-5, -54, "imgs/empty_sprite.png", 155, 35)
+        #self.objects["Ebox6"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
+        #self.objects["Ebox6"].hitbox = Hitbox(-5, -54, "imgs/empty_sprite.png", 155, 35, collideable= True)
 
-        self.objects["Ebox7"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
-        self.objects["Ebox7"].hitbox = Hitbox(-13, -26, "imgs/empty_sprite.png", 137, 75)
+        #self.objects["Ebox7"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
+        #self.objects["Ebox7"].hitbox = Hitbox(-13, -26, "imgs/empty_sprite.png", 137, 75, collideable= True)
 
 
         self.update_entrance("entrance_room", ReturnEntrance(self, self.player, enter_from="s", return_side="s"))
@@ -176,17 +185,17 @@ class TestScene1(MapScene):
         # pygame.mixer.music.load(self.music_path)
         self.enter()
 
-        self.objects["Rbox1"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=True)
-        self.objects["Rbox1"].hitbox = Hitbox(-4605, 1467, "imgs/empty_sprite.png", 41, 42)
+        #self.objects["Rbox1"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=True)
+        #self.objects["Rbox1"].hitbox = Hitbox(-4605, 1467, "imgs/empty_sprite.png", 41, 42, collideable= True)
 
-        self.objects["Rbox2"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=True)
-        self.objects["Rbox2"].hitbox = Hitbox(-4605, 1437, "imgs/empty_sprite.png", 47, 21)
+        #self.objects["Rbox2"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=False)
+        #self.objects["Rbox2"].hitbox = Hitbox(-4605, 1437, "imgs/empty_sprite.png", 47, 61, collideable= True)
 
-        self.objects["Rbox3"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=True)
-        self.objects["Rbox3"].hitbox = Hitbox(-4605, 1276, "imgs/empty_sprite.png", 201, 302)
+        #self.objects["Rbox3"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=True)
+        #self.objects["Rbox3"].hitbox = Hitbox(-4605, 1276, "imgs/empty_sprite.png", 201, 302, collideable= True)
 
-        self.objects["Rbox4"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=True)
-        self.objects["Rbox4"].hitbox = Hitbox(-4605, 1166, "imgs/empty_sprite.png", 242, 82)
+        #self.objects["Rbox4"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=True)
+        #self.objects["Rbox4"].hitbox = Hitbox(-4605, 1166, "imgs/empty_sprite.png", 242, 82, collideable= True)
 
         self.npcs["sans"] = Sans(x=-4600, y=900, center=True)
 

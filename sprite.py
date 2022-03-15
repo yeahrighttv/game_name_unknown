@@ -295,10 +295,11 @@ class DialogOption(DialogBox):
 
 
 class Hitbox(pygame.Rect):
-    def __init__(self, x, y, main_image_path, width=0, height=0):
+    def __init__(self, x, y, main_image_path, width=0, height=0, collideable=False):
         self.hitbox = pygame.Rect(x, y, width, height)
         self.mask = pygame.mask.from_surface(pygame.image.load(main_image_path))
         self.mask_rect = self.mask.get_rect()
+        self.collideable = collideable
 
         if width != 0:
             self.mask_rect.x = x - width / 2

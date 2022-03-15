@@ -10,11 +10,11 @@ vec = pygame.math.Vector2
 
 
 class Player(Sprite):
-    def __init__(self, main_image_path, x, y, center=False, scale=False):
+    def __init__(self, main_image_path, x, y, center=False, scale=False, playercanmove=True):
         super().__init__(main_image_path, x, y, center, scale)
 
         self.inventory = Inventory()
-
+        self.playercanmove = playercanmove
         self.name = "Anon"
         self.dmg = 51
         self.hp = 17
@@ -67,7 +67,6 @@ class Player(Sprite):
                 self.horizontal_animation_counter = 0
 
     def change_direction(self):
-
         # Temp fix for directions by ordering updates
         if self.vel.y < 0:
             self.image = self.directions["up"][self.vertical_animation_counter]
@@ -84,12 +83,14 @@ class Player(Sprite):
         self.vel.xy = dirX * self.speed, dirY * self.speed
 
     def move(self, dirX, dirY, dt):
+        
         self.update_position(dirX, dirY, dt)
         self.change_direction()
 
     def update_position(self, dirX, dirY, dt):
         self.change_vel(dirX * (dt / 1000), dirY * (dt / 1000))
         print(self.rect.x, self.rect.y)
+        print(self.playercanmove)
         # Move rect
         self.rect.move_ip(self.vel)
 

@@ -1,6 +1,6 @@
 import time
 from abc import abstractmethod
-
+import math
 import pygame
 
 import config
@@ -53,9 +53,33 @@ class PlayingField(AbstractState):
                     break
 
     def check_for_obejct_collisions(self):
+
+        hitbox_tolerance = 6
+
         for obj in self.objects.values():
             if self.player.rect.colliderect(obj.hitbox.mask_rect):
-                obj.collide(self.game)
+                if obj.hitbox.collideable == True:
+                    collided_box = obj.hitbox.mask_rect
+                    print("collided box:",collided_box)
+                    print("player.rect.top:",self.player.rect.top, "collided box.bottom", collided_box.bottom)
+                    print("player.rect.left:",self.player.rect.left, "collided box.right", collided_box.right)
+                    if math.isclose(collided_box.bottom, self.player.rect.top, abs_tol= hitbox_tolerance):
+                        print("collision top of player")
+                    if math.isclose(collided_box.top, self.player.rect.bottom, abs_tol= hitbox_tolerance):
+                        print("collision bottom of player")
+                    if math.isclose(collided_box.left, self.player.rect.right, abs_tol= hitbox_tolerance):
+                        print("collision right of player")
+                    if math.isclose(collided_box.right, self.player.rect.left, abs_tol= hitbox_tolerance):
+                        print("collision left of player")
+
+                    # if self.player.rect.x < collided_box.x:
+                    #     print("collision left of player")
+                    # if self.player.rect.x > collided_box.x:
+                    #     print("collision right of player")
+                    # if self.player.rect.y > collided_box.y:
+                    #     print("collision top of player")
+                    # if self.player.rect.y < collided_box.y:
+                    #     print("collision bottom of player")
 
     def checks(self):
         self.check_for_entrance_collisions()
