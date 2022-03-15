@@ -89,8 +89,8 @@ class Player(Sprite):
 
     def update_position(self, dirX, dirY, dt):
         self.change_vel(dirX * (dt / 1000), dirY * (dt / 1000))
-        print(self.rect.x, self.rect.y)
-        print(self.playercanmove)
+       #print(self.rect.x, self.rect.y)
+        #print(self.playercanmove)
         # Move rect
         self.rect.move_ip(self.vel)
 
