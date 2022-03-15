@@ -58,7 +58,7 @@ class PlayingField(AbstractState):
                 obj.collide(self.game)
 
     def checks(self):
-        self.check_for_entrance_collision()
+        self.check_for_entrance_collisions()
         self.check_for_npc_collisions()
         self.check_for_item_collisions()
         self.check_for_obejct_collisions()
@@ -185,7 +185,7 @@ class MapScene(GeneralScene):
 
             self.checks()
 
-    def check_for_entrance_collision(self):
+    def check_for_entrance_collisions(self):
         for area_name, area in self.indoors_areas.items():
             if self.player.rect.colliderect(area.house_sprite.rect):
                 self.cur_indoors_area = area_name
@@ -327,10 +327,12 @@ class Room(PlayingField):
         self.camera.set_method("stand")
         self.camera.mode.set_default_offset()
 
-        self.check_for_entrance_collisions()
-        self.check_for_npc_collisions()
-        self.check_for_item_collisions()
-        self.check_for_obejct_collisions()
+        self.checks()
+
+        # self.check_for_entrance_collisions()
+        # self.check_for_npc_collisions()
+        # self.check_for_item_collisions()
+        # self.check_for_obejct_collisions()
 
     def check_for_entrance_collisions(self):
         for entrance in self.entrances.values():
