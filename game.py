@@ -12,7 +12,7 @@ vec = pygame.math.Vector2
 
 class Game:
     def __init__(self, screen):
-        self.volume = 0.1
+        self.volume = 0.5
         pygame.init()
         pygame.mixer.init()
         pygame.mixer.music.set_volume(self.volume)

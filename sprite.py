@@ -210,7 +210,7 @@ class TestNPC(Neutral):
 
 class Sans(Boss):
     def __init__(self, main_image_path="imgs/sans_1.png", main_fight_sprite_path="imgs/sans_large.png",
-                 music_path="audio/megalovania.ogg", x=0, y=0,
+                 music_path="audio/main_theme_fight.ogg", x=0, y=0,
                  center=False, scale=False, hp=200, max_hp=200):
         super().__init__(main_image_path, main_fight_sprite_path, music_path, x, y, center, scale, hp, max_hp)
         # print(self.rect)
