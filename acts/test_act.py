@@ -171,7 +171,7 @@ class TestHouse(House):
         self.update_room("east_hallway", EastHallway("east_hallway", self.screen, self.game, self.player, self.camera, self))
         self.update_room("kitchen", Kitchen("kitchen", self.screen, self.game, self.player, self.camera, self))
         self.house_sprite = Sprite("imgs/house_test.png", -4604, 1267, center=True)
-        self.music_path = "audio/home.ogg"
+        self.music_path = "audio/main_theme.ogg"
         # self.play_music()
 
 
