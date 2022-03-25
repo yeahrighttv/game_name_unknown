@@ -189,6 +189,14 @@ class SchoolScene(MapScene):
         self.objects["bg"] = Sprite("imgs/School/floor_1_bg.png", center=True)
         self.objects["floor"] = Sprite("imgs/School/floor_1.png", center=True)
 
+        self.objects["flower_1"] = Sprite("imgs/Assets/pottedplant4.png", -1910, -124, center=True)
+        self.objects["bucket"] = Sprite("imgs/Assets/bucket_purple.png", -1894, -134, center=True)
+        self.objects["flower_2"] = Sprite("imgs/Assets/redflower.png", -1906, -40, center=True)
+        self.objects["door_principal"] = Sprite("imgs/Assets/door2.png", -1856, -162, center=True)
+
+        self.objects["door_administrator"] = Sprite("imgs/Assets/door2.png", -1856, -20, center=True)
+        self.objects["door_administrator"].image.set_alpha(150)
+
         # self.objects["Rbox1"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=True)
         # self.objects["Rbox1"].hitbox = Hitbox(-4605, 1467, "imgs/empty_sprite.png", 41, 42, collideable= True)
 

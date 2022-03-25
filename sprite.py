@@ -39,7 +39,7 @@ class Sprite(pygame.sprite.Sprite):
         # Collision box
         #if self.render_collision_box:
         #    pygame.draw.rect(surface, config.RED, pygame.Rect(self.rect.x - offset.x, self.rect.y - offset.y, self.rect.w, self.rect.h), width=1)
-        self.hitbox.render(surface, offset, dt)
+        # self.hitbox.render(surface, offset, dt)
 
     def center(self):
         self.rect.update(self.rect.x + (-self.rect.w / 2),
