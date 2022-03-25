@@ -60,7 +60,8 @@ class Sprite(pygame.sprite.Sprite):
                 self.animation_counter = 0
 
     def collide(self, game):
-        print("Collided")
+        # print("Collided")
+        pass
 
 
 class Map(Sprite):

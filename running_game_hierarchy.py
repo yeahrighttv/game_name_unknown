@@ -53,29 +53,32 @@ class PlayingField(AbstractState):
                     break
 
     def check_for_obejct_collisions(self):
-        #Object collision
-        #Max amount of pixels tolerated between sides
+        # Object collision
+        # Max amount of pixels tolerated between sides
         hitbox_tolerance = 6
         dink_offset = 1
 
-        for obj in self.objects.values():                                #For every object, check if the player collides with it, and if that objects hitbox is collideable, see which side it collided on
+        for obj in self.objects.values():
+            # For every object, check if the player collides with it,
+            # and if that objects hitbox is collideable, see which side it collided on
+
             if self.player.rect.colliderect(obj.hitbox.mask_rect):
                 if obj.hitbox.collideable == True:
                     collided_box = obj.hitbox.mask_rect
                     #print("collided box:",collided_box)
                     #print("player.rect.top:",self.player.rect.top, "collided box.bottom", collided_box.bottom)
                     #print("player.rect.left:",self.player.rect.left, "collided box.right", collided_box.right)
-                    if math.isclose(collided_box.bottom, self.player.rect.top, abs_tol= hitbox_tolerance):
-                        print("collision top of player")
+                    if math.isclose(collided_box.bottom, self.player.rect.top, abs_tol=hitbox_tolerance):
+                        # print("collision top of player")
                         self.player.rect.y = self.player.rect.y + dink_offset
-                    if math.isclose(collided_box.top, self.player.rect.bottom, abs_tol= hitbox_tolerance):
-                        print("collision bottom of player")
+                    if math.isclose(collided_box.top, self.player.rect.bottom, abs_tol=hitbox_tolerance):
+                        # print("collision bottom of player")
                         self.player.rect.y = self.player.rect.y - dink_offset
-                    if math.isclose(collided_box.left, self.player.rect.right, abs_tol= hitbox_tolerance):
-                        print("collision right of player")
+                    if math.isclose(collided_box.left, self.player.rect.right, abs_tol=hitbox_tolerance):
+                        # print("collision right of player")
                         self.player.rect.x = self.player.rect.x - dink_offset
-                    if math.isclose(collided_box.right, self.player.rect.left, abs_tol= hitbox_tolerance):
-                        print("collision left of player")
+                    if math.isclose(collided_box.right, self.player.rect.left, abs_tol=hitbox_tolerance):
+                        # print("collision left of player")
                         self.player.rect.x = self.player.rect.x + dink_offset
 
     def checks(self):
