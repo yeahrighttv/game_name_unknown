@@ -27,7 +27,7 @@ class Dialogue(AbstractState):
             text='What the fuck did you just fucking say about me, you little bitch?',
             text_width=(screen_size.x // 2),
             lines=2,
-            pos=((screen_size.x // 8), (screen_size.y // 2)),
+            pos=((screen_size.x // 6), (screen_size.y * 0.75)),
             padding=(150, 100),
             font_color=(255, 255, 255),
             font_size=26,
