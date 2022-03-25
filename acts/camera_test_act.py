@@ -9,6 +9,11 @@ vec = pygame.math.Vector2
 
 
 class Kitchen(Room):
+    def update(self, dt):
+        self.dt = dt
+
+        self.checks()
+
     def set_up(self):
         self.default_entrance = "west_room"
 
@@ -36,12 +41,12 @@ class EastHallway(RoomBorder):
     def update(self, dt):
         self.dt = dt
 
-        self.camera.set_method("border")
-        borders_rect = self.objects.get("bg").rect
-        self.camera.mode.set_borders(borders_rect.x,
-                                     borders_rect.y,
-                                     borders_rect.x + borders_rect.w,
-                                     borders_rect.y + borders_rect.h + 50)
+        # self.camera.set_method("border")
+        # borders_rect = self.objects.get("bg").rect
+        # self.camera.mode.set_borders(borders_rect.x,
+        #                              borders_rect.y,
+        #                              borders_rect.x + borders_rect.w,
+        #                              borders_rect.y + borders_rect.h + 50)
 
         self.checks()
 
@@ -83,6 +88,11 @@ class EastHallway(RoomBorder):
 
 
 class WestRoom(Room):
+    def update(self, dt):
+        self.dt = dt
+
+        self.checks()
+
     def set_up(self):
         self.default_entrance = "entrance_room"
         self.objects["bg"] = Map("imgs/Assets/Room_West_Floor.png", center=True)
@@ -115,6 +125,11 @@ class WestRoom(Room):
 
 
 class EntranceRoom(Room):
+    def update(self, dt):
+        self.dt = dt
+
+        self.checks()
+
     def set_up(self):
 
         self.default_entrance = "entrance_room"
@@ -179,6 +194,22 @@ class TestHouse(House):
 
 
 class TestScene1(MapScene):
+    def update(self, dt):
+        self.dt = dt
+
+        # self.camera.set_method("border")
+        # self.camera.mode.set_borders(self.map.rect.x,
+        #                              self.map.rect.y,
+        #                              self.map.rect.x + self.map.rect.w,
+        #                              self.map.rect.y + self.map.rect.h)
+
+        if self.cur_indoors_area in self.indoors_areas.keys():
+            self.indoors_areas.get(self.cur_indoors_area).update(dt)
+        else:
+            self.player.scope = self.map
+
+            self.checks()
+
     def set_up(self):
         self.map = Map("imgs/ruins.png", center=True)
         # self.map = Sprite("imgs/zelda_map_test.png", center=True)
@@ -233,7 +264,7 @@ class TestScene1(MapScene):
 #         self.indoors_areas.get(self.cur_indoors_area).enter_house()
 
 
-class TestAct(Act):
+class CameraTestAct(Act):
     def set_up(self):
         self.scene = "scene 1"
         self.update_scene("scene 1", TestScene1(self.screen, self.game, self.player, self.camera, self))

@@ -1,3 +1,4 @@
+from acts.camera_test_act import CameraTestAct
 from acts.school import SchoolAct
 from acts.test_act import TestAct
 from program_states import AbstractState
@@ -62,17 +63,19 @@ class RunningGame(AbstractState):
             pygame.K_9: lambda x, y: self.game.change_resD(x, y - 1),
             pygame.K_0: lambda x, y: self.game.change_resI(x, y + 1),
             pygame.K_7: lambda x, y: self.game.change_state(GameState.MENU),
-            pygame.K_o: lambda x, y: self.change_act("act 1"),
-            pygame.K_p: lambda x, y: self.change_act("act 2"),
+            pygame.K_o: lambda x, y: self.change_act("test_act"),
+            pygame.K_p: lambda x, y: self.change_act("school_act"),
+            pygame.K_i: lambda x, y: self.change_act("camera_test_act"),
             pygame.K_h: lambda x, y: self.update_hitboxes(),
             pygame.K_k: lambda x, y: self.player.change_speed(200),
             pygame.K_l: lambda x, y: self.player.change_speed(1000),
         }
 
-        self.act = "act 2"
+        self.act = "test_act"
         self.acts = {
-            "act 1": TestAct(self.screen, self.game, self.player, self.camera, self),
-            "act 2": SchoolAct(self.screen, self.game, self.player, self.camera, self),
+            "test_act": TestAct(self.screen, self.game, self.player, self.camera, self),
+            "school_act": SchoolAct(self.screen, self.game, self.player, self.camera, self),
+            "camera_test_act": CameraTestAct(self.screen, self.game, self.player, self.camera, self),
         }
 
         self.player.rect.x, self.player.rect.y = self.get_act().scenes.get(self.get_act().scene).player_last_pos
