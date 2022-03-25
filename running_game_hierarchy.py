@@ -217,7 +217,7 @@ class MapScene(GeneralScene):
                 self.cur_indoors_area = area_name
                 self.indoors_areas.get(self.cur_indoors_area).enter()
                 self.exit()
-                time.sleep(0.5)
+                time.sleep(0.05)
                 break
 
 
@@ -422,7 +422,7 @@ class Entrance:
         return player_pos_from_entering.get(self.enter_from)
 
     def action(self):
-        time.sleep(0.5)
+        time.sleep(0.05)
 
     def set_default_south(self):
         self.set_pos(-16, 116)
@@ -507,4 +507,4 @@ class ReturnEntrance(Entrance):
 
     def action(self):
         self.room.return_outside(self.return_side)
-        time.sleep(0.5)
+        time.sleep(0.05)
