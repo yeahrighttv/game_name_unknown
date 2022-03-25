@@ -10,7 +10,7 @@ ESC or OS "close" button to exit the game
 - General navigation:
 	- "7": Opens Inventory Menu
 	- UP and DOWN arrows: Loops through the options
-	- RIGHT arrow or enter: Enter submenu or execute action
+	- RIGHT arrow or ENTER: Enter submenu or execute action
 	- LEFT arrow: Exit current submenu option
 - Main menu options:
 	- Top quadrant: Player's name, LVL and HP information
@@ -40,6 +40,12 @@ ESC or OS "close" button to exit the game
 ### Fighting cheat
 
 - "j": -50hp to the Boss
+- Mouse over the rock, paper, scisors (buttons also come in that order) options and right click to choose. Play until the Boss has no HP left (or use the cheat code).
+
+### Dialogue
+
+- Walk into to the NPC to initate dialogue
+- Press ENTER to loop through the dialogue
 
 ### Camera modes
 To change camera modes, use:
