@@ -94,7 +94,6 @@ class RunningGame(AbstractState):
     def get_act(self):
         return self.acts.get(self.act)
 
-    # Moves and offsets camera
     def move_camera(self):
         self.camera.scroll()
 
@@ -160,17 +159,18 @@ class RunningGame(AbstractState):
                 pass
 
     def update_hitboxes(self):
-        scene = self.get_act().scenes.get(self.get_act().scene)
-
         self.render_hitboxes = not self.render_hitboxes
-        # if scene.cur_indoors_area in scene.indoors_areas.keys():
-        # house = scene.indoors_areas.get(scene.cur_indoors_area)
-        for house in scene.indoors_areas.values():
-            for room in house.rooms.values():
-                self.flip_all_hitboxes_rendering(room)
-        # else:
-        self.flip_hitbox_rendering_houses(scene.indoors_areas)
-        self.flip_all_hitboxes_rendering(scene)
+        for act in self.acts:
+            scene = self.acts.get(act).scenes.get(self.acts.get(act).scene)
+
+            # if scene.cur_indoors_area in scene.indoors_areas.keys():
+            # house = scene.indoors_areas.get(scene.cur_indoors_area)
+            for house in scene.indoors_areas.values():
+                for room in house.rooms.values():
+                    self.flip_all_hitboxes_rendering(room)
+            # else:
+            self.flip_hitbox_rendering_houses(scene.indoors_areas)
+            self.flip_all_hitboxes_rendering(scene)
 
     def flip_all_hitboxes_rendering(self, area):
         self.flip_hitbox_rendering(area.npcs)
