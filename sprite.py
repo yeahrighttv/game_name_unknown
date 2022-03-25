@@ -24,7 +24,8 @@ class Sprite(pygame.sprite.Sprite):
         self.rect.move_ip(x, y)
 
         self.hitbox = Hitbox(self.rect.x, self.rect.y, main_image_path, self.rect.w, self.rect.h)
-        
+        self.render_hitbox = False
+
         if center:
             self.center()
 
@@ -39,7 +40,8 @@ class Sprite(pygame.sprite.Sprite):
         # Collision box
         #if self.render_collision_box:
         #    pygame.draw.rect(surface, config.RED, pygame.Rect(self.rect.x - offset.x, self.rect.y - offset.y, self.rect.w, self.rect.h), width=1)
-        self.hitbox.render(surface, offset, dt)
+        if self.render_hitbox:
+            self.hitbox.render(surface, offset, dt)
 
     def center(self):
         self.rect.update(self.rect.x + (-self.rect.w / 2),

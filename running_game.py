@@ -36,6 +36,8 @@ class RunningGame(AbstractState):
         self.player = player
         self.set_up()
 
+        self.render_hitboxes = False
+
     def set_up(self):
 
         # Camera setup
@@ -61,6 +63,7 @@ class RunningGame(AbstractState):
             pygame.K_7: lambda x, y: self.game.change_state(GameState.MENU),
             pygame.K_o: lambda x, y: self.get_act().change_cur_scene("scene 1"),
             pygame.K_p: lambda x, y: self.get_act().change_cur_scene("scene 2"),
+            pygame.K_h: lambda x, y: self.update_hitboxes(),
             pygame.K_k: lambda x, y: self.player.change_speed(200),
             pygame.K_l: lambda x, y: self.player.change_speed(130),
         }
@@ -139,3 +142,29 @@ class RunningGame(AbstractState):
             # Check if key is released
             elif event.type == pygame.KEYUP:
                 pass
+
+    def update_hitboxes(self):
+        scene = self.get_act().scenes.get(self.get_act().scene)
+
+        self.render_hitboxes = not self.render_hitboxes
+        # if scene.cur_indoors_area in scene.indoors_areas.keys():
+        # house = scene.indoors_areas.get(scene.cur_indoors_area)
+        for house in scene.indoors_areas.values():
+            for room in house.rooms.values():
+                self.flip_all_hitboxes_rendering(room)
+        # else:
+        self.flip_hitbox_rendering_houses(scene.indoors_areas)
+        self.flip_all_hitboxes_rendering(scene)
+
+    def flip_all_hitboxes_rendering(self, area):
+        self.flip_hitbox_rendering(area.npcs)
+        self.flip_hitbox_rendering(area.objects)
+        self.flip_hitbox_rendering(area.items)
+
+    def flip_hitbox_rendering(self, dct):
+        for value in dct.values():
+            value.render_hitbox = self.render_hitboxes
+
+    def flip_hitbox_rendering_houses(self, houses):
+        for value in [house.house_sprite for house in houses.values()]:
+            value.render_hitbox = self.render_hitboxes
