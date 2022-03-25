@@ -190,8 +190,8 @@ class SchoolScene(MapScene):
         # pygame.mixer.music.load(self.music_path)
         self.enter()
 
-        self.objects["bg"] = Sprite("imgs/School/floor_1_bg.png", center=True)
-        self.objects["floor"] = Sprite("imgs/School/floor_1.png", center=True)
+        self.objects["bg"] = Sprite("imgs/School/floor_1_bg_smaller.png", -440, 157, center=True)
+        self.objects["floor"] = Sprite("imgs/School/floor_1_smaller.png", center=True)
 
         self.objects["flower_1"] = Sprite("imgs/Assets/pottedplant4.png", -1910, -124, center=True)
         self.objects["bucket"] = Sprite("imgs/Assets/bucket_purple.png", -1894, -134, center=True)
