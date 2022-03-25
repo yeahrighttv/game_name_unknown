@@ -5,6 +5,8 @@ from running_game_hierarchy import Act, MapScene, House, Room, Entrance, ReturnE
     SouthEntrance, WestEntrance, RoomBorder
 from sprite import Sprite, Sans, Map, Bear, TestNPC, Hitbox
 
+vec = pygame.math.Vector2
+
 
 class Kitchen(Room):
     def set_up(self):
@@ -181,6 +183,7 @@ class TestScene1(MapScene):
         # self.map = Sprite("imgs/zelda_map_test.png", center=True)
         self.update_indoor_area("house 1", TestHouse(self.screen, self.game, self.player, self.camera, self))
         self.player.rect.x, self.player.rect.y = -4620, 1450
+        self.player_last_pos = vec(-4620, 1450)
         self.music_path = "audio/ruins.ogg"
         # pygame.mixer.music.load(self.music_path)
         self.enter()

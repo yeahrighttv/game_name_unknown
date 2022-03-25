@@ -119,6 +119,8 @@ class GeneralScene(PlayingField):
         super().__init__(screen, game, player, camera, parent)
         self.music_path = music_path
 
+        self.player_last_pos = vec(0, 0)
+
     @abstractmethod
     def set_up(self):
         pass
