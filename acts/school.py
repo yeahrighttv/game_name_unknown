@@ -180,26 +180,41 @@ vec = pygame.math.Vector2
 
 class SchoolScene(MapScene):
     def set_up(self):
-        self.map = Map("imgs/School/floor_1.png", center=True)
+        self.map = Map("imgs/School/floor_1_smaller.png", center=True)
         # self.map = Sprite("imgs/zelda_map_test.png", center=True)
         # self.update_indoor_area("house 1", TestHouse(self.screen, self.game, self.player, self.camera, self))
-        self.player.rect.x, self.player.rect.y = -1980, -90
-        self.player_last_pos = vec(-1980, -90)
+        # self.player.rect.x, self.player.rect.y = -1980, -90
+        self.player.rect.x, self.player.rect.y = -1520, -244
+        const = vec(1980 - 1540, 90 - 248)
+        self.player_last_pos = vec(self.player.rect.x, self.player.rect.y)
 
         self.music_path = "audio/ruins.ogg"
         # pygame.mixer.music.load(self.music_path)
         self.enter()
 
-        self.objects["bg"] = Sprite("imgs/School/floor_1_bg_smaller.png", -440, 157, center=True)
+        self.objects["bg"] = Sprite("imgs/School/floor_1_bg_smaller.png", center=True)
         self.objects["floor"] = Sprite("imgs/School/floor_1_smaller.png", center=True)
 
-        self.objects["flower_1"] = Sprite("imgs/Assets/pottedplant4.png", -1910, -124, center=True)
-        self.objects["bucket"] = Sprite("imgs/Assets/bucket_purple.png", -1894, -134, center=True)
-        self.objects["flower_2"] = Sprite("imgs/Assets/redflower.png", -1906, -40, center=True)
-        self.objects["door_principal"] = Sprite("imgs/Assets/door2.png", -1856, -162, center=True)
+        self.objects["flower_1"] = Sprite("imgs/Assets/pottedplant4.png", -1910 + const.x, -124 + const.y, center=True)
+        self.objects["bucket"] = Sprite("imgs/Assets/bucket_purple.png", -1894 + const.x, -134 + const.y, center=True)
+        self.objects["flower_2"] = Sprite("imgs/Assets/redflower.png", -1906 + const.x, -40 + const.y, center=True)
+        self.objects["door_principal"] = Sprite("imgs/Assets/door2.png", -1856 + const.x, -162 + const.y, center=True)
+        self.objects["paintingframed2"] = Sprite("imgs/Assets/paintingframed2.png", -1740 + const.x, -120 + const.y,
+                                                 center=True)
 
-        self.objects["door_administrator"] = Sprite("imgs/Assets/door2.png", -1856, -20, center=True)
+        self.objects["door_administrator"] = Sprite("imgs/Assets/door2.png", -1883 + const.x, -20 + const.y,
+                                                    center=True)
         self.objects["door_administrator"].image.set_alpha(150)
+        self.objects["bulletin_board"] = Sprite("imgs/Assets/bulletin_board.png", -1848 + const.x, -20 + const.y,
+                                                center=True)
+        self.objects["bulletin_board"].image.set_alpha(150)
+
+        self.objects["framedpainting1"] = Sprite("imgs/Assets/framedpainting1.png", -1770 + const.x, -40 + const.y,
+                                                center=True)
+        self.objects["framedpainting1"].image.set_alpha(150)
+        self.objects["paintingframed5"] = Sprite("imgs/Assets/paintingframed5.png", -1710 + const.x, -40 + const.y,
+                                                center=True)
+        self.objects["paintingframed5"].image.set_alpha(150)
 
         # self.objects["Rbox1"] = Sprite("imgs/empty_sprite.png", -4620, 1500, center=True)
         # self.objects["Rbox1"].hitbox = Hitbox(-4605, 1467, "imgs/empty_sprite.png", 41, 42, collideable= True)
